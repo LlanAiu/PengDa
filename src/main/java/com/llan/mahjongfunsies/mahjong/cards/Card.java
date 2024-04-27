@@ -1,10 +1,20 @@
-package com.llan.mahjongfunsies.mahjong;
+package com.llan.mahjongfunsies.mahjong.cards;
 
 public class Card {
     public enum Suit{
-        TIAO,
-        TONG,
-        WAN;
+        TIAO(1),
+        TONG(2),
+        WAN(3);
+
+        private final int priority;
+
+        Suit(int priority){
+            this.priority = priority;
+        }
+
+        public int getPriority(){
+            return priority;
+        }
     }
 
     private final Suit suit;
