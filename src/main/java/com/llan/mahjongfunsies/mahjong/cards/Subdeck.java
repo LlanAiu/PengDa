@@ -1,6 +1,5 @@
 package com.llan.mahjongfunsies.mahjong.cards;
 
-import java.util.Comparator;
 import java.util.List;
 
 public abstract class Subdeck {
@@ -16,12 +15,18 @@ public abstract class Subdeck {
         }
     }
 
+    public void clear(){
+        while(cards.size() > 0){
+            cards.removeLast();
+        }
+    }
+
     public void sort(){
         cards.sort((card1, card2) -> {
-            if(card1.getSuit() != card2.getSuit()){
-                return card1.getSuit().getPriority() - card2.getSuit().getPriority();
+            if(card1.suit() != card2.suit()){
+                return card1.suit().getPriority() - card2.suit().getPriority();
             } else {
-                return card1.getValue() - card2.getValue();
+                return card1.value() - card2.value();
             }
         });
     }
