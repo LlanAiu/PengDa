@@ -9,7 +9,7 @@ public class Computer extends Player{
     }
 
     @Override
-    public Card play() {
+    public Card select() {
         return null;
     }
 }

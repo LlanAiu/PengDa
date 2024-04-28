@@ -9,7 +9,7 @@ public class Human extends Player{
     }
 
     @Override
-    public Card play() {
+    public Card select() {
         return null;
     }
 }

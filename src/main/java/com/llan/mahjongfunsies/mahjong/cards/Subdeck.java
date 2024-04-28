@@ -10,15 +10,15 @@ public abstract class Subdeck {
     }
 
     public void addCards(List<Card> cards){
-        for(Card card : cards){
-            this.cards.add(card);
-        }
+        this.cards.addAll(cards);
+    }
+
+    public void removeCard(Card card){
+        cards.remove(card);
     }
 
     public void clear(){
-        while(cards.size() > 0){
-            cards.removeLast();
-        }
+        cards.removeAll(cards);
     }
 
     public void sort(){
@@ -34,5 +34,16 @@ public abstract class Subdeck {
     public Card[] readAll(){
         Card[] readableCards = new Card[cards.size()];
         return cards.toArray(readableCards);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        for(Card card : cards){
+            sb.append(card.toString() + ", ");
+        }
+        sb.delete(sb.length() - 2, sb.length());
+        sb.append('}');
+        return sb.toString();
     }
 }

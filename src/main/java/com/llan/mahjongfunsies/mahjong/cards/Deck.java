@@ -19,15 +19,8 @@ public class Deck {
     }
 
     private Deck(){
-        cards = new ArrayList<>(108);
-        for(Card.Suit suit : Card.Suit.values()){
-            for(int value = 1; value < 10; value++){
-                for(int i = 0; i < 4; i++){
-                    cards.add(new Card(suit, value));
-                }
-            }
-        }
-        this.shuffle();
+        cards = new ArrayList<>(Constants.TOTAL_DECK_SIZE);
+        this.reset();
     }
 
     public Card drawNext(){
@@ -50,6 +43,9 @@ public class Deck {
     }
 
     public void reset(){
+        if(!cards.isEmpty()) {
+            cards.removeAll(cards);
+        }
         for(Card.Suit suit : Card.Suit.values()){
             for(int value : Constants.CARD_VALUES){
                 for(int i = 0; i < Constants.CARD_DUPLICATES; i++){

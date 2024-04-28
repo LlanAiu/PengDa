@@ -17,4 +17,5 @@ public record Card(Suit suit, int value) {
         }
     }
 
+
 }
