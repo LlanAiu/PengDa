@@ -1,6 +1,7 @@
 package com.llan.mahjongfunsies.mahjong.cards;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public abstract class Subdeck {
     List<Card> cards;
@@ -15,6 +16,10 @@ public abstract class Subdeck {
 
     public void removeCard(Card card){
         cards.remove(card);
+    }
+
+    public int countIdentical(Card search){
+        return (int) cards.stream().filter(card -> card.equals(search)).count();
     }
 
     public void clear(){
@@ -32,12 +37,14 @@ public abstract class Subdeck {
     }
 
     public Card[] readAll(){
-        Card[] readableCards = new Card[cards.size()];
-        return cards.toArray(readableCards);
+        return cards.toArray(new Card[cards.size()]);
     }
 
     @Override
     public String toString() {
+        if(cards.isEmpty()){
+            return "{ }";
+        }
         final StringBuilder sb = new StringBuilder("{");
         for(Card card : cards){
             sb.append(card.toString() + ", ");
