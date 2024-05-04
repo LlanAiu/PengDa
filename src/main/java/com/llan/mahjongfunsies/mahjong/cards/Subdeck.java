@@ -26,6 +26,10 @@ public abstract class Subdeck {
         cards.removeAll(cards);
     }
 
+    public boolean contains(Card card){
+        return cards.contains(card);
+    }
+
     public void sort(){
         cards.sort((card1, card2) -> {
             if(card1.suit() != card2.suit()){

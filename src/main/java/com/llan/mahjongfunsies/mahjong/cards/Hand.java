@@ -22,13 +22,28 @@ public class Hand extends Subdeck{
 
     //returns null if false, returns a list of winning cards if true
     public Optional<List<Card>> isOneAway(){
-
-        return Optional.empty();
+        List<Card> possibleHands = new ArrayList<>();
+        List<Card> winningCards = new ArrayList<>();
+        possibleHands.addAll(cards);
+        for(Card card : Constants.allCards){
+            possibleHands.addLast(card);
+            if(isWinning(possibleHands)){
+                winningCards.add(card);
+            }
+            possibleHands.removeLast();
+        }
+        if(winningCards.isEmpty()){
+            return Optional.empty();
+        } else {
+            return Optional.of(winningCards);
+        }
     }
 
     public boolean isWinning(){
+        return isWinning(cards);
+    }
 
-
+    public boolean isWinning(List<Card> hand){
         return false;
     }
 }
