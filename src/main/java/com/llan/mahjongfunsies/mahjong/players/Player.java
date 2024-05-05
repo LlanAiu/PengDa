@@ -49,31 +49,6 @@ public abstract class Player {
         hand.removeCard(card);
     }
 
-    public int numIdenticalCards(Card search){
-        return hand.countIdentical(search);
-    }
-
-    public boolean canStraight(Card search){
-        int value = search.value();
-        Card.Suit suit = search.suit();
-        if(value - 2 >= 1){
-            if(hand.contains(new Card(suit, value - 2)) && hand.contains(new Card(suit, value - 1))){
-                return true;
-            }
-        }
-        if(value + 1 <= 9 && value - 1 >= 1){
-            if(hand.contains(new Card(suit, value - 1)) && hand.contains(new Card(suit, value + 1))){
-                return true;
-            }
-        }
-        if(value + 2 <= 9){
-            if(hand.contains(new Card(suit, value + 1)) && hand.contains(new Card(suit, value + 2))){
-                return true;
-            }
-        }
-        return false;
-    }
-
     //playing is true if it's the current player's turn rather than just a move on the last card played
     public void setLegalMoves(Card lastPlayed, boolean playing){
         if (playing) {
@@ -81,14 +56,14 @@ public abstract class Player {
                 legalMoves.add(new Move(GameAction.CARD, card, index));
             }
         }
-        int num = numIdenticalCards(lastPlayed);
+        int num = hand.countIdentical(lastPlayed);
         if (num >= 2) {
             legalMoves.add(new Move(GameAction.TRIPLE, lastPlayed, index));
             if(num >= 3){
                 legalMoves.add(new Move(GameAction.QUAD, lastPlayed, index));
             }
         }
-        if (canStraight(lastPlayed)) {
+        if (hand.canStraight(lastPlayed)) {
             legalMoves.add(new Move(GameAction.STRAIGHT, lastPlayed, index));
         }
     }

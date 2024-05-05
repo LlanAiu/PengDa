@@ -33,7 +33,7 @@ public class Deck {
     public List<Card> drawNext(int number){
         List<Card> drawn = new ArrayList<>(number);
         for(int i = 0; i < number; i++){
-            drawn.add(drawNext()); //should be ok since read only?
+            drawn.add(drawNext());
         }
         return drawn;
     }
@@ -46,11 +46,9 @@ public class Deck {
         if(!cards.isEmpty()) {
             cards.removeAll(cards);
         }
-        for(Card.Suit suit : Card.Suit.values()){
-            for(int value : Constants.CARD_VALUES){
-                for(int i = 0; i < Constants.CARD_DUPLICATES; i++){
-                    cards.add(new Card(suit, value));
-                }
+        for(Card card : Constants.allCards){
+            for(int i = 0; i < Constants.CARD_DUPLICATES; i++){
+                cards.add(Card.copyOf(card));
             }
         }
         this.shuffle();
