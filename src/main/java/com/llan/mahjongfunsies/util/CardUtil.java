@@ -5,7 +5,6 @@ import com.llan.mahjongfunsies.mahjong.cards.Subdeck;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class CardUtil {
@@ -16,11 +15,11 @@ public class CardUtil {
         List<Card> pairs = hand.findPairs(filtered);
         for(Card card : pairs){
             processed = new ArrayList<>();
-            Collections.copy(processed, filtered);
+            processed.addAll(filtered);
             processed.remove(card);
             processed.remove(card);
             int count = countSets(processed);
-            if(count == ((double) processed.size()) / 3.0){
+            if(count == ((double) filtered.size() - 2.0) / 3.0){
                 return true;
             }
         }
