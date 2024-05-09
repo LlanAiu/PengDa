@@ -4,6 +4,8 @@ import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
+import com.llan.mahjongfunsies.mahjong.environment.GameAction;
+import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 
 public class Gameflow {
@@ -20,12 +22,24 @@ public class Gameflow {
 
     private Gameflow(){}
 
-    public static void nextTurn(){
+    //returns true if move is played, false otherwise
+    public static boolean pollNextTurn(){
+        if(players[currentTurnIndex].moveSelected() != GameAction.NOTHING){
+            players[currentTurnIndex].play();
+            return true;
+        }
+        return false;
+    }
 
+    public static void initialize(){
+        for(int i = 0; i < players.length; i++){
+            players[i] = new Human(i);
+        }
     }
 
     public static void reset(){
         currentTurnIndex = 0;
+        firstTurnIndex = 0;
         turnNumber = 1;
         deck.reset();
         discardPile.clear();
@@ -33,6 +47,7 @@ public class Gameflow {
             player.reset();
             player.drawInitialHand();
         }
+        players[firstTurnIndex].setPlayingMoves();
     }
 
     public static int getFirstTurnIndex(){
@@ -43,9 +58,25 @@ public class Gameflow {
         discardPile.addCard(lastPlayed);
         players[index].removeCard(card);
         lastPlayed = card;
+        checkPostMoves();
+    }
+
+    public static void checkPostMoves(){
+        for(Player player : players){
+            player.clearLegalMoves();
+            player.setLegalMoves(lastPlayed, false);
+        }
+    }
+
+    public static void playPostMoves(){
+        for(int i = 0; i < players.length; i++){
+
+        }
     }
 
     public static void addCardToPlayer(Card card, int index){
         players[index].addCard(card);
+        currentTurnIndex = index;
+        players[index].setPlayingMoves();
     }
 }

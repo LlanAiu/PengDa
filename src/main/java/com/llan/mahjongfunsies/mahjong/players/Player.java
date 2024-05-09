@@ -10,6 +10,9 @@ import com.llan.mahjongfunsies.mahjong.environment.Move;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.ToIntFunction;
+import java.util.stream.IntStream;
 
 public abstract class Player {
     private Hand hand;
@@ -27,6 +30,7 @@ public abstract class Player {
 
     public void reset(){
         hand.clear();
+        this.clearLegalMoves();
     }
 
     public boolean hasWon(){
@@ -49,8 +53,26 @@ public abstract class Player {
         hand.removeCard(card);
     }
 
+    public void finishSet(Card card){
+        if(action == GameAction.TRIPLE || action == GameAction.QUAD){
+            for(Card c : hand.getCards()){
+                if(c.equals(card)){
+                    c.setHidden(false);
+                }
+            }
+        } else {
+
+        }
+
+        card.setHidden(false);
+        hand.addCard(card);
+    }
+
     //playing is true if it's the current player's turn rather than just a move on the last card played
     public void setLegalMoves(Card lastPlayed, boolean playing){
+        if(!legalMoves.isEmpty()){
+            this.clearLegalMoves();
+        }
         if (playing) {
             for(Card card : hand.readAll()){
                 legalMoves.add(new Move(GameAction.CARD, card, index));
@@ -68,16 +90,27 @@ public abstract class Player {
         }
     }
 
-    public void clearLegalMoves(){
-        legalMoves.removeAll(legalMoves);
+    public void setPlayingMoves(){
+        if(!legalMoves.isEmpty()){
+            this.clearLegalMoves();
+        }
+        for(Card card : hand.readAll()){
+            legalMoves.add(new Move(GameAction.CARD, card, index));
+        }
     }
 
-    public boolean moveSelected(){
-        return action != GameAction.NOTHING;
+    public void clearLegalMoves(){
+        legalMoves.removeAll(legalMoves);
+        action = GameAction.NOTHING;
+    }
+
+    public GameAction moveSelected(){
+        return action;
     }
 
     public void play(){
         action.play(selectedCard, index);
+        action = GameAction.NOTHING;
     }
 
     public abstract Card select();

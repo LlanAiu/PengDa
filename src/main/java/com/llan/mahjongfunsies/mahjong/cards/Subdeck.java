@@ -2,7 +2,6 @@ package com.llan.mahjongfunsies.mahjong.cards;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 public abstract class Subdeck {
     List<Card> cards;
@@ -47,14 +46,6 @@ public abstract class Subdeck {
         });
     }
 
-    public List<List<Card>> splitBySuit(){
-        List<List<Card>> suits = new ArrayList<>();
-        for(Card.Suit suit : Card.Suit.values()){
-            suits.add(cards.stream().filter(card -> card.suit() == suit).toList());
-        }
-        return suits;
-    }
-
     public List<Card> filterShown(){
         return cards.stream().filter(card -> card.isHidden()).toList();
     }
@@ -72,6 +63,10 @@ public abstract class Subdeck {
 
     public Card[] readAll(){
         return cards.toArray(new Card[cards.size()]);
+    }
+
+    public List<Card> getCards(){
+        return cards;
     }
 
     @Override

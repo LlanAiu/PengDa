@@ -109,6 +109,17 @@ public class Card {
     }
 
     @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Card{");
+        sb.append("suit=").append(suit);
+        sb.append(", value=").append(value);
+        sb.append(", honor=").append(honor);
+        sb.append(", hidden=").append(hidden);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
