@@ -18,6 +18,7 @@ public class Gameflow {
     private static Player[] players = new Player[Constants.NUM_PLAYERS];
     private static int firstTurnIndex = 0;
     private static int currentTurnIndex = 0;
+    private static boolean played = false;
     private static int turnNumber = 1;
 
     private Gameflow(){}
@@ -58,6 +59,7 @@ public class Gameflow {
         discardPile.addCard(lastPlayed);
         players[index].removeCard(card);
         lastPlayed = card;
+        played = true;
         checkPostMoves();
     }
 
@@ -69,8 +71,21 @@ public class Gameflow {
     }
 
     public static void playPostMoves(){
+        int index = -1;
+        int priority = 10;
         for(int i = 0; i < players.length; i++){
-
+            if(players[i].moveSelected() != GameAction.NOTHING){
+                if(players[i].moveSelected().getPriority() < priority){
+                    priority = players[i].moveSelected().getPriority();
+                    index = i;
+                }
+            }
+        }
+        if(index != -1){
+            players[index].play();
+        } else {
+            currentTurnIndex++;
+            currentTurnIndex = currentTurnIndex % Constants.NUM_PLAYERS;
         }
     }
 

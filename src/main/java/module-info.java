@@ -6,4 +6,6 @@ module com.llan.mahjongfunsies {
 
     opens com.llan.mahjongfunsies to javafx.fxml;
     exports com.llan.mahjongfunsies;
+    exports com.llan.mahjongfunsies.controllers;
+    opens com.llan.mahjongfunsies.controllers to javafx.fxml;
 }
