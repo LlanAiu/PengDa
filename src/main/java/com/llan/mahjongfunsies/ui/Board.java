@@ -4,16 +4,26 @@ import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.environment.GameState;
 import com.llan.mahjongfunsies.util.DisplayUtil;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.util.Duration;
 
 public class Board {
 
     private BorderPane pane;
+
+    private Label debugText;
 
     private static Board instance;
 
@@ -26,6 +36,7 @@ public class Board {
 
     private Board(){
         pane = new BorderPane();
+        debugText = new Label();
         for(DisplayUtil.Orientation orientation : DisplayUtil.Orientation.values()){
             GridPane hand = new GridPane();
             if(orientation == DisplayUtil.Orientation.UP || orientation == DisplayUtil.Orientation.DOWN){
@@ -63,6 +74,15 @@ public class Board {
                     break;
             }
         }
+        pane.setCenter(debugText);
+        Timeline periodic = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                periodic();
+            }
+        }));
+        periodic.setCycleCount(Timeline.INDEFINITE);
+        periodic.play();
     }
 
     public Parent getRoot(){
@@ -70,6 +90,7 @@ public class Board {
     }
 
     public void displayState(GameState state){
+        System.out.println(state.turnIndex());
         for(int i = 0; i < state.hands().length; i++){
             GridPane hand;
             Card[] cards = state.hands()[i].hand();
@@ -81,21 +102,19 @@ public class Board {
                 default -> hand = (GridPane) pane.getTop();
             }
             for(int j = 0; j < cards.length; j++){
-                ImageView background = DisplayUtil.getCardBackground(false, orient);
-                ImageView cardImage = DisplayUtil.getCardImage(cards[j], orient);
+                Node card = DisplayUtil.displayCard(cards[j], orient, i == state.turnIndex());
                 if(orient == DisplayUtil.Orientation.UP || orient == DisplayUtil.Orientation.DOWN){
-                    hand.add(background, j, 0);
-                    hand.add(cardImage, j, 0);
+                    hand.add(card, j, 0);
                 } else {
-                    hand.add(background, 0, j);
-                    hand.add(cardImage, 0, j);
+                    hand.add(card, 0, j);
                 }
-                GridPane.setHalignment(cardImage, HPos.CENTER);
-                GridPane.setHalignment(background, HPos.CENTER);
-                GridPane.setValignment(cardImage, VPos.CENTER);
-                GridPane.setValignment(background, VPos.CENTER);
+                GridPane.setHalignment(card, HPos.CENTER);
+                GridPane.setValignment(card, VPos.CENTER);
             }
         }
     }
 
+    private void periodic(){
+
+    }
 }

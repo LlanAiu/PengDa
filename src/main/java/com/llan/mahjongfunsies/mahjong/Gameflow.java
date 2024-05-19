@@ -11,7 +11,8 @@ import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.util.DisplayUtil;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Gameflow {
 
@@ -20,6 +21,7 @@ public class Gameflow {
 
     private static Card lastPlayed;
 
+    private static Map<DisplayUtil.Orientation, Player> playerOrientations;
     private static Player[] players = new Player[Constants.NUM_PLAYERS];
     private static int firstTurnIndex = 0;
     private static int currentTurnIndex = 0;
@@ -43,6 +45,23 @@ public class Gameflow {
         for(int i = 0; i < players.length; i++){
             players[i] = new Human(i);
         }
+        playerOrientations = new HashMap<>();
+        updatePlayerOrientations();
+    }
+
+    //Static for now, maybe change later?
+    public static void updatePlayerOrientations(){
+        if(!playerOrientations.isEmpty()){
+            playerOrientations.clear();
+        }
+        playerOrientations.put(DisplayUtil.Orientation.DOWN, players[0]);
+        playerOrientations.put(DisplayUtil.Orientation.LEFT, players[1]);
+        playerOrientations.put(DisplayUtil.Orientation.UP, players[2]);
+        playerOrientations.put(DisplayUtil.Orientation.RIGHT, players[3]);
+    }
+
+    public static Player getPlayerByOrientation(DisplayUtil.Orientation orientation){
+        return playerOrientations.get(orientation);
     }
 
     public static void reset(){
@@ -114,10 +133,10 @@ public class Gameflow {
         for(int i = 0; i < players.length; i++){
             DisplayUtil.Orientation orientation;
             switch(i){
-                case 1 -> orientation = DisplayUtil.Orientation.RIGHT;
-                case 2 -> orientation = DisplayUtil.Orientation.DOWN;
-                case 3 -> orientation = DisplayUtil.Orientation.LEFT;
-                default -> orientation = DisplayUtil.Orientation.UP;
+                case 1 -> orientation = DisplayUtil.Orientation.LEFT;
+                case 2 -> orientation = DisplayUtil.Orientation.UP;
+                case 3 -> orientation = DisplayUtil.Orientation.RIGHT;
+                default -> orientation = DisplayUtil.Orientation.DOWN;
             }
             hands[i] = new PlayerHand(i, players[i].getHand(), orientation);
         }

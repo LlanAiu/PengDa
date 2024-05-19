@@ -10,9 +10,6 @@ import com.llan.mahjongfunsies.mahjong.environment.Move;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.ToIntFunction;
-import java.util.stream.IntStream;
 
 public abstract class Player {
     private Hand hand;
@@ -31,6 +28,10 @@ public abstract class Player {
     public void reset(){
         hand.clear();
         this.clearLegalMoves();
+    }
+
+    public int getIndex(){
+        return index;
     }
 
     public boolean hasWon(){
