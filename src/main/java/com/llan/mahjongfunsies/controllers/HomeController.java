@@ -1,10 +1,8 @@
 package com.llan.mahjongfunsies.controllers;
 
-import com.llan.mahjongfunsies.Main;
 import com.llan.mahjongfunsies.ui.Board;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,8 +26,10 @@ public class HomeController {
 //        Parent root = FXMLLoader.load(Main.class.getResource("game.fxml"));
         Parent root = Board.getInstance().getRoot();
         Scene scene = new Scene(root);
+        GameController.getInstance().initialize();
         stage.setScene(scene);
         stage.sizeToScene();
         stage.show();
+
     }
 }

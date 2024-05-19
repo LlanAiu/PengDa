@@ -53,6 +53,7 @@ public abstract class Player {
         hand.removeCard(card);
     }
 
+    //To be finished later
     public void finishSet(Card card){
         if(action == GameAction.TRIPLE || action == GameAction.QUAD){
             for(Card c : hand.getCards()){
@@ -66,6 +67,14 @@ public abstract class Player {
 
         card.setHidden(false);
         hand.addCard(card);
+    }
+
+    public Card[] getHand(){
+        return hand.readAll();
+    }
+
+    public void sortHand(){
+        hand.sort();
     }
 
     //playing is true if it's the current player's turn rather than just a move on the last card played

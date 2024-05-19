@@ -5,8 +5,13 @@ import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
+import com.llan.mahjongfunsies.mahjong.environment.GameState;
+import com.llan.mahjongfunsies.mahjong.environment.PlayerHand;
 import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.mahjong.players.Player;
+import com.llan.mahjongfunsies.util.DisplayUtil;
+
+import java.util.Arrays;
 
 public class Gameflow {
 
@@ -20,6 +25,8 @@ public class Gameflow {
     private static int currentTurnIndex = 0;
     private static boolean played = false;
     private static int turnNumber = 1;
+
+    private static GameState state;
 
     private Gameflow(){}
 
@@ -47,8 +54,10 @@ public class Gameflow {
         for(Player player : players){
             player.reset();
             player.drawInitialHand();
+            player.sortHand();
         }
         players[firstTurnIndex].setPlayingMoves();
+        updateState();
     }
 
     public static int getFirstTurnIndex(){
@@ -60,6 +69,7 @@ public class Gameflow {
         players[index].removeCard(card);
         lastPlayed = card;
         played = true;
+        updateState();
         checkPostMoves();
     }
 
@@ -93,5 +103,24 @@ public class Gameflow {
         players[index].addCard(card);
         currentTurnIndex = index;
         players[index].setPlayingMoves();
+    }
+
+    public static GameState getState(){
+        return state;
+    }
+
+    public static void updateState(){
+        PlayerHand[] hands = new PlayerHand[players.length];
+        for(int i = 0; i < players.length; i++){
+            DisplayUtil.Orientation orientation;
+            switch(i){
+                case 1 -> orientation = DisplayUtil.Orientation.RIGHT;
+                case 2 -> orientation = DisplayUtil.Orientation.DOWN;
+                case 3 -> orientation = DisplayUtil.Orientation.LEFT;
+                default -> orientation = DisplayUtil.Orientation.UP;
+            }
+            hands[i] = new PlayerHand(i, players[i].getHand(), orientation);
+        }
+        state = new GameState(turnNumber, currentTurnIndex, lastPlayed, hands, discardPile.readAll(), deck.readAll());
     }
 }

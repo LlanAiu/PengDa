@@ -61,4 +61,8 @@ public class Deck {
         }
         cards = shuffled;
     }
+
+    public Card[] readAll(){
+        return cards.toArray(new Card[cards.size()]);
+    }
 }
