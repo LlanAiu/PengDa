@@ -1,6 +1,7 @@
 package com.llan.mahjongfunsies.mahjong.players;
 
-import com.llan.mahjongfunsies.mahjong.cards.Card;
+import com.llan.mahjongfunsies.controllers.GameController;
+import com.llan.mahjongfunsies.mahjong.environment.Move;
 
 public class Human extends Player{
 
@@ -9,7 +10,10 @@ public class Human extends Player{
     }
 
     @Override
-    public Card select() {
-        return null;
+    public void select() {
+        Move input = GameController.getInstance().getLastInputMove();
+        if(input.playerIndex() == this.index){
+            this.move = input;
+        }
     }
 }

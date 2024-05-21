@@ -12,16 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Player {
-    private Hand hand;
-    private int index;
-    private Card selectedCard;
-    private GameAction action;
-    private List<Move> legalMoves;
+    Hand hand;
+    int index;
+    Card selectedCard;
+    Move move;
+    List<Move> legalMoves;
 
     public Player(int index){
         this.index = index;
         hand = new Hand(index == Gameflow.getFirstTurnIndex());
-        action = GameAction.NOTHING;
+        move = null;
         legalMoves = new ArrayList<>();
     }
 
@@ -54,20 +54,9 @@ public abstract class Player {
         hand.removeCard(card);
     }
 
-    //To be finished later
+    //To be finished later, used for triple/straight/win/quad
     public void finishSet(Card card){
-        if(action == GameAction.TRIPLE || action == GameAction.QUAD){
-            for(Card c : hand.getCards()){
-                if(c.equals(card)){
-                    c.setHidden(false);
-                }
-            }
-        } else {
 
-        }
-
-        card.setHidden(false);
-        hand.addCard(card);
     }
 
     public Card[] getHand(){
@@ -111,17 +100,21 @@ public abstract class Player {
 
     public void clearLegalMoves(){
         legalMoves.removeAll(legalMoves);
-        action = GameAction.NOTHING;
+        move = Move.none();
     }
 
-    public GameAction moveSelected(){
-        return action;
+    public GameAction actionSelected(){
+        return move.action();
     }
 
     public void play(){
-        action.play(selectedCard, index);
-        action = GameAction.NOTHING;
+        if(legalMoves.contains(move)){
+            move.action().play(move.card(), move.playerIndex());
+            move = Move.none();
+        } else {
+            System.out.println("Selected Move Is Not Legal");
+        }
     }
 
-    public abstract Card select();
+    public abstract void select();
 }

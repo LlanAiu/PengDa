@@ -1,7 +1,5 @@
 package com.llan.mahjongfunsies.mahjong.players;
 
-import com.llan.mahjongfunsies.mahjong.cards.Card;
-
 public class Computer extends Player{
 
     public Computer(int index){
@@ -9,7 +7,7 @@ public class Computer extends Player{
     }
 
     @Override
-    public Card select() {
-        return null;
+    public void select() {
+
     }
 }

@@ -6,6 +6,7 @@ import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.environment.GameState;
+import com.llan.mahjongfunsies.mahjong.environment.Move;
 import com.llan.mahjongfunsies.mahjong.environment.PlayerHand;
 import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.mahjong.players.Player;
@@ -34,11 +35,13 @@ public class Gameflow {
 
     //returns true if move is played, false otherwise
     public static boolean pollNextTurn(){
-        if(players[currentTurnIndex].moveSelected() != GameAction.NOTHING){
+        if(players[currentTurnIndex].actionSelected() != GameAction.NOTHING){
             players[currentTurnIndex].play();
             return true;
+        } else {
+            players[currentTurnIndex].select();
+            return false;
         }
-        return false;
     }
 
     public static void initialize(){
@@ -103,9 +106,9 @@ public class Gameflow {
         int index = -1;
         int priority = 10;
         for(int i = 0; i < players.length; i++){
-            if(players[i].moveSelected() != GameAction.NOTHING){
-                if(players[i].moveSelected().getPriority() < priority){
-                    priority = players[i].moveSelected().getPriority();
+            if(players[i].actionSelected() != GameAction.NOTHING){
+                if(players[i].actionSelected().getPriority() < priority){
+                    priority = players[i].actionSelected().getPriority();
                     index = i;
                 }
             }

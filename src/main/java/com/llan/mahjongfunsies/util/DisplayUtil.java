@@ -1,17 +1,17 @@
 package com.llan.mahjongfunsies.util;
 
+import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.Gameflow;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
+import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 
 import java.io.FileInputStream;
@@ -89,6 +89,7 @@ public class DisplayUtil {
             public void handle(MouseEvent mouseEvent) {
                 if(shouldShow){
                     System.out.println(card + "; Player Index: " + Gameflow.getPlayerByOrientation(orientation).getIndex());
+                    GameController.getInstance().handleInput(GameAction.CARD, card, Gameflow.getPlayerByOrientation(orientation).getIndex());
                 }
             }
         });

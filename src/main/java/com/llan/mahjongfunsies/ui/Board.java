@@ -4,20 +4,13 @@ import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.environment.GameState;
 import com.llan.mahjongfunsies.util.DisplayUtil;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.util.Duration;
 
 public class Board {
 
@@ -75,14 +68,6 @@ public class Board {
             }
         }
         pane.setCenter(debugText);
-        Timeline periodic = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                periodic();
-            }
-        }));
-        periodic.setCycleCount(Timeline.INDEFINITE);
-        periodic.play();
     }
 
     public Parent getRoot(){
@@ -114,7 +99,7 @@ public class Board {
         }
     }
 
-    private void periodic(){
+    public void periodic(){
 
     }
 }
