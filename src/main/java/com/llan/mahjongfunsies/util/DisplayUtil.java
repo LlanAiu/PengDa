@@ -70,7 +70,7 @@ public class DisplayUtil {
         return viewer;
     }
 
-    public static Node displayCard(Card card, Orientation orientation, boolean displayOverride){
+    public static Node displayCard(Card card, Orientation orientation, boolean displayOverride, int cardIndex){
         boolean shouldShow = !card.isHidden() || displayOverride;
         ImageView background = getCardBackground(!shouldShow, orientation);
         ImageView cardView = getCardImage(card, orientation);

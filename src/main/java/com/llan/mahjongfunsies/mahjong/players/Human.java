@@ -12,7 +12,7 @@ public class Human extends Player{
     @Override
     public void select() {
         Move input = GameController.getInstance().getLastInputMove();
-        if(input.playerIndex() == this.index){
+        if(input.playerIndex() == this.index && !input.equals(this.move)){
             this.move = input;
         }
     }

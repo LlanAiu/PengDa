@@ -28,6 +28,7 @@ public class Gameflow {
     private static int currentTurnIndex = 0;
     private static boolean played = false;
     private static int turnNumber = 1;
+    private static boolean shouldPlay = false;
 
     private static GameState state;
 
@@ -35,7 +36,7 @@ public class Gameflow {
 
     //returns true if move is played, false otherwise
     public static boolean pollNextTurn(){
-        if(players[currentTurnIndex].actionSelected() != GameAction.NOTHING){
+        if(players[currentTurnIndex].actionSelected() != GameAction.NOTHING && shouldPlay){
             players[currentTurnIndex].play();
             return true;
         } else {
@@ -71,6 +72,9 @@ public class Gameflow {
         currentTurnIndex = 0;
         firstTurnIndex = 0;
         turnNumber = 1;
+        shouldPlay = false;
+        played = false;
+        lastPlayed = null;
         deck.reset();
         discardPile.clear();
         for(Player player : players){
@@ -125,6 +129,11 @@ public class Gameflow {
         players[index].addCard(card);
         currentTurnIndex = index;
         players[index].setPlayingMoves();
+    }
+
+    public static void shouldPlay(){
+        shouldPlay = true;
+        System.out.println("Playing card now");
     }
 
     public static GameState getState(){
