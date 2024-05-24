@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 
 public class DisplayConstants {
     public static final int cardWidth = 40;
+    public static final int cardLength = 54;
 
     public static final int gridWidth = 42;
     public static final int gridLength = 55;

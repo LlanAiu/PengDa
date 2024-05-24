@@ -28,7 +28,7 @@ public class GameController {
     }
 
     public void initialize(){
-        Gameflow.initialize();
+//        Gameflow.initialize();
         Gameflow.reset();
         Board.getInstance().displayState(Gameflow.getState());
         lastInputMove = Move.none();
@@ -39,7 +39,7 @@ public class GameController {
 
     private void periodic(){
         Board.getInstance().periodic();
-        Gameflow.pollNextTurn();
+//        Gameflow.pollNextTurn();
     }
 
     public void handleInput(GameAction action, Card card, int index){
