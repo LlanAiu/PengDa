@@ -8,18 +8,15 @@ import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
 import com.llan.mahjongfunsies.ui.IndexedPane;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.function.Consumer;
 
 public class DisplayUtil {
     public enum Orientation {
@@ -78,23 +75,30 @@ public class DisplayUtil {
         ImageView background = getCardBackground(!shouldShow, orientation);
         ImageView cardView = getCardImage(card, orientation);
         Pane tile = new IndexedPane(cardIndex);
+        double offset = 0;
         tile.getChildren().add(background);
         if(shouldShow){
             tile.getChildren().add(cardView);
             if(!card.isHidden()){
-                StackPane.setMargin(background, new Insets(0, 0, 25, 0));
-                StackPane.setMargin(cardView, new Insets(0, 0, 25, 0));
+                offset = -20;
             } else if(selected){
-                StackPane.setMargin(background, new Insets(0, 0, 50, 0));
-                StackPane.setMargin(cardView, new Insets(0, 0, 50, 0));
+                offset = -10;
             }
         }
         if(orientation == Orientation.LEFT || orientation == Orientation.RIGHT){
             tile.setPrefSize(DisplayConstants.cardLength, DisplayConstants.cardWidth);
             double delta = (DisplayConstants.cardWidth - DisplayConstants.cardLength) / 2.0;
-            tile.getChildren().get(0).relocate(-delta, delta);
+            double shift = offset;
+            tile.getChildren().stream().forEach(node -> {
+                node.relocate(-delta, delta);
+                node.relocate(shift, 0);
+            });
         } else {
             tile.setPrefSize(DisplayConstants.cardWidth, DisplayConstants.cardLength);
+            if(offset != 0){
+               double shift = offset;
+               tile.getChildren().forEach(node -> node.relocate(0, shift));
+            }
         }
         tile.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

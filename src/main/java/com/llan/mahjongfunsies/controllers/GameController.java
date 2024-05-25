@@ -28,9 +28,8 @@ public class GameController {
     }
 
     public void initialize(){
-//        Gameflow.initialize();
         Gameflow.reset();
-        Board.getInstance().displayState(Gameflow.getState());
+        Board.getInstance().displayState();
         lastInputMove = Move.none();
         Timeline periodic = new Timeline(new KeyFrame(Duration.millis(DisplayConstants.frameRateMillis), actionEvent -> periodic()));
         periodic.setCycleCount(Timeline.INDEFINITE);

@@ -13,9 +13,9 @@ import javafx.scene.layout.*;
 import java.util.function.Predicate;
 
 public class HandUI {
-    private GridPane grid;
-    private Player player;
-    private DisplayUtil.Orientation orientation;
+    private final GridPane grid;
+    private final Player player;
+    private final DisplayUtil.Orientation orientation;
     private boolean currentTurn;
     private int selectedIndex = -1;
     private Card[] lastHand;
@@ -34,6 +34,8 @@ public class HandUI {
             }
         }
         grid.setGridLinesVisible(true);
+        grid.setVgap(2);
+        grid.setHgap(2);
         currentTurn = false;
     }
 
@@ -41,14 +43,10 @@ public class HandUI {
         return grid;
     }
 
-    public void displayHand(int currentIndex){
+    public void displayHand(){
         for(int i = 0; i < player.getHand().length; i++){
-            addCard(player.getHand()[i], currentIndex == player.getIndex(), i);
+            addCard(player.getHand()[i], Gameflow.getCurrentTurnIndex() == player.getIndex(), i);
         }
-    }
-
-    public boolean isDifferent(Card test, int index){
-        return true;
     }
 
     public void addCard(Card card, boolean override, int index){
@@ -64,12 +62,25 @@ public class HandUI {
     }
 
     public void replaceCard(Card card, int index){
-        grid.getChildren().removeIf(new Predicate<Node>() {
-            @Override
-            public boolean test(Node node) {
-               return ((IndexedPane) node).getIndex() == index;
-            }
-        });
+        grid.getChildren().removeIf(node -> ((IndexedPane) node).getIndex() == index);
         addCard(card, true, index);
+    }
+
+    public void clearGrid(){
+        grid.getChildren().removeAll(grid.getChildren());
+    }
+
+    public void setSelectedIndex(int index){
+        System.out.println("Changed Selected Index");
+        int lastIndex = selectedIndex;
+        this.selectedIndex = index;
+        if(lastIndex != -1){
+            replaceCard(player.getHand()[lastIndex], lastIndex);
+        }
+        replaceCard(player.getHand()[index], index);
+    }
+
+    public DisplayUtil.Orientation getOrientation(){
+        return orientation;
     }
 }

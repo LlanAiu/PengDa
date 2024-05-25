@@ -90,6 +90,10 @@ public class Gameflow {
         return firstTurnIndex;
     }
 
+    public static int getCurrentTurnIndex(){
+        return currentTurnIndex;
+    }
+
     public static void play(Card card, int index){
         discardPile.addCard(lastPlayed);
         players[index].removeCard(card);

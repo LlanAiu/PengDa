@@ -23,10 +23,9 @@ public class HomeController {
     }
 
     private void setScreen(Stage stage) throws IOException {
-//        Parent root = FXMLLoader.load(Main.class.getResource("game.fxml"));
+        GameController.getInstance().initialize();
         Parent root = Board.getInstance().getRoot();
         Scene scene = new Scene(root);
-        GameController.getInstance().initialize();
         stage.setScene(scene);
         stage.sizeToScene();
         stage.show();
