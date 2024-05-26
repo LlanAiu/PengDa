@@ -2,6 +2,8 @@ package com.llan.mahjongfunsies.mahjong.cards;
 
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.util.CardUtil;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,14 +12,14 @@ import java.util.Optional;
 public class Hand extends Subdeck{
 
     public Hand(){
-        cards = new ArrayList<>();
+        cards = FXCollections.observableArrayList();
     }
 
     public Hand(boolean isFirst){
         if(isFirst){
-            cards = new ArrayList<>(Constants.STARTING_CARDS + 1);
+            cards = FXCollections.observableArrayList(new ArrayList<>(Constants.STARTING_CARDS + 1));
         } else {
-            cards = new ArrayList<>(Constants.STARTING_CARDS);
+            cards = FXCollections.observableArrayList(new ArrayList<>(Constants.STARTING_CARDS));
         }
     }
 
@@ -97,5 +99,10 @@ public class Hand extends Subdeck{
 
     public boolean isWinning(){
         return CardUtil.isWinning(this);
+    }
+
+    @Override
+    public void onChange(ListChangeListener.Change<? extends Card> change) {
+
     }
 }

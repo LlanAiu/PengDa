@@ -5,7 +5,6 @@ import com.llan.mahjongfunsies.mahjong.Gameflow;
 import com.llan.mahjongfunsies.util.DisplayUtil;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
 import java.util.Arrays;
@@ -13,9 +12,9 @@ import java.util.Arrays;
 public class Board {
 
     private BorderPane pane;
-    private Label debugText;
 
     private HandUI[] hands = new HandUI[Constants.NUM_PLAYERS];
+    private DiscardUI discard;
 
     private DisplayUtil.Orientation selectedOrientation;
     private int selectedIndex = -1;
@@ -31,7 +30,7 @@ public class Board {
 
     private Board(){
         pane = new BorderPane();
-        debugText = new Label();
+        discard = DiscardUI.getInstance();
         for(int i = 0; i < Constants.NUM_PLAYERS; i++){
             DisplayUtil.Orientation orientation;
             switch (i){
@@ -43,6 +42,8 @@ public class Board {
             hands[i] = new HandUI(orientation);
             setInPane(hands[i]);
         }
+        pane.setCenter(discard.getGrid());
+        BorderPane.setAlignment(discard.getGrid(), Pos.CENTER);
     }
 
     public Parent getRoot(){
@@ -53,11 +54,13 @@ public class Board {
         for(HandUI hand : hands){
             hand.clearGrid();
         }
+        discard.clear();
     }
 
     public void displayState(){
         this.clearBoard();
         Arrays.stream(hands).forEach(handUI -> handUI.displayHand());
+        discard.updateDisplay();
     }
 
     public void setSelected(DisplayUtil.Orientation orient, int cardIndex){

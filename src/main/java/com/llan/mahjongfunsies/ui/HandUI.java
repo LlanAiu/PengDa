@@ -10,8 +10,6 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
 
-import java.util.function.Predicate;
-
 public class HandUI {
     private final GridPane grid;
     private final Player player;
@@ -34,8 +32,8 @@ public class HandUI {
             }
         }
         grid.setGridLinesVisible(true);
-        grid.setVgap(2);
-        grid.setHgap(2);
+        grid.setVgap(DisplayConstants.gridGap);
+        grid.setHgap(DisplayConstants.gridGap);
         currentTurn = false;
     }
 

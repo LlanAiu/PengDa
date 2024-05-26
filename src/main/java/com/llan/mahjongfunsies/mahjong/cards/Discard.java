@@ -1,5 +1,8 @@
 package com.llan.mahjongfunsies.mahjong.cards;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+
 import java.util.ArrayList;
 
 public class Discard extends Subdeck{
@@ -14,6 +17,11 @@ public class Discard extends Subdeck{
     }
 
     private Discard(){
-        cards = new ArrayList<>();
+        cards = FXCollections.observableArrayList();
+    }
+
+    @Override
+    public void onChange(ListChangeListener.Change<? extends Card> change) {
+
     }
 }

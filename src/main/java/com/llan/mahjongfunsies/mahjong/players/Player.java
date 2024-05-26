@@ -14,7 +14,6 @@ import java.util.List;
 public abstract class Player {
     Hand hand;
     int index;
-    Card selectedCard;
     Move move;
     List<Move> legalMoves;
 
