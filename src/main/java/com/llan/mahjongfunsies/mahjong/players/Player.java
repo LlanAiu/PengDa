@@ -7,6 +7,7 @@ import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Hand;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.environment.Move;
+import com.llan.mahjongfunsies.util.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,12 +59,16 @@ public abstract class Player {
 
     }
 
-    public Card[] getHand(){
+    public Card[] getCards(){
         return hand.readAll();
     }
 
     public void sortHand(){
         hand.sort();
+    }
+
+    public void registerObserver(Observer observer){
+        hand.addObserver(observer);
     }
 
     //playing is true if it's the current player's turn rather than just a move on the last card played

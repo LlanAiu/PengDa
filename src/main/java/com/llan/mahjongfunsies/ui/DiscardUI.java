@@ -2,12 +2,14 @@ package com.llan.mahjongfunsies.ui;
 
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
 import com.llan.mahjongfunsies.util.DisplayUtil;
+import com.llan.mahjongfunsies.util.Observer;
+import com.llan.mahjongfunsies.util.Subject;
 import javafx.scene.Node;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-public class DiscardUI {
+public class DiscardUI implements Observer {
     GridPane grid;
     private final Discard discard;
 
@@ -57,5 +59,8 @@ public class DiscardUI {
         grid.getChildren().removeAll(grid.getChildren());
     }
 
+    @Override
+    public void update(Subject observable) {
 
+    }
 }

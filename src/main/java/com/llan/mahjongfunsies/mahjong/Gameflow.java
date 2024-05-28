@@ -6,7 +6,6 @@ import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.environment.GameState;
-import com.llan.mahjongfunsies.mahjong.environment.Move;
 import com.llan.mahjongfunsies.mahjong.environment.PlayerHand;
 import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.mahjong.players.Player;
@@ -154,7 +153,7 @@ public class Gameflow {
                 case 3 -> orientation = DisplayUtil.Orientation.RIGHT;
                 default -> orientation = DisplayUtil.Orientation.DOWN;
             }
-            hands[i] = new PlayerHand(i, players[i].getHand(), orientation);
+            hands[i] = new PlayerHand(i, players[i].getCards(), orientation);
         }
         state = new GameState(turnNumber, currentTurnIndex, lastPlayed, hands, discardPile.readAll(), deck.readAll());
     }

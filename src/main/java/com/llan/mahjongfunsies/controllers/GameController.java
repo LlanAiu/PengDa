@@ -6,6 +6,7 @@ import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.environment.Move;
 import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
+import com.llan.mahjongfunsies.util.SubjectBase;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -39,6 +40,7 @@ public class GameController {
     private void periodic(){
         Board.getInstance().periodic();
 //        Gameflow.pollNextTurn();
+        SubjectBase.periodicAll();
     }
 
     public void handleInput(GameAction action, Card card, int index){

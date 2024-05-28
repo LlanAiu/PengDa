@@ -1,22 +1,12 @@
 package com.llan.mahjongfunsies.mahjong.cards;
 
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
+import com.llan.mahjongfunsies.util.SubjectBase;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Subdeck {
-    ObservableList<Card> cards;
-
-    public Subdeck(){
-        cards.addListener(new ListChangeListener<>() {
-            @Override
-            public void onChanged(Change<? extends Card> change) {
-                this.onChanged(change);
-            }
-        });
-    }
+public abstract class Subdeck extends SubjectBase {
+    List<Card> cards;
 
     public void addCard(Card card){
         cards.add(card);
@@ -80,8 +70,6 @@ public abstract class Subdeck {
     public List<Card> getCards(){
         return cards;
     }
-
-    public abstract void onChange(ListChangeListener.Change<? extends Card> change);
 
     @Override
     public String toString() {

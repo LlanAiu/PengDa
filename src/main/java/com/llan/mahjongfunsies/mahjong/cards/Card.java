@@ -127,6 +127,10 @@ public class Card {
         return value == card.value && suit == card.suit && honor == card.honor;
     }
 
+    public boolean exactEquals(Card other){
+        return this.equals(other) && this.isHidden() == other.isHidden();
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(suit, value, honor);
