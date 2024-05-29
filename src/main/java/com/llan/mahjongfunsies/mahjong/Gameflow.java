@@ -94,7 +94,8 @@ public class Gameflow {
     }
 
     public static void play(Card card, int index){
-        discardPile.addCard(lastPlayed);
+        System.out.println("Moved played: Player index: " + index + "; Card played: " + card);
+        discardPile.addCard(card);
         players[index].removeCard(card);
         lastPlayed = card;
         played = true;

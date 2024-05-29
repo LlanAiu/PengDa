@@ -60,7 +60,7 @@ public class Board {
     public void displayState(){
         this.clearBoard();
         Arrays.stream(hands).forEach(handUI -> handUI.displayHand());
-        discard.updateDisplay();
+        discard.displayDiscard();
     }
 
     public void setSelected(DisplayUtil.Orientation orient, int cardIndex){

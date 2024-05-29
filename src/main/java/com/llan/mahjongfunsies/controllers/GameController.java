@@ -14,6 +14,7 @@ import javafx.util.Duration;
 public class GameController {
 
     private Move lastInputMove;
+    private int lastCardIndex = -1;
 
     private static GameController instance;
 
@@ -39,15 +40,16 @@ public class GameController {
 
     private void periodic(){
         Board.getInstance().periodic();
-//        Gameflow.pollNextTurn();
+        Gameflow.pollNextTurn();
         SubjectBase.periodicAll();
     }
 
-    public void handleInput(GameAction action, Card card, int index){
-        if(lastInputMove.action().equals(action) && lastInputMove.card().equals(card) && lastInputMove.playerIndex() == index){
+    public void handleInput(int cardIndex, Card card, int index){
+        if(cardIndex == lastCardIndex && lastInputMove.card().exactEquals(card) && lastInputMove.playerIndex() == index){
             Gameflow.shouldPlay();
         } else {
-            lastInputMove = new Move(action, card, index);
+            lastInputMove = new Move(GameAction.CARD, card, index);
+            lastCardIndex = cardIndex;
         }
     }
 

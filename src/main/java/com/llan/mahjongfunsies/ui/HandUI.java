@@ -8,7 +8,6 @@ import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.util.DisplayUtil;
 import com.llan.mahjongfunsies.util.Observer;
 import com.llan.mahjongfunsies.util.Subject;
-import com.llan.mahjongfunsies.util.SubjectBase;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
@@ -18,7 +17,6 @@ public class HandUI implements Observer {
     private final GridPane grid;
     private final Player player;
     private final DisplayUtil.Orientation orientation;
-    private boolean currentTurn;
     private int selectedIndex = -1;
     private Card[] lastHand;
 
@@ -39,7 +37,6 @@ public class HandUI implements Observer {
         grid.setGridLinesVisible(true);
         grid.setVgap(DisplayConstants.gridGap);
         grid.setHgap(DisplayConstants.gridGap);
-        currentTurn = false;
     }
 
     public GridPane getGrid(){
@@ -47,8 +44,13 @@ public class HandUI implements Observer {
     }
 
     public void displayHand(){
-        for(int i = 0; i < player.getCards().length; i++){
-            addCard(player.getCards()[i], Gameflow.getCurrentTurnIndex() == player.getIndex(), i);
+        if(lastHand == null){
+            for(int i = 0; i < player.getCards().length; i++){
+                addCard(player.getCards()[i], Gameflow.getCurrentTurnIndex() == player.getIndex(), i);
+            }
+            lastHand = player.getCards();
+        } else {
+            updateDisplay(player.getCards());
         }
     }
 
@@ -70,7 +72,7 @@ public class HandUI implements Observer {
 
     public void replaceCard(Card card, int index){
         removeCard(index);
-        addCard(card, true, index);
+        addCard(card, Gameflow.getCurrentTurnIndex() == player.getIndex(), index);
     }
 
     public void clearGrid(){
@@ -92,22 +94,26 @@ public class HandUI implements Observer {
     }
 
     private void updateDisplay(Card[] display){
-        int max = Math.max(display.length, lastHand.length);
-        for(int i = 0; i < max; i++){
-            if(i > display.length - 1){
-                this.removeCard(i);
-            } else if (i > lastHand.length - 1) {
-                this.addCard(display[i], currentTurn, i);
-            } else {
-                if(!display[i].exactEquals(lastHand[i])){
-                    replaceCard(display[i], i);
+        if(lastHand != null) {
+            int max = Math.max(display.length, lastHand.length);
+            for (int i = 0; i < max; i++) {
+                if (i > display.length - 1) {
+                    this.removeCard(i);
+                } else if (i > lastHand.length - 1) {
+                    this.addCard(display[i], Gameflow.getCurrentTurnIndex() == player.getIndex(), i);
+                } else {
+                    if (!display[i].displayEquals(lastHand[i], Gameflow.getCurrentTurnIndex() == player.getIndex())) {
+                        replaceCard(display[i], i);
+                    }
                 }
             }
+            lastHand = display;
         }
     }
 
     @Override
     public void update(Subject observable) {
+        System.out.println("Hand display updated for index " + player.getIndex());
         Card[] currentCards = ((Hand) observable).readAll();
         this.updateDisplay(currentCards);
     }

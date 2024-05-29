@@ -115,6 +115,7 @@ public abstract class Player {
         if(legalMoves.contains(move)){
             move.action().play(move.card(), move.playerIndex());
             move = Move.none();
+            System.out.println("Move played");
         } else {
             System.out.println("Selected Move Is Not Legal");
         }

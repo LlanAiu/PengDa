@@ -105,7 +105,7 @@ public class DisplayUtil {
             public void handle(MouseEvent mouseEvent) {
                 if (shouldShow) {
                     System.out.println(card + "; Player Index: " + Gameflow.getPlayerByOrientation(orientation).getIndex());
-                    GameController.getInstance().handleInput(GameAction.CARD, card, Gameflow.getPlayerByOrientation(orientation).getIndex());
+                    GameController.getInstance().handleInput(((IndexedPane) tile).getIndex(), card, Gameflow.getPlayerByOrientation(orientation).getIndex());
                     Board.getInstance().setSelected(orientation, cardIndex);
                 }
             }

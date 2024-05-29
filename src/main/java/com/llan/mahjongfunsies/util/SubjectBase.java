@@ -6,11 +6,13 @@ import java.util.List;
 public abstract class SubjectBase implements Subject{
 
     private static List<SubjectBase> subjects = new ArrayList<>();
+    private List<Observer> observers;
     private boolean changed;
 
     public SubjectBase(){
         subjects.add(this);
         changed = false;
+        observers = new ArrayList<>();
     }
 
     @Override

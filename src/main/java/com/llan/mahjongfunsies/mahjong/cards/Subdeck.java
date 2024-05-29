@@ -10,14 +10,17 @@ public abstract class Subdeck extends SubjectBase {
 
     public void addCard(Card card){
         cards.add(card);
+        setChanged();
     }
 
     public void addCards(List<Card> cards){
         this.cards.addAll(cards);
+        setChanged();
     }
 
     public void removeCard(Card card){
         cards.remove(card);
+        setChanged();
     }
 
     public int countIdentical(Card search){
@@ -46,6 +49,7 @@ public abstract class Subdeck extends SubjectBase {
                 }
             }
         });
+        setChanged();
     }
 
     public List<Card> filterShown(){

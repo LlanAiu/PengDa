@@ -131,6 +131,15 @@ public class Card {
         return this.equals(other) && this.isHidden() == other.isHidden();
     }
 
+    public boolean displayEquals(Card other, boolean override){
+
+        if(this.isHidden() && other.isHidden() && !override) {
+            return true;
+        } else {
+            return this.exactEquals(other);
+        }
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(suit, value, honor);
