@@ -42,6 +42,10 @@ public class Deck {
         return cards.isEmpty();
     }
 
+    public int cardsRemaining(){
+        return cards.size();
+    }
+
     public void reset(){
         if(!cards.isEmpty()) {
             cards.removeAll(cards);

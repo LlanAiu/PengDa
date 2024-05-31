@@ -7,8 +7,10 @@ import com.llan.mahjongfunsies.mahjong.cards.Discard;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.environment.GameState;
 import com.llan.mahjongfunsies.mahjong.environment.PlayerHand;
+import com.llan.mahjongfunsies.mahjong.players.Computer;
 import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.mahjong.players.Player;
+import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.util.DisplayUtil;
 
 import java.util.HashMap;
@@ -25,6 +27,7 @@ public class Gameflow {
     private static Player[] players = new Player[Constants.NUM_PLAYERS];
     private static int firstTurnIndex = 0;
     private static int currentTurnIndex = 0;
+    private static int humanIndex = 0;
     private static boolean played = false;
     private static int turnNumber = 1;
     private static boolean shouldPlay = false;
@@ -46,7 +49,11 @@ public class Gameflow {
 
     public static void initialize(){
         for(int i = 0; i < players.length; i++){
-            players[i] = new Human(i);
+            if(i == humanIndex){
+                players[i] = new Human(i);
+            } else {
+                players[i] = new Computer(i);
+            }
         }
         playerOrientations = new HashMap<>();
         updatePlayerOrientations();
@@ -93,14 +100,22 @@ public class Gameflow {
         return currentTurnIndex;
     }
 
+    public static int getHumanIndex() {
+        return humanIndex;
+    }
+
     public static void play(Card card, int index){
         System.out.println("Moved played: Player index: " + index + "; Card played: " + card);
         discardPile.addCard(card);
         players[index].removeCard(card);
         lastPlayed = card;
         played = true;
+        shouldPlay = false;
         updateState();
+        Board.getInstance().resetSelected();
         checkPostMoves();
+        //wait three turns
+        playPostMoves();
     }
 
     public static void checkPostMoves(){
@@ -124,9 +139,16 @@ public class Gameflow {
         if(index != -1){
             players[index].play();
         } else {
-            currentTurnIndex++;
-            currentTurnIndex = currentTurnIndex % Constants.NUM_PLAYERS;
+            passTurn();
         }
+    }
+
+    public static void passTurn(){
+        currentTurnIndex++;
+        currentTurnIndex = currentTurnIndex % Constants.NUM_PLAYERS;
+        players[currentTurnIndex].drawCard();
+        players[currentTurnIndex].clearLegalMoves();
+        players[currentTurnIndex].setLegalMoves(lastPlayed, true);
     }
 
     public static void addCardToPlayer(Card card, int index){

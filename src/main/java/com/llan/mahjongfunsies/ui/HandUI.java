@@ -46,7 +46,7 @@ public class HandUI implements Observer {
     public void displayHand(){
         if(lastHand == null){
             for(int i = 0; i < player.getCards().length; i++){
-                addCard(player.getCards()[i], Gameflow.getCurrentTurnIndex() == player.getIndex(), i);
+                addCard(player.getCards()[i], Gameflow.getHumanIndex() == player.getIndex(), i);
             }
             lastHand = player.getCards();
         } else {
@@ -72,7 +72,7 @@ public class HandUI implements Observer {
 
     public void replaceCard(Card card, int index){
         removeCard(index);
-        addCard(card, Gameflow.getCurrentTurnIndex() == player.getIndex(), index);
+        addCard(card, Gameflow.getHumanIndex() == player.getIndex(), index);
     }
 
     public void clearGrid(){
@@ -89,6 +89,10 @@ public class HandUI implements Observer {
         replaceCard(player.getCards()[index], index);
     }
 
+    public void resetSelected(){
+        selectedIndex = -1;
+    }
+
     public DisplayUtil.Orientation getOrientation(){
         return orientation;
     }
@@ -100,9 +104,9 @@ public class HandUI implements Observer {
                 if (i > display.length - 1) {
                     this.removeCard(i);
                 } else if (i > lastHand.length - 1) {
-                    this.addCard(display[i], Gameflow.getCurrentTurnIndex() == player.getIndex(), i);
+                    this.addCard(display[i], Gameflow.getHumanIndex() == player.getIndex(), i);
                 } else {
-                    if (!display[i].displayEquals(lastHand[i], Gameflow.getCurrentTurnIndex() == player.getIndex())) {
+                    if (!display[i].displayEquals(lastHand[i], Gameflow.getHumanIndex() == player.getIndex())) {
                         replaceCard(display[i], i);
                     }
                 }
@@ -116,5 +120,6 @@ public class HandUI implements Observer {
         System.out.println("Hand display updated for index " + player.getIndex());
         Card[] currentCards = ((Hand) observable).readAll();
         this.updateDisplay(currentCards);
+
     }
 }

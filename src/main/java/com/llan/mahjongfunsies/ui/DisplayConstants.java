@@ -13,5 +13,5 @@ public class DisplayConstants {
     public static final Insets leftInsets = new Insets(20, 0, 20, 5);
     public static final Insets rightInsets = new Insets(20, 10, 20, 0);
 
-    public static final int frameRateMillis = 200;
+    public static final int frameRateMillis = 50;
 }

@@ -42,8 +42,8 @@ public class Board {
             hands[i] = new HandUI(orientation);
             setInPane(hands[i]);
         }
-        pane.setCenter(discard.getGrid());
-        BorderPane.setAlignment(discard.getGrid(), Pos.CENTER);
+        pane.setCenter(discard.getNode());
+        BorderPane.setAlignment(discard.getNode(), Pos.CENTER);
     }
 
     public Parent getRoot(){
@@ -64,15 +64,18 @@ public class Board {
     }
 
     public void setSelected(DisplayUtil.Orientation orient, int cardIndex){
-        if(orient != orient || cardIndex != selectedIndex){
+        if(orient != selectedOrientation || cardIndex != selectedIndex){
             selectedOrientation = orient;
             selectedIndex = cardIndex;
-            assert Gameflow.getCurrentTurnIndex() == Gameflow.getPlayerByOrientation(orient).getIndex();
+            assert Gameflow.getHumanIndex() == Gameflow.getPlayerByOrientation(orient).getIndex();
             hands[Gameflow.getCurrentTurnIndex()].setSelectedIndex(selectedIndex);
         }
     }
 
     public void resetSelected(){
+        for(HandUI hand : hands){
+            hand.resetSelected();
+        }
         selectedIndex = -1;
     }
 

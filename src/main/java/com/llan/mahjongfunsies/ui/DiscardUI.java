@@ -1,17 +1,22 @@
 package com.llan.mahjongfunsies.ui;
 
 import com.llan.mahjongfunsies.mahjong.cards.Card;
+import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
 import com.llan.mahjongfunsies.util.DisplayUtil;
 import com.llan.mahjongfunsies.util.Observer;
 import com.llan.mahjongfunsies.util.Subject;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 
 public class DiscardUI implements Observer {
+    VBox box;
     GridPane grid;
+    Label text;
     private final Discard discard;
     private Card[] lastDisplayed;
 
@@ -28,6 +33,8 @@ public class DiscardUI implements Observer {
         discard = Discard.getInstance();
         discard.addObserver(this);
         grid = new GridPane();
+        box = new VBox();
+        text = new Label("Debug text");
         grid.setGridLinesVisible(true);
         grid.setVgap(DisplayConstants.gridGap);
         grid.setHgap(DisplayConstants.gridGap);
@@ -37,10 +44,12 @@ public class DiscardUI implements Observer {
         for(int i = 0; i < 10; i++){
             grid.getRowConstraints().add(new RowConstraints(DisplayConstants.cardLength));
         }
+        box.getChildren().add(grid);
+        box.getChildren().add(text);
     }
 
-    public GridPane getGrid(){
-        return grid;
+    public Node getNode(){
+        return box;
     }
 
     public void displayDiscard(){
@@ -75,7 +84,9 @@ public class DiscardUI implements Observer {
     public void updateDisplay(Card[] display){
         if(lastDisplayed != null) {
             int max = Math.max(display.length, lastDisplayed.length);
-            for (int i = 0; i < max; i++) {
+
+            //Discard changes will always be in the last two cards
+            for (int i = Math.max(0, max - 2); i < max; i++) {
                 if (i > display.length - 1) {
                     this.removeCard(i);
                 } else if (i > lastDisplayed.length - 1) {
@@ -88,6 +99,7 @@ public class DiscardUI implements Observer {
             }
             lastDisplayed = display;
         }
+        text.setText("Cards Remaining: " + Deck.getInstance().cardsRemaining());
     }
 
     public void clear(){

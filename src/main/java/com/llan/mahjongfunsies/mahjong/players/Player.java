@@ -46,6 +46,11 @@ public abstract class Player {
         }
     }
 
+    public void drawCard(){
+        hand.addCard(Deck.getInstance().drawNext());
+        hand.sort();
+    }
+
     public void addCard(Card card){
         hand.addCard(card);
     }
@@ -77,9 +82,7 @@ public abstract class Player {
             this.clearLegalMoves();
         }
         if (playing) {
-            for(Card card : hand.readAll()){
-                legalMoves.add(new Move(GameAction.CARD, card, index));
-            }
+            setPlayingMoves();
         }
         int num = hand.countIdentical(lastPlayed);
         if (num >= 2) {
@@ -98,7 +101,9 @@ public abstract class Player {
             this.clearLegalMoves();
         }
         for(Card card : hand.readAll()){
-            legalMoves.add(new Move(GameAction.CARD, card, index));
+            if(card.isHidden()){
+                legalMoves.add(new Move(GameAction.CARD, card, index));
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.llan.mahjongfunsies.controllers;
 
 import com.llan.mahjongfunsies.mahjong.Gameflow;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
+import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.environment.Move;
 import com.llan.mahjongfunsies.ui.Board;
@@ -40,7 +41,12 @@ public class GameController {
 
     private void periodic(){
         Board.getInstance().periodic();
-        Gameflow.pollNextTurn();
+        if(!Deck.getInstance().isEmpty()){
+            Gameflow.pollNextTurn();
+        } else {
+            System.out.println("No more cards remaining");
+        }
+
         SubjectBase.periodicAll();
     }
 
