@@ -10,15 +10,7 @@ import java.util.Optional;
 public class Hand extends Subdeck{
 
     public Hand(){
-        cards = new ArrayList<>();
-    }
-
-    public Hand(boolean isFirst){
-        if(isFirst){
-            cards = new ArrayList<>(Constants.STARTING_CARDS + 1);
-        } else {
-            cards = new ArrayList<>(Constants.STARTING_CARDS);
-        }
+        cards = new ArrayList<>(Constants.STARTING_CARDS);
     }
 
     public List<Card> findStraightPair(Card search){

@@ -7,6 +7,7 @@ import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
 import com.llan.mahjongfunsies.ui.IndexedPane;
+import com.llan.mahjongfunsies.ui.InputHandler;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -105,7 +106,7 @@ public class DisplayUtil {
             public void handle(MouseEvent mouseEvent) {
                 if (shouldShow) {
                     System.out.println(card + "; Player Index: " + Gameflow.getPlayerByOrientation(orientation).getIndex());
-                    GameController.getInstance().handleInput(((IndexedPane) tile).getIndex(), card, Gameflow.getPlayerByOrientation(orientation).getIndex());
+                    InputHandler.getInstance().handleInput(((IndexedPane) tile).getIndex(), card, Gameflow.getPlayerByOrientation(orientation).getIndex());
                     Board.getInstance().setSelected(orientation, cardIndex);
                 }
             }

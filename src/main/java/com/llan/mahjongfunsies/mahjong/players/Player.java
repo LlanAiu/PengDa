@@ -20,8 +20,8 @@ public abstract class Player {
 
     public Player(int index){
         this.index = index;
-        hand = new Hand(index == Gameflow.getFirstTurnIndex());
-        move = null;
+        hand = new Hand();
+        move = Move.none();
         legalMoves = new ArrayList<>();
     }
 
@@ -39,11 +39,7 @@ public abstract class Player {
     }
 
     public void drawInitialHand(){
-        if(index == Gameflow.getFirstTurnIndex()){
-            hand.addCards(Deck.getInstance().drawNext(Constants.STARTING_CARDS + 1));
-        } else {
-            hand.addCards(Deck.getInstance().drawNext(Constants.STARTING_CARDS));
-        }
+        hand.addCards(Deck.getInstance().drawNext(Constants.STARTING_CARDS));
     }
 
     public void drawCard(){
@@ -77,12 +73,9 @@ public abstract class Player {
     }
 
     //playing is true if it's the current player's turn rather than just a move on the last card played
-    public void setLegalMoves(Card lastPlayed, boolean playing){
+    public void setPostLegalMoves(Card lastPlayed){
         if(!legalMoves.isEmpty()){
             this.clearLegalMoves();
-        }
-        if (playing) {
-            setPlayingMoves();
         }
         int num = hand.countIdentical(lastPlayed);
         if (num >= 2) {
@@ -112,8 +105,16 @@ public abstract class Player {
         move = Move.none();
     }
 
+    public boolean checkLegalMove(Move move){
+        return legalMoves.contains(move);
+    }
+
     public GameAction actionSelected(){
         return move.action();
+    }
+
+    public Move getSelectedMove(){
+        return move;
     }
 
     public void play(){
@@ -126,5 +127,5 @@ public abstract class Player {
         }
     }
 
-    public abstract void select();
+    public abstract boolean trySelect();
 }

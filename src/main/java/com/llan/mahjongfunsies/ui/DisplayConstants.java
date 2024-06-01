@@ -14,4 +14,7 @@ public class DisplayConstants {
     public static final Insets rightInsets = new Insets(20, 10, 20, 0);
 
     public static final int frameRateMillis = 50;
+    public static final int postWaitMillis = 2500;
+    //automatically floored
+    public static final int maxPolledFrames = postWaitMillis / frameRateMillis;
 }

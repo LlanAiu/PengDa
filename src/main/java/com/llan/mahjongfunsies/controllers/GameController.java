@@ -1,10 +1,7 @@
 package com.llan.mahjongfunsies.controllers;
 
+import com.llan.mahjongfunsies.mahjong.Game;
 import com.llan.mahjongfunsies.mahjong.Gameflow;
-import com.llan.mahjongfunsies.mahjong.cards.Card;
-import com.llan.mahjongfunsies.mahjong.cards.Deck;
-import com.llan.mahjongfunsies.mahjong.environment.GameAction;
-import com.llan.mahjongfunsies.mahjong.environment.Move;
 import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
 import com.llan.mahjongfunsies.util.SubjectBase;
@@ -14,8 +11,7 @@ import javafx.util.Duration;
 
 public class GameController {
 
-    private Move lastInputMove;
-    private int lastCardIndex = -1;
+    private Game currentGame;
 
     private static GameController instance;
 
@@ -27,13 +23,13 @@ public class GameController {
     }
 
     private GameController(){
-        lastInputMove = Move.none();
+        currentGame = new Game();
     }
 
     public void initialize(){
         Gameflow.reset();
+        currentGame.onStart();
         Board.getInstance().displayState();
-        lastInputMove = Move.none();
         Timeline periodic = new Timeline(new KeyFrame(Duration.millis(DisplayConstants.frameRateMillis), actionEvent -> periodic()));
         periodic.setCycleCount(Timeline.INDEFINITE);
         periodic.play();
@@ -41,29 +37,10 @@ public class GameController {
 
     private void periodic(){
         Board.getInstance().periodic();
-        if(!Deck.getInstance().isEmpty()){
-            Gameflow.pollNextTurn();
-        } else {
-            System.out.println("No more cards remaining");
+        if(!currentGame.isFinished()){
+            currentGame.run();
         }
 
         SubjectBase.periodicAll();
-    }
-
-    public void handleInput(int cardIndex, Card card, int index){
-        if(cardIndex == lastCardIndex && lastInputMove.card().exactEquals(card) && lastInputMove.playerIndex() == index){
-            Gameflow.shouldPlay();
-        } else {
-            lastInputMove = new Move(GameAction.CARD, card, index);
-            lastCardIndex = cardIndex;
-        }
-    }
-
-    public void clearRecordedInputs(){
-        lastInputMove = Move.none();
-    }
-
-    public Move getLastInputMove(){
-        return lastInputMove;
     }
 }

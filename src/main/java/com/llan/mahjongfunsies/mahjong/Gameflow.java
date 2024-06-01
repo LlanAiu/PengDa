@@ -42,7 +42,7 @@ public class Gameflow {
             players[currentTurnIndex].play();
             return true;
         } else {
-            players[currentTurnIndex].select();
+            players[currentTurnIndex].trySelect();
             return false;
         }
     }
@@ -59,7 +59,7 @@ public class Gameflow {
         updatePlayerOrientations();
     }
 
-    //Static for now, maybe change later?
+    //constant for now, maybe change later?
     public static void updatePlayerOrientations(){
         if(!playerOrientations.isEmpty()){
             playerOrientations.clear();
