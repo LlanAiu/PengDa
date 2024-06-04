@@ -13,6 +13,13 @@ public final class Constants {
 
     public static final int NUM_PLAYERS = 4;
 
+    public static final int NULL_PRIORITY = 100000;
+    public static final int STRAIGHT_PRIORITY = 4;
+    public static final int TRIPLE_PRIORITY = 3;
+    public static final int QUAD_PRIORITY = 2;
+    public static final int WIN_PRIORITY = 1;
+
+
     public static final Card[] allCards;
 
     static {

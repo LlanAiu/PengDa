@@ -1,12 +1,11 @@
 package com.llan.mahjongfunsies.mahjong.players;
 
 import com.llan.mahjongfunsies.Constants;
-import com.llan.mahjongfunsies.mahjong.Gameflow;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Hand;
+import com.llan.mahjongfunsies.mahjong.commands.*;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
-import com.llan.mahjongfunsies.mahjong.environment.Move;
 import com.llan.mahjongfunsies.util.Observer;
 
 import java.util.ArrayList;
@@ -15,13 +14,13 @@ import java.util.List;
 public abstract class Player {
     Hand hand;
     int index;
-    Move move;
-    List<Move> legalMoves;
+    Command move;
+    List<Command> legalMoves;
 
     public Player(int index){
         this.index = index;
         hand = new Hand();
-        move = Move.none();
+        move = new NullCommand();
         legalMoves = new ArrayList<>();
     }
 
@@ -72,20 +71,19 @@ public abstract class Player {
         hand.addObserver(observer);
     }
 
-    //playing is true if it's the current player's turn rather than just a move on the last card played
-    public void setPostLegalMoves(Card lastPlayed){
+    public void setLegalPostMoves(Card lastPlayed, int lastPlayerIndex){
         if(!legalMoves.isEmpty()){
             this.clearLegalMoves();
         }
         int num = hand.countIdentical(lastPlayed);
         if (num >= 2) {
-            legalMoves.add(new Move(GameAction.TRIPLE, lastPlayed, index));
+            legalMoves.add(new Triple(index));
             if(num >= 3){
-                legalMoves.add(new Move(GameAction.QUAD, lastPlayed, index));
+                legalMoves.add(new Quad(index));
             }
         }
-        if (hand.canStraight(lastPlayed)) {
-            legalMoves.add(new Move(GameAction.STRAIGHT, lastPlayed, index));
+        if (hand.canStraight(lastPlayed) && index == ((lastPlayerIndex + 1) % Constants.NUM_PLAYERS)) {
+            legalMoves.add(new Straight(index));
         }
     }
 
@@ -95,32 +93,34 @@ public abstract class Player {
         }
         for(Card card : hand.readAll()){
             if(card.isHidden()){
-                legalMoves.add(new Move(GameAction.CARD, card, index));
+                legalMoves.add(new PlayCard(card, index));
             }
         }
     }
 
     public void clearLegalMoves(){
         legalMoves.removeAll(legalMoves);
-        move = Move.none();
+        move = new NullCommand();
     }
 
-    public boolean checkLegalMove(Move move){
+    public boolean checkLegalMove(Command move){
         return legalMoves.contains(move);
     }
 
+    //TO BE REMOVED SOON
     public GameAction actionSelected(){
-        return move.action();
+        return GameAction.NOTHING;
     }
 
-    public Move getSelectedMove(){
+    public Command getSelectedMove(){
         return move;
     }
 
+    //TO BE REMOVED SOON
     public void play(){
         if(legalMoves.contains(move)){
-            move.action().play(move.card(), move.playerIndex());
-            move = Move.none();
+            move.execute();
+            move = new NullCommand();
             System.out.println("Move played");
         } else {
             System.out.println("Selected Move Is Not Legal");

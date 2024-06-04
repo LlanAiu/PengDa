@@ -2,7 +2,7 @@ package com.llan.mahjongfunsies.ui;
 
 import javafx.geometry.Insets;
 
-public class DisplayConstants {
+public final class DisplayConstants {
     public static final int cardWidth = 40;
     public static final int cardLength = 54;
 

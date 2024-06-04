@@ -2,8 +2,9 @@ package com.llan.mahjongfunsies.mahjong;
 
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
+import com.llan.mahjongfunsies.mahjong.commands.Command;
+import com.llan.mahjongfunsies.mahjong.commands.PrioritizedPostMove;
 import com.llan.mahjongfunsies.mahjong.environment.Move;
-import com.llan.mahjongfunsies.mahjong.environment.Stage;
 import com.llan.mahjongfunsies.mahjong.players.Computer;
 import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.mahjong.players.Player;
@@ -69,10 +70,10 @@ public class TurnManager {
         }
     }
 
-    public Optional<Move> pollCurrentTurn(Stage stage){
-        if(stage.equals(Stage.CHECKING)){
+    public Optional<Command> pollCurrentTurn(Game.Stage stage){
+        if(stage.equals(Game.Stage.CHECKING)){
             if(players[currentTurnIndex].trySelect()){
-                Move move = players[currentTurnIndex].getSelectedMove();
+                Command move = players[currentTurnIndex].getSelectedMove();
                 if(players[currentTurnIndex].checkLegalMove(move)){
                     return Optional.of(move);
                 }
@@ -81,7 +82,8 @@ public class TurnManager {
             Arrays.stream(players).forEach(Player::trySelect);
             polledTries++;
             if(polledTries >= DisplayConstants.maxPolledFrames){
-                Move move = getMoveByPriority();
+                Command move = getMoveByPriority();
+                polledTries = 0;
                 return Optional.of(move);
             }
         }
@@ -95,7 +97,7 @@ public class TurnManager {
 
     //for post turn only
     public void setPostPlayableMoves(Card lastPlayed){
-        Arrays.stream(players).forEach(player -> player.setPostLegalMoves(lastPlayed));
+        Arrays.stream(players).forEach(player -> player.setLegalPostMoves(lastPlayed, currentTurnIndex));
     }
 
     public void drawInitialHands(){
@@ -133,10 +135,10 @@ public class TurnManager {
         return winningIndex;
     }
 
-    public Move getMoveByPriority(){
-        List<Move> moves = new ArrayList<>();
+    public Command getMoveByPriority(){
+        List<Command> moves = new ArrayList<>();
         Arrays.stream(players).forEach(player -> moves.add(player.getSelectedMove()));
-        moves.sort(Comparator.comparingInt(o -> o.action().getPriority()));
+        moves.sort(Comparator.comparingInt(o -> ((PrioritizedPostMove) o).getPriority()));
         return moves.getLast();
     }
 }

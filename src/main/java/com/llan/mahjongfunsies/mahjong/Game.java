@@ -3,11 +3,18 @@ package com.llan.mahjongfunsies.mahjong;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
-import com.llan.mahjongfunsies.mahjong.environment.Move;
-import com.llan.mahjongfunsies.mahjong.environment.Stage;
+import com.llan.mahjongfunsies.mahjong.commands.Command;
+import com.llan.mahjongfunsies.mahjong.commands.PrioritizedPostMove;
 import com.llan.mahjongfunsies.util.Episode;
 
 public class Game implements Episode {
+
+    public enum Stage {
+        PREMOVE,
+        CHECKING,
+        POSTCHECKING;
+    }
+
     private final TurnManager manager;
     private final Discard discard;
     private final Deck deck;
@@ -37,14 +44,14 @@ public class Game implements Episode {
         var move = manager.pollCurrentTurn(stage);
         if(move.isPresent()){
             if(stage.equals(Stage.CHECKING)){
-                move.ifPresent(Move::play);
+                move.ifPresent(Command::execute);
                 if(stage.equals(Stage.CHECKING)){
                     postTurn();
                 }
             } else if (stage.equals(stage.POSTCHECKING)){
                 move.ifPresent(move1 -> {
-                    if(!move1.isNone()){
-                        move1.play();
+                    if(!((PrioritizedPostMove) move1).isNull()){
+                        move1.execute();
                     } else {
                         nextTurn();
                     }

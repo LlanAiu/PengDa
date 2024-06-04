@@ -10,7 +10,8 @@ public class Card {
         HONOR(0),
         TIAO(1),
         TONG(2),
-        WAN(3);
+        WAN(3),
+        NONE(-1);
 
         private final int priority;
 
@@ -57,6 +58,10 @@ public class Card {
     @Contract("_ -> new")
     public static @NotNull Card copyOf(@NotNull Card card){
         return new Card(card.suit, card.value, card.honor);
+    }
+
+    public static Card none(){
+        return new Card(Suit.NONE, -1, HonorType.NONE);
     }
 
     private final Suit suit;

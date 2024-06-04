@@ -1,9 +1,7 @@
 package com.llan.mahjongfunsies.util;
 
-import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.Gameflow;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
-import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
 import com.llan.mahjongfunsies.ui.IndexedPane;
@@ -106,7 +104,7 @@ public class DisplayUtil {
             public void handle(MouseEvent mouseEvent) {
                 if (shouldShow) {
                     System.out.println(card + "; Player Index: " + Gameflow.getPlayerByOrientation(orientation).getIndex());
-                    InputHandler.getInstance().handleInput(((IndexedPane) tile).getIndex(), card, Gameflow.getPlayerByOrientation(orientation).getIndex());
+                    InputHandler.getInstance().onCardPressed(((IndexedPane) tile).getIndex(), card, Gameflow.getPlayerByOrientation(orientation).getIndex());
                     Board.getInstance().setSelected(orientation, cardIndex);
                 }
             }

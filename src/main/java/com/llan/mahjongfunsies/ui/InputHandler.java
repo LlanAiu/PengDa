@@ -1,13 +1,14 @@
 package com.llan.mahjongfunsies.ui;
 
-import com.llan.mahjongfunsies.mahjong.Gameflow;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
-import com.llan.mahjongfunsies.mahjong.environment.GameAction;
-import com.llan.mahjongfunsies.mahjong.environment.Move;
+import com.llan.mahjongfunsies.mahjong.commands.CommandBase;
+import com.llan.mahjongfunsies.mahjong.commands.NullCommand;
+import com.llan.mahjongfunsies.mahjong.commands.PlayCard;
 
 public class InputHandler {
-    private Move lastInputMove;
-    private int lastCardIndex = -1;
+    private CommandBase lastInputMove;
+    private int lastCardIndex;
+    private boolean shouldReturn;
 
     private static InputHandler instance;
 
@@ -18,20 +19,32 @@ public class InputHandler {
         return instance;
     }
 
-    public void handleInput(int cardIndex, Card card, int index){
-        if(cardIndex == lastCardIndex && lastInputMove.card().exactEquals(card) && lastInputMove.playerIndex() == index){
-            Gameflow.shouldPlay();
+    private InputHandler(){
+        lastInputMove = new NullCommand();
+        lastCardIndex = -1;
+        shouldReturn = false;
+    }
+
+    public void onCardPressed(int cardIndex, Card card, int index){
+        if(lastCardIndex == cardIndex && lastInputMove.getCard().exactEquals(card) && lastInputMove.getPlayerIndex() == index){
+            shouldReturn = true;
         } else {
-            lastInputMove = new Move(GameAction.CARD, card, index);
+            lastInputMove = new PlayCard(card, index);
             lastCardIndex = cardIndex;
         }
     }
 
     public void clearRecordedInputs(){
-        lastInputMove = Move.none();
+        lastInputMove = new NullCommand();
+        shouldReturn = false;
     }
 
-    public Move getLastInputMove(){
-        return lastInputMove;
+    public CommandBase getLastInputMove(){
+        if(shouldReturn){
+            CommandBase selected = lastInputMove;
+            clearRecordedInputs();
+            return selected;
+        }
+        return new NullCommand();
     }
 }

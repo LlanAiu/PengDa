@@ -121,7 +121,7 @@ public class Gameflow {
     public static void checkPostMoves(){
         for(Player player : players){
             player.clearLegalMoves();
-            player.setLegalMoves(lastPlayed, false);
+            player.setLegalPostMoves(lastPlayed, currentTurnIndex);
         }
     }
 
@@ -148,7 +148,7 @@ public class Gameflow {
         currentTurnIndex = currentTurnIndex % Constants.NUM_PLAYERS;
         players[currentTurnIndex].drawCard();
         players[currentTurnIndex].clearLegalMoves();
-        players[currentTurnIndex].setLegalMoves(lastPlayed, true);
+        players[currentTurnIndex].setPlayingMoves();
     }
 
     public static void addCardToPlayer(Card card, int index){

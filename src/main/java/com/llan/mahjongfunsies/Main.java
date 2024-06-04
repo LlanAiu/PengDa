@@ -16,6 +16,7 @@ public class Main extends Application {
         stage.setTitle("Funsies!");
         stage.setScene(scene);
         stage.show();
+
         Gameflow.initialize();
     }
 

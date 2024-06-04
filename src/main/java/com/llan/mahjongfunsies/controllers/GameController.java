@@ -43,4 +43,8 @@ public class GameController {
 
         SubjectBase.periodicAll();
     }
+
+    public Game getCurrentGame(){
+        return currentGame;
+    }
 }
