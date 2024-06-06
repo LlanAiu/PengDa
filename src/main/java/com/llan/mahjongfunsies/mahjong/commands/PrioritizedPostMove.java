@@ -7,6 +7,10 @@ public abstract class PrioritizedPostMove extends CommandBase{
 
     final int priority;
 
+    public PrioritizedPostMove(){
+        priority = Constants.NULL_PRIORITY;
+    }
+
     public PrioritizedPostMove(int playerIndex){
         super(Card.none(), playerIndex);
         priority = setPriority();

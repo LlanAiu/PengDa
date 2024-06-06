@@ -1,6 +1,6 @@
 package com.llan.mahjongfunsies.util;
 
-import com.llan.mahjongfunsies.mahjong.Gameflow;
+import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
@@ -103,8 +103,8 @@ public class DisplayUtil {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (shouldShow) {
-                    System.out.println(card + "; Player Index: " + Gameflow.getPlayerByOrientation(orientation).getIndex());
-                    InputHandler.getInstance().onCardPressed(((IndexedPane) tile).getIndex(), card, Gameflow.getPlayerByOrientation(orientation).getIndex());
+                    System.out.println(card + "; Player Index: " + GameController.getInstance().getPlayerByOrientation(orientation).getIndex());
+                    InputHandler.getInstance().onCardPressed(((IndexedPane) tile).getIndex(), card, GameController.getInstance().getPlayerByOrientation(orientation).getIndex());
                     Board.getInstance().setSelected(orientation, cardIndex);
                 }
             }

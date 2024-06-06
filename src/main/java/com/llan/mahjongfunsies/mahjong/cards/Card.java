@@ -10,8 +10,7 @@ public class Card {
         HONOR(0),
         TIAO(1),
         TONG(2),
-        WAN(3),
-        NONE(-1);
+        WAN(3);
 
         private final int priority;
 
@@ -61,7 +60,7 @@ public class Card {
     }
 
     public static Card none(){
-        return new Card(Suit.NONE, -1, HonorType.NONE);
+        return new Card(Suit.TIAO, -1, HonorType.NONE);
     }
 
     private final Suit suit;

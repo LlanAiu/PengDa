@@ -1,9 +1,10 @@
 package com.llan.mahjongfunsies.controllers;
 
 import com.llan.mahjongfunsies.mahjong.Game;
-import com.llan.mahjongfunsies.mahjong.Gameflow;
+import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
+import com.llan.mahjongfunsies.util.DisplayUtil;
 import com.llan.mahjongfunsies.util.SubjectBase;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -27,7 +28,6 @@ public class GameController {
     }
 
     public void initialize(){
-        Gameflow.reset();
         currentGame.onStart();
         Board.getInstance().displayState();
         Timeline periodic = new Timeline(new KeyFrame(Duration.millis(DisplayConstants.frameRateMillis), actionEvent -> periodic()));
@@ -46,5 +46,13 @@ public class GameController {
 
     public Game getCurrentGame(){
         return currentGame;
+    }
+
+    public int getCurrentTurnIndex(){
+        return currentGame.getCurrentTurnIndex();
+    }
+
+    public Player getPlayerByOrientation(DisplayUtil.Orientation orientation){
+        return currentGame.getPlayerByOrientation(orientation);
     }
 }

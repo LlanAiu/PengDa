@@ -43,7 +43,6 @@ public abstract class Player {
 
     public void drawCard(){
         hand.addCard(Deck.getInstance().drawNext());
-        hand.sort();
     }
 
     public void addCard(Card card){
@@ -103,6 +102,11 @@ public abstract class Player {
         move = new NullCommand();
     }
 
+    //also dummy method rn
+    public List<Command> getLegalMoves(){
+        return legalMoves;
+    }
+
     public boolean checkLegalMove(Command move){
         return legalMoves.contains(move);
     }
@@ -126,6 +130,8 @@ public abstract class Player {
             System.out.println("Selected Move Is Not Legal");
         }
     }
+
+    public abstract boolean shouldDisplay();
 
     public abstract boolean trySelect();
 }

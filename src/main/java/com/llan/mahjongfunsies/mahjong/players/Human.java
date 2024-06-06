@@ -11,6 +11,11 @@ public class Human extends Player{
     }
 
     @Override
+    public boolean shouldDisplay() {
+        return true;
+    }
+
+    @Override
     public boolean trySelect() {
         CommandBase input = InputHandler.getInstance().getLastInputMove();
         if(!(input instanceof NullCommand)){

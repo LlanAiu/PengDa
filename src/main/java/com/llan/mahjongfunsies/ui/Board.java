@@ -1,19 +1,22 @@
 package com.llan.mahjongfunsies.ui;
 
 import com.llan.mahjongfunsies.Constants;
-import com.llan.mahjongfunsies.mahjong.Gameflow;
+import com.llan.mahjongfunsies.controllers.GameController;
+import com.llan.mahjongfunsies.mahjong.commands.Command;
 import com.llan.mahjongfunsies.util.DisplayUtil;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.layout.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Board {
 
     private BorderPane pane;
 
     private HandUI[] hands = new HandUI[Constants.NUM_PLAYERS];
+    private PostMoveUI humanPostMove = new PostMoveUI();
     private DiscardUI discard;
 
     private DisplayUtil.Orientation selectedOrientation;
@@ -57,6 +60,15 @@ public class Board {
         discard.clear();
     }
 
+    //dummy method for now just to test logic
+    public void updatePostMoves(List<Command> moves){
+        humanPostMove.updateVisibilities(moves);
+    }
+
+    public void resetPostMoves(){
+        humanPostMove.hideAll();
+    }
+
     public void displayState(){
         this.clearBoard();
         Arrays.stream(hands).forEach(handUI -> handUI.displayHand());
@@ -67,8 +79,7 @@ public class Board {
         if(orient != selectedOrientation || cardIndex != selectedIndex){
             selectedOrientation = orient;
             selectedIndex = cardIndex;
-            assert Gameflow.getHumanIndex() == Gameflow.getPlayerByOrientation(orient).getIndex();
-            hands[Gameflow.getCurrentTurnIndex()].setSelectedIndex(selectedIndex);
+            hands[GameController.getInstance().getCurrentTurnIndex()].setSelectedIndex(selectedIndex);
         }
     }
 
@@ -86,9 +97,12 @@ public class Board {
     private void setInPane(HandUI hand){
         switch (hand.getOrientation()){
             case DOWN:
-                pane.setBottom(hand.getGrid());
-                BorderPane.setMargin(hand.getGrid(), DisplayConstants.bottomInsets);
-                BorderPane.setAlignment(hand.getGrid(), Pos.BOTTOM_CENTER);
+                HBox box = new HBox();
+                box.getChildren().add(hand.getGrid());
+                box.getChildren().add(humanPostMove.getNode());
+                pane.setBottom(box);
+                BorderPane.setMargin(box, DisplayConstants.bottomInsets);
+                BorderPane.setAlignment(box, Pos.BOTTOM_CENTER);
                 break;
             case LEFT:
                 pane.setLeft(hand.getGrid());

@@ -4,10 +4,10 @@ import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
 import com.llan.mahjongfunsies.mahjong.commands.PrioritizedPostMove;
-import com.llan.mahjongfunsies.mahjong.environment.Move;
 import com.llan.mahjongfunsies.mahjong.players.Computer;
 import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.mahjong.players.Player;
+import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
 import com.llan.mahjongfunsies.util.DisplayUtil;
 
@@ -98,6 +98,7 @@ public class TurnManager {
     //for post turn only
     public void setPostPlayableMoves(Card lastPlayed){
         Arrays.stream(players).forEach(player -> player.setLegalPostMoves(lastPlayed, currentTurnIndex));
+        Board.getInstance().updatePostMoves(players[humanIndex].getLegalMoves());
     }
 
     public void drawInitialHands(){
@@ -106,6 +107,7 @@ public class TurnManager {
 
     public void drawCard(){
         players[currentTurnIndex].drawCard();
+        players[currentTurnIndex].sortHand();
     }
 
     public void addCardToPlayer(Card card, int index){
@@ -123,6 +125,7 @@ public class TurnManager {
 
     public void setCurrentTurnIndex(int index){
         currentTurnIndex = index;
+        players[currentTurnIndex].sortHand();
     }
 
     public void checkWin(){

@@ -5,6 +5,9 @@ import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
 import com.llan.mahjongfunsies.mahjong.commands.PrioritizedPostMove;
+import com.llan.mahjongfunsies.mahjong.players.Player;
+import com.llan.mahjongfunsies.ui.Board;
+import com.llan.mahjongfunsies.util.DisplayUtil;
 import com.llan.mahjongfunsies.util.Episode;
 
 public class Game implements Episode {
@@ -33,6 +36,7 @@ public class Game implements Episode {
         discard.clear();
         deck.reset();
         manager.drawInitialHands();
+        manager.drawCard();
         stage = Stage.PREMOVE;
     }
 
@@ -56,6 +60,7 @@ public class Game implements Episode {
                         nextTurn();
                     }
                 });
+                Board.getInstance().resetPostMoves();
             }
         }
     }
@@ -66,6 +71,7 @@ public class Game implements Episode {
     }
 
     private void postTurn(){
+        Board.getInstance().resetSelected();
         manager.setPostPlayableMoves(discard.getLastPlayed());
         stage = Stage.POSTCHECKING;
     }
@@ -96,5 +102,13 @@ public class Game implements Episode {
         manager.addCardToPlayer(discard.removeLastPlayed(), index);
         manager.setCurrentTurnIndex(index);
         stage = Stage.PREMOVE;
+    }
+
+    public Player getPlayerByOrientation(DisplayUtil.Orientation orientation){
+        return manager.getPlayerByOrientation(orientation);
+    }
+
+    public int getCurrentTurnIndex(){
+        return manager.getCurrentTurnIndex();
     }
 }

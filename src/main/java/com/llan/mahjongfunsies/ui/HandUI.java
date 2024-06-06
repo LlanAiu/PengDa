@@ -1,7 +1,7 @@
 package com.llan.mahjongfunsies.ui;
 
 import com.llan.mahjongfunsies.Constants;
-import com.llan.mahjongfunsies.mahjong.Gameflow;
+import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.cards.Hand;
 import com.llan.mahjongfunsies.mahjong.players.Player;
@@ -22,7 +22,7 @@ public class HandUI implements Observer {
 
     public HandUI(DisplayUtil.Orientation orientation) {
         this.orientation = orientation;
-        player = Gameflow.getPlayerByOrientation(orientation);
+        player = GameController.getInstance().getPlayerByOrientation(orientation);
         player.registerObserver(this);
         grid = new GridPane();
         if (orientation == DisplayUtil.Orientation.UP || orientation == DisplayUtil.Orientation.DOWN) {
@@ -46,7 +46,7 @@ public class HandUI implements Observer {
     public void displayHand(){
         if(lastHand == null){
             for(int i = 0; i < player.getCards().length; i++){
-                addCard(player.getCards()[i], Gameflow.getHumanIndex() == player.getIndex(), i);
+                addCard(player.getCards()[i], player.shouldDisplay(), i);
             }
             lastHand = player.getCards();
         } else {
@@ -72,7 +72,7 @@ public class HandUI implements Observer {
 
     public void replaceCard(Card card, int index){
         removeCard(index);
-        addCard(card, Gameflow.getHumanIndex() == player.getIndex(), index);
+        addCard(card, player.shouldDisplay(), index);
     }
 
     public void clearGrid(){
@@ -86,11 +86,13 @@ public class HandUI implements Observer {
         if(lastIndex != -1){
             replaceCard(player.getCards()[lastIndex], lastIndex);
         }
-        replaceCard(player.getCards()[index], index);
+        if(index != -1){
+            replaceCard(player.getCards()[index], index);
+        }
     }
 
     public void resetSelected(){
-        selectedIndex = -1;
+        setSelectedIndex(-1);
     }
 
     public DisplayUtil.Orientation getOrientation(){
@@ -104,9 +106,9 @@ public class HandUI implements Observer {
                 if (i > display.length - 1) {
                     this.removeCard(i);
                 } else if (i > lastHand.length - 1) {
-                    this.addCard(display[i], Gameflow.getHumanIndex() == player.getIndex(), i);
+                    this.addCard(display[i], player.shouldDisplay(), i);
                 } else {
-                    if (!display[i].displayEquals(lastHand[i], Gameflow.getHumanIndex() == player.getIndex())) {
+                    if (!display[i].displayEquals(lastHand[i], player.shouldDisplay())) {
                         replaceCard(display[i], i);
                     }
                 }
@@ -120,6 +122,5 @@ public class HandUI implements Observer {
         System.out.println("Hand display updated for index " + player.getIndex());
         Card[] currentCards = ((Hand) observable).readAll();
         this.updateDisplay(currentCards);
-
     }
 }

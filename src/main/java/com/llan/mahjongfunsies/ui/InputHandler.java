@@ -35,6 +35,7 @@ public class InputHandler {
     }
 
     public void clearRecordedInputs(){
+        lastCardIndex = -1;
         lastInputMove = new NullCommand();
         shouldReturn = false;
     }
