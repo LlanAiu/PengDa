@@ -10,6 +10,7 @@ import com.llan.mahjongfunsies.util.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class Player {
     Hand hand;
@@ -84,6 +85,11 @@ public abstract class Player {
         if (hand.canStraight(lastPlayed) && index == ((lastPlayerIndex + 1) % Constants.NUM_PLAYERS)) {
             legalMoves.add(new Straight(index));
         }
+        hand.isOneAway().ifPresent(cards -> {
+            if(cards.contains(lastPlayed)){
+                legalMoves.add(new Win(index));
+            }
+        });
     }
 
     public void setPlayingMoves(){
@@ -109,11 +115,6 @@ public abstract class Player {
 
     public boolean checkLegalMove(Command move){
         return legalMoves.contains(move);
-    }
-
-    //TO BE REMOVED SOON
-    public GameAction actionSelected(){
-        return GameAction.NOTHING;
     }
 
     public Command getSelectedMove(){

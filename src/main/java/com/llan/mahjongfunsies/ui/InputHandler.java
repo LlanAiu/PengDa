@@ -1,14 +1,14 @@
 package com.llan.mahjongfunsies.ui;
 
 import com.llan.mahjongfunsies.mahjong.cards.Card;
-import com.llan.mahjongfunsies.mahjong.commands.CommandBase;
-import com.llan.mahjongfunsies.mahjong.commands.NullCommand;
-import com.llan.mahjongfunsies.mahjong.commands.PlayCard;
+import com.llan.mahjongfunsies.mahjong.commands.*;
+import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 
 public class InputHandler {
     private CommandBase lastInputMove;
     private int lastCardIndex;
     private boolean shouldReturn;
+
 
     private static InputHandler instance;
 
@@ -31,6 +31,16 @@ public class InputHandler {
         } else {
             lastInputMove = new PlayCard(card, index);
             lastCardIndex = cardIndex;
+        }
+    }
+
+    public void onPostMove(GameAction action, int index){
+        shouldReturn = true;
+        switch (action) {
+            case STRAIGHT -> lastInputMove = new Straight(index);
+            case TRIPLE -> lastInputMove = new Triple(index);
+            case QUAD -> lastInputMove = new Quad(index);
+            case WIN -> lastInputMove = new Win(index);
         }
     }
 

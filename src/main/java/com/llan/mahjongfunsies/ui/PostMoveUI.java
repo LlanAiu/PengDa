@@ -16,10 +16,10 @@ public class PostMoveUI {
     public PostMoveUI(){
         box = new VBox();
         buttons = new Button[4];
-        buttons[0] = new Button("Triple!");
-        buttons[1] = new Button("Straight!");
-        buttons[2] = new Button("Quad!");
-        buttons[3] = new Button("Win!");
+        buttons[0] = new Button("碰");
+        buttons[1] = new Button("吃");
+        buttons[2] = new Button("杠");
+        buttons[3] = new Button("胡");
         box.getChildren().addAll(buttons);
         hideAll();
     }

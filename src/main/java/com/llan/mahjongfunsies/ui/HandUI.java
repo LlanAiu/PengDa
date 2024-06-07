@@ -13,12 +13,11 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
 
-public class HandUI implements Observer {
-    private final GridPane grid;
-    private final Player player;
-    private final DisplayUtil.Orientation orientation;
-    private int selectedIndex = -1;
-    private Card[] lastHand;
+public abstract class HandUI implements Observer {
+    final GridPane grid;
+    final Player player;
+    final DisplayUtil.Orientation orientation;
+    Card[] lastHand;
 
     public HandUI(DisplayUtil.Orientation orientation) {
         this.orientation = orientation;
@@ -39,10 +38,6 @@ public class HandUI implements Observer {
         grid.setHgap(DisplayConstants.gridGap);
     }
 
-    public GridPane getGrid(){
-        return grid;
-    }
-
     public void displayHand(){
         if(lastHand == null){
             for(int i = 0; i < player.getCards().length; i++){
@@ -56,7 +51,7 @@ public class HandUI implements Observer {
 
     public void addCard(Card card, boolean override, int index){
         Node cardView = DisplayUtil.displayCard(card, orientation, override,
-                index, index == selectedIndex);
+                index, isSelected(index));
         if(orientation == DisplayUtil.Orientation.UP || orientation == DisplayUtil.Orientation.DOWN){
             grid.add(cardView, index, 0);
         } else {
@@ -77,22 +72,6 @@ public class HandUI implements Observer {
 
     public void clearGrid(){
         grid.getChildren().removeAll(grid.getChildren());
-    }
-
-    public void setSelectedIndex(int index){
-        System.out.println("Changed Selected Index");
-        int lastIndex = selectedIndex;
-        this.selectedIndex = index;
-        if(lastIndex != -1){
-            replaceCard(player.getCards()[lastIndex], lastIndex);
-        }
-        if(index != -1){
-            replaceCard(player.getCards()[index], index);
-        }
-    }
-
-    public void resetSelected(){
-        setSelectedIndex(-1);
     }
 
     public DisplayUtil.Orientation getOrientation(){
@@ -123,4 +102,8 @@ public class HandUI implements Observer {
         Card[] currentCards = ((Hand) observable).readAll();
         this.updateDisplay(currentCards);
     }
+
+    abstract boolean isSelected(int index);
+
+    abstract Node getNode();
 }

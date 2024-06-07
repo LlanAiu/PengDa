@@ -112,6 +112,7 @@ public class TurnManager {
 
     public void addCardToPlayer(Card card, int index){
         players[index].addCard(card);
+        //also need to do finishing set / un-hiding cards stuff
     }
 
     public void removeCardFromPlayer(Card card, int index){

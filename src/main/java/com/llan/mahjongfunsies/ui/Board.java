@@ -3,6 +3,7 @@ package com.llan.mahjongfunsies.ui;
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
+import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.util.DisplayUtil;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -15,6 +16,7 @@ public class Board {
 
     private BorderPane pane;
 
+    private int humanIndex;
     private HandUI[] hands = new HandUI[Constants.NUM_PLAYERS];
     private PostMoveUI humanPostMove = new PostMoveUI();
     private DiscardUI discard;
@@ -42,7 +44,7 @@ public class Board {
                 case 2 -> orientation = DisplayUtil.Orientation.UP;
                 default -> orientation = DisplayUtil.Orientation.RIGHT;
             }
-            hands[i] = new HandUI(orientation);
+            hands[i] = createUI(orientation, i);
             setInPane(hands[i]);
         }
         pane.setCenter(discard.getNode());
@@ -60,13 +62,12 @@ public class Board {
         discard.clear();
     }
 
-    //dummy method for now just to test logic
     public void updatePostMoves(List<Command> moves){
-        humanPostMove.updateVisibilities(moves);
+        ((HumanUI) hands[humanIndex]).updatePostMoves(moves);
     }
 
     public void resetPostMoves(){
-        humanPostMove.hideAll();
+        ((HumanUI) hands[humanIndex]).hidePostMoves();
     }
 
     public void displayState(){
@@ -79,14 +80,12 @@ public class Board {
         if(orient != selectedOrientation || cardIndex != selectedIndex){
             selectedOrientation = orient;
             selectedIndex = cardIndex;
-            hands[GameController.getInstance().getCurrentTurnIndex()].setSelectedIndex(selectedIndex);
+            ((HumanUI) hands[humanIndex]).setSelectedIndex(cardIndex);
         }
     }
 
     public void resetSelected(){
-        for(HandUI hand : hands){
-            hand.resetSelected();
-        }
+        ((HumanUI) hands[humanIndex]).resetSelected();
         selectedIndex = -1;
     }
 
@@ -98,27 +97,36 @@ public class Board {
         switch (hand.getOrientation()){
             case DOWN:
                 HBox box = new HBox();
-                box.getChildren().add(hand.getGrid());
+                box.getChildren().add(hand.getNode());
                 box.getChildren().add(humanPostMove.getNode());
                 pane.setBottom(box);
                 BorderPane.setMargin(box, DisplayConstants.bottomInsets);
                 BorderPane.setAlignment(box, Pos.BOTTOM_CENTER);
                 break;
             case LEFT:
-                pane.setLeft(hand.getGrid());
-                BorderPane.setMargin(hand.getGrid(), DisplayConstants.leftInsets);
-                BorderPane.setAlignment(hand.getGrid(), Pos.CENTER_LEFT);
+                pane.setLeft(hand.getNode());
+                BorderPane.setMargin(hand.getNode(), DisplayConstants.leftInsets);
+                BorderPane.setAlignment(hand.getNode(), Pos.CENTER_LEFT);
                 break;
             case UP:
-                pane.setTop(hand.getGrid());
-                BorderPane.setMargin(hand.getGrid(), DisplayConstants.topInsets);
-                BorderPane.setAlignment(hand.getGrid(), Pos.TOP_CENTER);
+                pane.setTop(hand.getNode());
+                BorderPane.setMargin(hand.getNode(), DisplayConstants.topInsets);
+                BorderPane.setAlignment(hand.getNode(), Pos.TOP_CENTER);
                 break;
             default:
-                pane.setRight(hand.getGrid());
-                BorderPane.setMargin(hand.getGrid(), DisplayConstants.rightInsets);
-                BorderPane.setAlignment(hand.getGrid(), Pos.CENTER_RIGHT);
+                pane.setRight(hand.getNode());
+                BorderPane.setMargin(hand.getNode(), DisplayConstants.rightInsets);
+                BorderPane.setAlignment(hand.getNode(), Pos.CENTER_RIGHT);
                 break;
+        }
+    }
+
+    private HandUI createUI(DisplayUtil.Orientation orientation, int index){
+        if(GameController.getInstance().getPlayerByOrientation(orientation) instanceof Human){
+            humanIndex = index;
+            return new HumanUI(orientation);
+        } else {
+            return new ComputerUI(orientation);
         }
     }
 }
