@@ -9,7 +9,6 @@ public class InputHandler {
     private int lastCardIndex;
     private boolean shouldReturn;
 
-
     private static InputHandler instance;
 
     public static InputHandler getInstance(){
@@ -37,6 +36,7 @@ public class InputHandler {
     public void onPostMove(GameAction action, int index){
         shouldReturn = true;
         switch (action) {
+            //filter moves and do an extra poll for this one
             case STRAIGHT -> lastInputMove = new Straight(index);
             case TRIPLE -> lastInputMove = new Triple(index);
             case QUAD -> lastInputMove = new Quad(index);
@@ -48,6 +48,11 @@ public class InputHandler {
         lastCardIndex = -1;
         lastInputMove = new NullCommand();
         shouldReturn = false;
+    }
+
+    //used only by the prompter
+    public void setLastInputMove(Straight move){
+        lastInputMove = move;
     }
 
     public CommandBase getLastInputMove(){

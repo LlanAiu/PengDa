@@ -2,6 +2,7 @@ package com.llan.mahjongfunsies.mahjong.commands;
 
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
+import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 
 public abstract class PrioritizedPostMove extends CommandBase{
 
@@ -27,8 +28,10 @@ public abstract class PrioritizedPostMove extends CommandBase{
     //only called once, should just return a constant
     abstract int setPriority();
 
+    abstract GameAction getActionType();
+
     @Override
     public void play() {
-        currentGame.addLastCardToPlayer(playerIndex);
+        currentGame.addLastCardToPlayer(getActionType(), playerIndex);
     }
 }

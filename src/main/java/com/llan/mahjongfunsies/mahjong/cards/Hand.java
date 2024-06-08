@@ -1,6 +1,7 @@
 package com.llan.mahjongfunsies.mahjong.cards;
 
 import com.llan.mahjongfunsies.Constants;
+import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.util.CardUtil;
 
 import java.util.ArrayList;
@@ -43,6 +44,41 @@ public class Hand extends Subdeck{
         return List.of();
     }
 
+    public void reveal(List<Card> reveal){
+        for(Card card : cards){
+            if(reveal.contains(card)){
+                card.setHidden(false);
+                reveal.remove(card);
+            }
+        }
+    }
+
+    public List<Card> getSetOf(GameAction action, Card card){
+        List<Card> cards = new ArrayList<>(4);
+        switch (action){
+            case TRIPLE:
+                for(int i = 0; i < 3; i++){
+                    cards.add(Card.of(card.suit(), card.value(), card.honor()));
+                }
+                break;
+            case QUAD:
+                for(int i = 0; i < 4; i++){
+                    cards.add(Card.of(card.suit(), card.value(), card.honor()));
+                }
+                break;
+            case STRAIGHT:
+                //Something here that requires player input (which to select)
+
+                break;
+            case WIN:
+                cards.addAll(cards);
+                break;
+        }
+
+        return null;
+    }
+
+    //rework this to return a list of all possible moves
     public boolean canStraight(Card search){
         int value = search.value();
         Card.Suit suit = search.suit();

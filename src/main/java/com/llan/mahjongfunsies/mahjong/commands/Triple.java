@@ -1,6 +1,7 @@
 package com.llan.mahjongfunsies.mahjong.commands;
 
 import com.llan.mahjongfunsies.Constants;
+import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 
 public class Triple extends PrioritizedPostMove{
 
@@ -11,5 +12,10 @@ public class Triple extends PrioritizedPostMove{
     @Override
     int setPriority() {
         return Constants.TRIPLE_PRIORITY;
+    }
+
+    @Override
+    GameAction getActionType() {
+        return GameAction.TRIPLE;
     }
 }

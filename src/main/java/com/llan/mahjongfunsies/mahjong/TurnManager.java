@@ -4,6 +4,7 @@ import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
 import com.llan.mahjongfunsies.mahjong.commands.PrioritizedPostMove;
+import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.players.Computer;
 import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.mahjong.players.Player;
@@ -70,22 +71,26 @@ public class TurnManager {
         }
     }
 
-    public Optional<Command> pollCurrentTurn(Game.Stage stage){
-        if(stage.equals(Game.Stage.CHECKING)){
-            if(players[currentTurnIndex].trySelect()){
-                Command move = players[currentTurnIndex].getSelectedMove();
-                if(players[currentTurnIndex].checkLegalMove(move)){
-                    return Optional.of(move);
-                }
-            }
-        } else {
-            Arrays.stream(players).forEach(Player::trySelect);
-            polledTries++;
-            if(polledTries >= DisplayConstants.maxPolledFrames){
-                Command move = getMoveByPriority();
-                polledTries = 0;
+    public Optional<Command> pollCurrentTurn(){
+        if(players[currentTurnIndex].trySelect()){
+            Command move = players[currentTurnIndex].getSelectedMove();
+            if(players[currentTurnIndex].checkLegalMove(move)){
                 return Optional.of(move);
             }
+        }
+        return Optional.empty();
+    }
+
+    public void pollAll(){
+        Arrays.stream(players).forEach(Player::trySelect);
+    }
+
+    public Optional<Command> getMoveByPriority(){
+        List<Command> moves = new ArrayList<>();
+        Arrays.stream(players).forEach(player -> moves.add(player.getSelectedMove()));
+        moves.sort(Comparator.comparingInt(o -> ((PrioritizedPostMove) o).getPriority()));
+        if(!((PrioritizedPostMove) moves.getLast()).isNull()){
+            return Optional.of(moves.getLast());
         }
         return Optional.empty();
     }
@@ -110,9 +115,9 @@ public class TurnManager {
         players[currentTurnIndex].sortHand();
     }
 
-    public void addCardToPlayer(Card card, int index){
+    public void addCardToPlayer(GameAction action, Card card, int index){
         players[index].addCard(card);
-        //also need to do finishing set / un-hiding cards stuff
+        players[index].reveal(players[index].getSetOf(action, card));
     }
 
     public void removeCardFromPlayer(Card card, int index){
@@ -139,10 +144,7 @@ public class TurnManager {
         return winningIndex;
     }
 
-    public Command getMoveByPriority(){
-        List<Command> moves = new ArrayList<>();
-        Arrays.stream(players).forEach(player -> moves.add(player.getSelectedMove()));
-        moves.sort(Comparator.comparingInt(o -> ((PrioritizedPostMove) o).getPriority()));
-        return moves.getLast();
+    public void filterMoves(int index){
+        players[index].filterStraightMoves();
     }
 }

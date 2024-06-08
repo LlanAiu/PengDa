@@ -10,7 +10,7 @@ import com.llan.mahjongfunsies.util.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public abstract class Player {
     Hand hand;
@@ -55,8 +55,12 @@ public abstract class Player {
     }
 
     //To be finished later, used for triple/straight/win/quad
-    public void finishSet(Card card){
+    public void reveal(List<Card> cards){
+        hand.reveal(cards);
+    }
 
+    public List<Card> getSetOf(GameAction action, Card card){
+        return  hand.getSetOf(action, card);
     }
 
     public Card[] getCards(){
@@ -82,6 +86,8 @@ public abstract class Player {
                 legalMoves.add(new Quad(index));
             }
         }
+
+        //redo this section to add all possible moves
         if (hand.canStraight(lastPlayed) && index == ((lastPlayerIndex + 1) % Constants.NUM_PLAYERS)) {
             legalMoves.add(new Straight(index));
         }
@@ -101,6 +107,11 @@ public abstract class Player {
                 legalMoves.add(new PlayCard(card, index));
             }
         }
+    }
+
+    //leaves only the remaining moves that need disambiguation-ing
+    public void filterStraightMoves(){
+        legalMoves.removeIf(command -> !(command instanceof Straight));
     }
 
     public void clearLegalMoves(){
