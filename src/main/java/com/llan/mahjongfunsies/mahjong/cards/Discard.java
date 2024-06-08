@@ -17,7 +17,7 @@ public class Discard extends Subdeck{
     }
 
     public Card removeLastPlayed(){
-        return cards.removeLast();
+        return this.removeLast();
     }
 
     public Card getLastPlayed(){

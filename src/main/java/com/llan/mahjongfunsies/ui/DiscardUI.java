@@ -108,7 +108,6 @@ public class DiscardUI implements Observer {
 
     @Override
     public void update(Subject observable) {
-        System.out.println("DiscardUI Updated");
         Card[] cards = ((Discard) observable).readAll();
         this.updateDisplay(cards);
     }

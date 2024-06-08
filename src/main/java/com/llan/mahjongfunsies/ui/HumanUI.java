@@ -1,7 +1,9 @@
 package com.llan.mahjongfunsies.ui;
 
+import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
 import com.llan.mahjongfunsies.util.DisplayUtil;
+import com.llan.mahjongfunsies.util.MathUtil;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 
@@ -15,7 +17,7 @@ public class HumanUI extends HandUI{
     public HumanUI(DisplayUtil.Orientation orientation){
         super(orientation);
         box = new HBox();
-        moveUI = new PostMoveUI();
+        moveUI = new PostMoveUI(GameController.getInstance().getPlayerByOrientation(orientation));
         box.getChildren().add(moveUI.getNode());
         box.getChildren().add(grid);
     }
@@ -24,7 +26,7 @@ public class HumanUI extends HandUI{
         System.out.println("Changed Selected Index");
         int lastIndex = selectedIndex;
         this.selectedIndex = index;
-        if(lastIndex != -1){
+        if(lastIndex != -1 && MathUtil.between(lastIndex, -1, player.getCards().length)){
             replaceCard(player.getCards()[lastIndex], lastIndex);
         }
         if(index != -1){

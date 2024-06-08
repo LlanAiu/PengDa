@@ -23,10 +23,8 @@ public class Postchecking extends GameState{
         var move = game.getPostMove();
         if(move.isPresent()){
             move.ifPresent(command -> {
-                if(command instanceof Straight){
-                    if(!((Straight) command).isSelected()) {
-                        game.setState(new Prompting(((Straight) command).getPlayerIndex()));
-                    }
+                if(command instanceof Straight && !((Straight) command).isSelected()){
+                    game.setState(new Prompting(((Straight) command).getPlayerIndex()));
                 } else {
                     command.execute();
                     game.setState(new Premove());

@@ -2,17 +2,33 @@ package com.llan.mahjongfunsies.mahjong.commands;
 
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
+import com.llan.mahjongfunsies.util.Triplet;
+
+import java.util.Optional;
 
 public class Straight extends PrioritizedPostMove {
-    //associated cards stored here (probably just a triplet data strucutre? or list?)
+    private Triplet cards;
 
     public Straight(int playerIndex){
         super(playerIndex);
     }
 
-    //if it has the associated cards attached
+    public Straight(int playerIndex, Triplet cards){
+        super(playerIndex);
+        this.cards = cards;
+    }
+
+    public Triplet getCards(){
+        return cards;
+    }
+
+    public void setCards(Triplet cards){
+        this.cards = cards;
+    }
+
+
     public boolean isSelected(){
-        return false;
+        return cards != null;
     }
 
     @Override
@@ -27,6 +43,6 @@ public class Straight extends PrioritizedPostMove {
 
     @Override
     public void play() {
-        super.play();
+        currentGame.addLastCardToPlayer(getActionType(), playerIndex, Optional.of(cards));
     }
 }

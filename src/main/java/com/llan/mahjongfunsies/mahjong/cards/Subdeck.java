@@ -19,12 +19,21 @@ public abstract class Subdeck extends SubjectBase {
     }
 
     public void removeCard(Card card){
-        cards.remove(card);
+        for(int i = 0; i < cards.size(); i++){
+            if(cards.get(i).exactEquals(card)){
+                cards.remove(i);
+            }
+        }
         setChanged();
     }
 
-    public int countIdentical(Card search){
-        return (int) cards.stream().filter(card -> card.equals(search)).count();
+    public Card removeLast(){
+        setChanged();
+        return cards.removeLast();
+    }
+
+    public int countHiddenIdentical(Card search){
+        return (int) this.filterShown().stream().filter(card -> card.equals(search)).count();
     }
 
     public void clear(){
@@ -59,7 +68,7 @@ public abstract class Subdeck extends SubjectBase {
     public List<Card> findPairs(List<Card> cards){
         List<Card> pairs = new ArrayList<>();
         for(Card card : cards){
-            int num = this.countIdentical(card);
+            int num = this.countHiddenIdentical(card);
             if(num >= 2 && !pairs.contains(card)){
                 pairs.add(card);
             }

@@ -4,9 +4,11 @@ import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
 import com.llan.mahjongfunsies.mahjong.players.Human;
+import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.util.DisplayUtil;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 
 import java.util.Arrays;
@@ -15,10 +17,10 @@ import java.util.List;
 public class Board {
 
     private BorderPane pane;
+    private StackPane center;
 
     private int humanIndex;
     private HandUI[] hands = new HandUI[Constants.NUM_PLAYERS];
-    private PostMoveUI humanPostMove = new PostMoveUI();
     private DiscardUI discard;
 
     private DisplayUtil.Orientation selectedOrientation;
@@ -35,6 +37,7 @@ public class Board {
 
     private Board(){
         pane = new BorderPane();
+        center = new StackPane();
         discard = DiscardUI.getInstance();
         for(int i = 0; i < Constants.NUM_PLAYERS; i++){
             DisplayUtil.Orientation orientation;
@@ -47,8 +50,9 @@ public class Board {
             hands[i] = createUI(orientation, i);
             setInPane(hands[i]);
         }
-        pane.setCenter(discard.getNode());
-        BorderPane.setAlignment(discard.getNode(), Pos.CENTER);
+        center.getChildren().add(discard.getNode());
+        pane.setCenter(center);
+        BorderPane.setAlignment(center, Pos.CENTER);
     }
 
     public Parent getRoot(){
@@ -60,6 +64,15 @@ public class Board {
             hand.clearGrid();
         }
         discard.clear();
+    }
+
+    public void addPrompter(Player player){
+        Prompter prompter = new Prompter(player);
+        center.getChildren().add(prompter.getNode());
+    }
+
+    public void removePrompter(){
+        center.getChildren().removeIf(node -> ((VBox) node).getChildren().getFirst() instanceof Button);
     }
 
     public void updatePostMoves(List<Command> moves){
@@ -96,12 +109,9 @@ public class Board {
     private void setInPane(HandUI hand){
         switch (hand.getOrientation()){
             case DOWN:
-                HBox box = new HBox();
-                box.getChildren().add(hand.getNode());
-                box.getChildren().add(humanPostMove.getNode());
-                pane.setBottom(box);
-                BorderPane.setMargin(box, DisplayConstants.bottomInsets);
-                BorderPane.setAlignment(box, Pos.BOTTOM_CENTER);
+                pane.setBottom(hand.getNode());
+                BorderPane.setMargin(hand.getNode(), DisplayConstants.bottomInsets);
+                BorderPane.setAlignment(hand.getNode(), Pos.BOTTOM_CENTER);
                 break;
             case LEFT:
                 pane.setLeft(hand.getNode());

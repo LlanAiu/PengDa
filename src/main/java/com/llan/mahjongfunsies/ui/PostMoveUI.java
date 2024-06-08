@@ -1,31 +1,35 @@
 package com.llan.mahjongfunsies.ui;
 
 import com.llan.mahjongfunsies.mahjong.commands.*;
+import com.llan.mahjongfunsies.mahjong.environment.GameAction;
+import com.llan.mahjongfunsies.mahjong.players.Player;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class PostMoveUI {
-    private Button[] buttons;
+    private PostMoveButton[] buttons;
 
-    private VBox box;
+    private GridPane grid;
 
-    public PostMoveUI(){
-        box = new VBox();
-        buttons = new Button[4];
-        buttons[0] = new Button("碰");
-        buttons[1] = new Button("吃");
-        buttons[2] = new Button("杠");
-        buttons[3] = new Button("胡");
-        box.getChildren().addAll(buttons);
+    public PostMoveUI(Player player){
+        grid = new GridPane();
+        buttons = new PostMoveButton[4];
+        buttons[0] = new PostMoveButton(player, GameAction.TRIPLE);
+        buttons[1] = new PostMoveButton(player, GameAction.STRAIGHT);
+        buttons[2] = new PostMoveButton(player, GameAction.QUAD);
+        buttons[3] = new PostMoveButton(player, GameAction.WIN);
+        grid.add(buttons[0].getButton(), 0, 0);
+        grid.add(buttons[1].getButton(), 0, 1);
+        grid.add(buttons[2].getButton(), 1, 0);
+        grid.add(buttons[3].getButton(), 1, 1);
         hideAll();
     }
 
     public Node getNode(){
-        return box;
+        return grid;
     }
 
     public void hideAll(){

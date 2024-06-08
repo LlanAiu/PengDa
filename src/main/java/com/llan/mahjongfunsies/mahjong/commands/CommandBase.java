@@ -46,4 +46,13 @@ public abstract class CommandBase implements Command{
     public int hashCode() {
         return Objects.hash(card, playerIndex, currentGame);
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder(this.getClass().getName() + "{");
+        sb.append("playerIndex=").append(playerIndex);
+        sb.append(", card=").append(card);
+        sb.append('}');
+        return sb.toString();
+    }
 }

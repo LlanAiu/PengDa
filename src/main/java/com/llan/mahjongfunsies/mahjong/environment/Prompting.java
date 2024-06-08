@@ -1,20 +1,32 @@
 package com.llan.mahjongfunsies.mahjong.environment;
 
+import com.llan.mahjongfunsies.mahjong.commands.Straight;
+import com.llan.mahjongfunsies.mahjong.players.Player;
+import com.llan.mahjongfunsies.ui.Board;
+
 public class Prompting extends GameState{
-    private int index;
+    private Player player;
 
     public Prompting(int index){
-        this.index = index;
-        game.filterMoves(index);
+        player = game.getPlayerByIndex(index);
+        player.filterStraightMoves();
+        Board.getInstance().addPrompter(player);
     }
 
     @Override
     public void periodic() {
-
+        Straight move = (Straight) player.getSelectedMove();
+        if(move.isSelected()){
+            shouldTransition = true;
+        } else {
+            player.trySelect();
+        }
     }
 
     @Override
     public void onTransition() {
-
+        player.getSelectedMove().execute();
+        Board.getInstance().removePrompter();
+        game.setState(new Premove());
     }
 }

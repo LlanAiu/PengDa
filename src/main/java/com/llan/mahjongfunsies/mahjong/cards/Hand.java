@@ -3,6 +3,7 @@ package com.llan.mahjongfunsies.mahjong.cards;
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.util.CardUtil;
+import com.llan.mahjongfunsies.util.Triplet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,36 +15,6 @@ public class Hand extends Subdeck{
         cards = new ArrayList<>(Constants.STARTING_CARDS);
     }
 
-    public List<Card> findStraightPair(Card search){
-        int value = search.value();
-        Card.Suit suit = search.suit();
-        if(suit == Card.Suit.HONOR){
-            return List.of();
-        }
-        this.sort();
-        List<Card> filtered = cards.stream().filter(card -> {
-            if (card.suit() == suit && card.isHidden()){
-               int distance = card.value() - value;
-               return Math.abs(distance) <= 2 && distance != 0;
-            }
-            return false;
-        }).distinct().toList();
-        if(filtered.size() > 1){
-            for(int i = 0; i < filtered.size() - 1; i++){
-                int sum = (filtered.get(i).value() - value) + (filtered.get(i + 1).value() - value);
-                if(Math.abs(sum) == 3 || sum == 0){
-                    for(Card card : filtered){
-                        if(!(card.equals(filtered.get(i)) || card.equals(filtered.get(i + 1)))){
-                            filtered.remove(card);
-                        }
-                    }
-                    return filtered;
-                }
-            }
-        }
-        return List.of();
-    }
-
     public void reveal(List<Card> reveal){
         for(Card card : cards){
             if(reveal.contains(card)){
@@ -53,7 +24,7 @@ public class Hand extends Subdeck{
         }
     }
 
-    public List<Card> getSetOf(GameAction action, Card card){
+    public List<Card> getSetOf(GameAction action, Card card, Optional<Triplet> triplet){
         List<Card> cards = new ArrayList<>(4);
         switch (action){
             case TRIPLE:
@@ -67,44 +38,61 @@ public class Hand extends Subdeck{
                 }
                 break;
             case STRAIGHT:
-                //Something here that requires player input (which to select)
-
+                triplet.ifPresent(triplet1 -> cards.addAll(triplet1.getCards()));
                 break;
             case WIN:
                 cards.addAll(cards);
                 break;
         }
-
-        return null;
+        return cards;
     }
 
-    //rework this to return a list of all possible moves
-    public boolean canStraight(Card search){
+    public List<Triplet> getStraights(Card search){
         int value = search.value();
         Card.Suit suit = search.suit();
+        List<Triplet> sets = new ArrayList<>();
+        List<Card> filtered = this.filterShown();
         if(suit == Card.Suit.HONOR){
-            return false;
+            return sets;
         }
 
         if(value - 2 >= 1){
-            if(this.contains(Card.of(suit, value - 2)) && this.contains(Card.of(suit, value - 1))){
-                return true;
+            if(filtered.contains(Card.of(suit, value - 2)) && filtered.contains(Card.of(suit, value - 1))){
+                sets.add(
+                    new Triplet(
+                        Card.of(suit, value - 2),
+                        Card.of(suit, value - 1),
+                        Card.of(suit, value)
+                    )
+                );
             }
         }
         if(value + 1 <= 9 && value - 1 >= 1){
-            if(this.contains(Card.of(suit, value - 1)) && this.contains(Card.of(suit, value + 1))){
-                return true;
+            if(filtered.contains(Card.of(suit, value - 1)) && filtered.contains(Card.of(suit, value + 1))){
+                sets.add(
+                    new Triplet(
+                        Card.of(suit, value - 1),
+                        Card.of(suit, value),
+                        Card.of(suit, value + 1)
+                    )
+                );
             }
         }
         if(value + 2 <= 9){
-            if(this.contains(Card.of(suit, value + 1)) && this.contains(Card.of(suit, value + 2))){
-                return true;
+            if(filtered.contains(Card.of(suit, value + 1)) && filtered.contains(Card.of(suit, value + 2))){
+                sets.add(
+                    new Triplet(
+                        Card.of(suit, value),
+                        Card.of(suit, value + 1),
+                        Card.of(suit, value + 2)
+                    )
+                );
             }
         }
-        return false;
+        return sets;
     }
 
-    //returns null if false, returns a list of winning cards if true
+    //returns a list of winning cards if true
     public Optional<List<Card>> isOneAway(){
         Hand possibleHands = new Hand();
         List<Card> winningCards = new ArrayList<>();

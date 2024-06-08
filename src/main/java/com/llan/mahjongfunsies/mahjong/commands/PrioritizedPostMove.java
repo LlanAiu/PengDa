@@ -2,7 +2,10 @@ package com.llan.mahjongfunsies.mahjong.commands;
 
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
+import com.llan.mahjongfunsies.mahjong.cards.Discard;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
+
+import java.util.Optional;
 
 public abstract class PrioritizedPostMove extends CommandBase{
 
@@ -13,7 +16,7 @@ public abstract class PrioritizedPostMove extends CommandBase{
     }
 
     public PrioritizedPostMove(int playerIndex){
-        super(Card.none(), playerIndex);
+        super(Discard.getInstance().getLastPlayed(), playerIndex);
         priority = setPriority();
     }
 
@@ -32,6 +35,6 @@ public abstract class PrioritizedPostMove extends CommandBase{
 
     @Override
     public void play() {
-        currentGame.addLastCardToPlayer(getActionType(), playerIndex);
+        currentGame.addLastCardToPlayer(getActionType(), playerIndex, Optional.empty());
     }
 }

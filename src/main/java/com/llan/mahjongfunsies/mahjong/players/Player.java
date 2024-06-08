@@ -7,10 +7,11 @@ import com.llan.mahjongfunsies.mahjong.cards.Hand;
 import com.llan.mahjongfunsies.mahjong.commands.*;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.util.Observer;
+import com.llan.mahjongfunsies.util.Triplet;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Optional;
 
 public abstract class Player {
     Hand hand;
@@ -54,13 +55,12 @@ public abstract class Player {
         hand.removeCard(card);
     }
 
-    //To be finished later, used for triple/straight/win/quad
     public void reveal(List<Card> cards){
         hand.reveal(cards);
     }
 
-    public List<Card> getSetOf(GameAction action, Card card){
-        return  hand.getSetOf(action, card);
+    public List<Card> getSetOf(GameAction action, Card card, Optional<Triplet> cards){
+        return hand.getSetOf(action, card, cards);
     }
 
     public Card[] getCards(){
@@ -79,7 +79,7 @@ public abstract class Player {
         if(!legalMoves.isEmpty()){
             this.clearLegalMoves();
         }
-        int num = hand.countIdentical(lastPlayed);
+        int num = hand.countHiddenIdentical(lastPlayed);
         if (num >= 2) {
             legalMoves.add(new Triple(index));
             if(num >= 3){
@@ -87,9 +87,11 @@ public abstract class Player {
             }
         }
 
-        //redo this section to add all possible moves
-        if (hand.canStraight(lastPlayed) && index == ((lastPlayerIndex + 1) % Constants.NUM_PLAYERS)) {
-            legalMoves.add(new Straight(index));
+        List<Triplet> straights = hand.getStraights(lastPlayed);
+        if (!straights.isEmpty() && index == ((lastPlayerIndex + 1) % Constants.NUM_PLAYERS)) {
+            for(Triplet cards : straights){
+                legalMoves.add(new Straight(index, cards));
+            }
         }
         hand.isOneAway().ifPresent(cards -> {
             if(cards.contains(lastPlayed)){
@@ -119,7 +121,6 @@ public abstract class Player {
         move = new NullCommand();
     }
 
-    //also dummy method rn
     public List<Command> getLegalMoves(){
         return legalMoves;
     }
@@ -129,18 +130,13 @@ public abstract class Player {
     }
 
     public Command getSelectedMove(){
-        return move;
-    }
-
-    //TO BE REMOVED SOON
-    public void play(){
-        if(legalMoves.contains(move)){
-            move.execute();
-            move = new NullCommand();
-            System.out.println("Move played");
-        } else {
-            System.out.println("Selected Move Is Not Legal");
+        if(move instanceof Straight && !((Straight) move).isSelected()){
+            List<Command> straights = legalMoves.stream().filter(command -> command instanceof Straight).toList();
+            if(straights.size() == 1){
+                move = straights.getFirst();
+            }
         }
+        return move;
     }
 
     public abstract boolean shouldDisplay();

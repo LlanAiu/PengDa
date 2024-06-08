@@ -35,8 +35,8 @@ public class InputHandler {
 
     public void onPostMove(GameAction action, int index){
         shouldReturn = true;
+        System.out.println("Post Move Queued");
         switch (action) {
-            //filter moves and do an extra poll for this one
             case STRAIGHT -> lastInputMove = new Straight(index);
             case TRIPLE -> lastInputMove = new Triple(index);
             case QUAD -> lastInputMove = new Quad(index);

@@ -3,14 +3,15 @@ package com.llan.mahjongfunsies.mahjong;
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
+import com.llan.mahjongfunsies.mahjong.commands.NullCommand;
 import com.llan.mahjongfunsies.mahjong.commands.PrioritizedPostMove;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.players.Computer;
 import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.ui.Board;
-import com.llan.mahjongfunsies.ui.DisplayConstants;
 import com.llan.mahjongfunsies.util.DisplayUtil;
+import com.llan.mahjongfunsies.util.Triplet;
 
 import java.util.*;
 
@@ -89,8 +90,9 @@ public class TurnManager {
         List<Command> moves = new ArrayList<>();
         Arrays.stream(players).forEach(player -> moves.add(player.getSelectedMove()));
         moves.sort(Comparator.comparingInt(o -> ((PrioritizedPostMove) o).getPriority()));
-        if(!((PrioritizedPostMove) moves.getLast()).isNull()){
-            return Optional.of(moves.getLast());
+        if(!(moves.getFirst() instanceof NullCommand)){
+            System.out.println("Selected Command: " + moves.getFirst().toString());
+            return Optional.of(moves.getFirst());
         }
         return Optional.empty();
     }
@@ -115,9 +117,9 @@ public class TurnManager {
         players[currentTurnIndex].sortHand();
     }
 
-    public void addCardToPlayer(GameAction action, Card card, int index){
+    public void addCardToPlayer(GameAction action, Card card, int index, Optional<Triplet> cards){
         players[index].addCard(card);
-        players[index].reveal(players[index].getSetOf(action, card));
+        players[index].reveal(players[index].getSetOf(action, card, cards));
     }
 
     public void removeCardFromPlayer(Card card, int index){
@@ -144,7 +146,7 @@ public class TurnManager {
         return winningIndex;
     }
 
-    public void filterMoves(int index){
-        players[index].filterStraightMoves();
+    public Player getPlayerByIndex(int index){
+        return players[index];
     }
 }

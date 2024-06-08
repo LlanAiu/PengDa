@@ -23,6 +23,14 @@ public class PostMoveButton {
         button.setOnAction(onClick(action));
     }
 
+    public void setVisible(boolean visible){
+        button.setVisible(visible);
+    }
+
+    public Button getButton(){
+        return button;
+    }
+
     private EventHandler<ActionEvent> onClick(GameAction action){
         return actionEvent -> InputHandler.getInstance().onPostMove(action, player.getIndex());
     }

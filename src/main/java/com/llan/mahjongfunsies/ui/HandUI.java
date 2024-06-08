@@ -98,7 +98,6 @@ public abstract class HandUI implements Observer {
 
     @Override
     public void update(Subject observable) {
-        System.out.println("Hand display updated for index " + player.getIndex());
         Card[] currentCards = ((Hand) observable).readAll();
         this.updateDisplay(currentCards);
     }
