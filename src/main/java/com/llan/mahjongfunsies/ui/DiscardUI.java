@@ -36,13 +36,13 @@ public class DiscardUI implements Observer {
         box = new VBox();
         text = new Label("Debug text");
         grid.setGridLinesVisible(true);
-        grid.setVgap(DisplayConstants.gridGap);
-        grid.setHgap(DisplayConstants.gridGap);
+        grid.setVgap(DisplayConstants.GRID_GAP);
+        grid.setHgap(DisplayConstants.GRID_GAP);
         for(int i = 0; i < 13; i++){
-            grid.getColumnConstraints().add(new ColumnConstraints(DisplayConstants.cardWidth));
+            grid.getColumnConstraints().add(new ColumnConstraints(DisplayConstants.CARD_WIDTH));
         }
         for(int i = 0; i < 10; i++){
-            grid.getRowConstraints().add(new RowConstraints(DisplayConstants.cardLength));
+            grid.getRowConstraints().add(new RowConstraints(DisplayConstants.CARD_LENGTH));
         }
         box.getChildren().add(grid);
         box.getChildren().add(text);

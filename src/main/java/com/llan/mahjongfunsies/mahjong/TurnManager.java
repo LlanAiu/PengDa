@@ -143,6 +143,7 @@ public class TurnManager {
     }
 
     public int hasWon(){
+        checkWin();
         return winningIndex;
     }
 

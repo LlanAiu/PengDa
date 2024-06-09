@@ -34,8 +34,8 @@ public abstract class HandUI implements Observer {
             }
         }
         grid.setGridLinesVisible(true);
-        grid.setVgap(DisplayConstants.gridGap);
-        grid.setHgap(DisplayConstants.gridGap);
+        grid.setVgap(DisplayConstants.GRID_GAP);
+        grid.setHgap(DisplayConstants.GRID_GAP);
     }
 
     public void displayHand(){
@@ -98,6 +98,7 @@ public abstract class HandUI implements Observer {
 
     @Override
     public void update(Subject observable) {
+        System.out.println("Hand UI updated for index " + player.getIndex());
         Card[] currentCards = ((Hand) observable).readAll();
         this.updateDisplay(currentCards);
     }

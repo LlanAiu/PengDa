@@ -47,7 +47,7 @@ public class DisplayUtil {
             throw new RuntimeException(e);
         }
         viewer.setImage(image);
-        viewer.setFitWidth(DisplayConstants.cardWidth);
+        viewer.setFitWidth(DisplayConstants.CARD_WIDTH);
         viewer.setPreserveRatio(true);
         viewer.setRotate(orientation.getRotation());
         return viewer;
@@ -63,7 +63,7 @@ public class DisplayUtil {
             throw new RuntimeException(e);
         }
         viewer.setImage(image);
-        viewer.setFitWidth(DisplayConstants.cardWidth);
+        viewer.setFitWidth(DisplayConstants.CARD_WIDTH);
         viewer.setPreserveRatio(true);
         viewer.setRotate(orientation.getRotation());
         return viewer;
@@ -79,23 +79,23 @@ public class DisplayUtil {
         if(shouldShow){
             tile.getChildren().add(cardView);
             if(!card.isHidden()){
-                offset = -20;
+                offset = DisplayConstants.UNHIDDEN_OFFSET;
             } else if(selected){
-                offset = -10;
+                offset = DisplayConstants.SELECTED_OFFSET;
             }
         }
         if(orientation == Orientation.LEFT || orientation == Orientation.RIGHT){
-            tile.setPrefSize(DisplayConstants.cardLength, DisplayConstants.cardWidth);
-            double delta = (DisplayConstants.cardWidth - DisplayConstants.cardLength) / 2.0;
-            double shift = offset;
+            tile.setPrefSize(DisplayConstants.CARD_LENGTH, DisplayConstants.CARD_WIDTH);
+            double delta = (DisplayConstants.CARD_WIDTH - DisplayConstants.CARD_LENGTH) / 2.0;
+            double shift = (orientation == Orientation.RIGHT) ? offset : -offset;
             tile.getChildren().stream().forEach(node -> {
                 node.relocate(-delta, delta);
                 node.relocate(shift, 0);
             });
         } else {
-            tile.setPrefSize(DisplayConstants.cardWidth, DisplayConstants.cardLength);
+            tile.setPrefSize(DisplayConstants.CARD_WIDTH, DisplayConstants.CARD_LENGTH);
             if(offset != 0){
-               double shift = offset;
+               double shift = (orientation == Orientation.DOWN) ? offset : -offset;
                tile.getChildren().forEach(node -> node.relocate(0, shift));
             }
         }

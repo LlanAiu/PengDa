@@ -15,7 +15,7 @@ public class Postchecking extends GameState{
     public void periodic() {
         game.pollAll();
         polledTries++;
-        shouldTransition = polledTries >= DisplayConstants.maxPolledFrames;
+        shouldTransition = polledTries >= DisplayConstants.MAX_POLLED_FRAMES;
     }
 
     @Override
@@ -31,8 +31,12 @@ public class Postchecking extends GameState{
                 }
             });
         } else {
-            game.nextTurn();
-            game.setState(new Premove());
+            if(game.noCardsLeft()){
+                game.setState(new End());
+            } else {
+                game.nextTurn();
+                game.setState(new Premove());
+            }
         }
     }
 }

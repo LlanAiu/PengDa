@@ -17,11 +17,15 @@ public class Hand extends Subdeck{
 
     public void reveal(List<Card> reveal){
         for(Card card : cards){
+            if(!card.isHidden()){
+                continue;
+            }
             if(reveal.contains(card)){
                 card.setHidden(false);
                 reveal.remove(card);
             }
         }
+        setChanged();
     }
 
     public List<Card> getSetOf(GameAction action, Card card, Optional<Triplet> triplet){
@@ -41,7 +45,7 @@ public class Hand extends Subdeck{
                 triplet.ifPresent(triplet1 -> cards.addAll(triplet1.getCards()));
                 break;
             case WIN:
-                cards.addAll(cards);
+                cards.addAll(this.filterShown());
                 break;
         }
         return cards;

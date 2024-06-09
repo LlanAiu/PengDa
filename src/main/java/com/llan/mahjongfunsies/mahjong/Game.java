@@ -4,6 +4,7 @@ import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
+import com.llan.mahjongfunsies.mahjong.environment.End;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.environment.Premove;
 import com.llan.mahjongfunsies.mahjong.environment.State;
@@ -67,7 +68,7 @@ public class Game implements Episode {
 
     @Override
     public boolean isFinished() {
-        return deck.isEmpty() || manager.hasWon() != -1;
+        return state instanceof End;
     }
 
     public Optional<Command> pollCurrentTurn(){
@@ -80,6 +81,19 @@ public class Game implements Episode {
 
     public Optional<Command> getPostMove(){
         return manager.getMoveByPriority();
+    }
+
+    public boolean hasWon(){
+        return manager.hasWon() != -1;
+    }
+
+    // -1 if no one has won
+    public int getWinningIndex(){
+        return manager.hasWon();
+    }
+
+    public boolean noCardsLeft(){
+        return deck.isEmpty();
     }
 
     public void setState(State state){
@@ -95,6 +109,10 @@ public class Game implements Episode {
     public void addLastCardToPlayer(GameAction action, int index, Optional<Triplet> cards){
         manager.addCardToPlayer(action, discard.removeLastPlayed(), index, cards);
         manager.setCurrentTurnIndex(index);
+        if(action.equals(GameAction.QUAD)){
+            //technically supposed to draw from the end but that seems a little unnecessary for now
+            manager.drawCard();
+        }
     }
 
     public Player getPlayerByOrientation(DisplayUtil.Orientation orientation){

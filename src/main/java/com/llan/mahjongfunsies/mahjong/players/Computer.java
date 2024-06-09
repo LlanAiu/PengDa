@@ -11,7 +11,7 @@ public class Computer extends Player{
 
     @Override
     public boolean shouldDisplay() {
-        return false;
+        return true;
     }
 
     @Override

@@ -23,13 +23,12 @@ public class HumanUI extends HandUI{
     }
 
     public void setSelectedIndex(int index){
-        System.out.println("Changed Selected Index");
         int lastIndex = selectedIndex;
         this.selectedIndex = index;
         if(lastIndex != -1 && MathUtil.between(lastIndex, -1, player.getCards().length)){
             replaceCard(player.getCards()[lastIndex], lastIndex);
         }
-        if(index != -1){
+        if(index != -1 && MathUtil.between(index, -1, player.getCards().length)){
             replaceCard(player.getCards()[index], index);
         }
     }

@@ -3,18 +3,21 @@ package com.llan.mahjongfunsies.ui;
 import javafx.geometry.Insets;
 
 public final class DisplayConstants {
-    public static final int cardWidth = 40;
-    public static final int cardLength = 54;
+    public static final int CARD_WIDTH = 40;
+    public static final int CARD_LENGTH = 54;
 
-    public static final int gridGap = 2;
+    public static final int GRID_GAP = 2;
 
-    public static final Insets topInsets = new Insets(5, 75, 0, 75);
-    public static final Insets bottomInsets = new Insets(0, 75, 5, 75);
-    public static final Insets leftInsets = new Insets(20, 0, 20, 5);
-    public static final Insets rightInsets = new Insets(20, 10, 20, 0);
+    public static final Insets TOP_INSETS = new Insets(5, 75, 0, 75);
+    public static final Insets BOTTOM_INSETS = new Insets(0, 75, 5, 75);
+    public static final Insets LEFT_INSETS = new Insets(20, 0, 20, 5);
+    public static final Insets RIGHT_INSETS = new Insets(20, 10, 20, 0);
 
-    public static final int frameRateMillis = 50;
-    public static final int postWaitMillis = 2500;
+    public static final double SELECTED_OFFSET = -7;
+    public static final double UNHIDDEN_OFFSET = -15;
+
+    public static final int FRAME_RATE_MILLIS = 50;
+    public static final int POST_WAIT_MILLIS = 2500;
     //automatically floored
-    public static final int maxPolledFrames = postWaitMillis / frameRateMillis;
+    public static final int MAX_POLLED_FRAMES = POST_WAIT_MILLIS / FRAME_RATE_MILLIS;
 }

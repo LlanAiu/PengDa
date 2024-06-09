@@ -8,7 +8,11 @@ import com.llan.mahjongfunsies.util.DisplayUtil;
 import com.llan.mahjongfunsies.util.SubjectBase;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.util.Duration;
+
+import java.sql.Time;
 
 public class GameController {
 
@@ -30,18 +34,18 @@ public class GameController {
     public void initialize(){
         currentGame.onStart();
         Board.getInstance().displayState();
-        Timeline periodic = new Timeline(new KeyFrame(Duration.millis(DisplayConstants.frameRateMillis), actionEvent -> periodic()));
+        Timeline periodic = new Timeline(new KeyFrame(Duration.millis(DisplayConstants.FRAME_RATE_MILLIS), actionEvent -> periodic()));
         periodic.setCycleCount(Timeline.INDEFINITE);
         periodic.play();
+        Timeline observables = new Timeline(new KeyFrame(Duration.millis(10), actionEvent -> SubjectBase.periodicAll()));
+        observables.setCycleCount(Timeline.INDEFINITE);
+        observables.play();
     }
 
     private void periodic(){
-        Board.getInstance().periodic();
         if(!currentGame.isFinished()){
             currentGame.run();
         }
-
-        SubjectBase.periodicAll();
     }
 
     public Game getCurrentGame(){

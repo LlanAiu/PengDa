@@ -3,13 +3,17 @@ package com.llan.mahjongfunsies.ui;
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
+import com.llan.mahjongfunsies.mahjong.environment.EndScreen;
 import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.util.DisplayUtil;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -53,6 +57,7 @@ public class Board {
         center.getChildren().add(discard.getNode());
         pane.setCenter(center);
         BorderPane.setAlignment(center, Pos.CENTER);
+        BorderPane.setMargin(center, new Insets(10));
     }
 
     public Parent getRoot(){
@@ -102,30 +107,36 @@ public class Board {
         selectedIndex = -1;
     }
 
-    public void periodic(){
-
+    public void finishGame(int index){
+        Stage stage = (Stage) pane.getScene().getWindow();
+        EndScreen screen = new EndScreen(index);
+        Parent root = screen.getParent();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.sizeToScene();
+        stage.show();
     }
 
     private void setInPane(HandUI hand){
         switch (hand.getOrientation()){
             case DOWN:
                 pane.setBottom(hand.getNode());
-                BorderPane.setMargin(hand.getNode(), DisplayConstants.bottomInsets);
+                BorderPane.setMargin(hand.getNode(), DisplayConstants.BOTTOM_INSETS);
                 BorderPane.setAlignment(hand.getNode(), Pos.BOTTOM_CENTER);
                 break;
             case LEFT:
                 pane.setLeft(hand.getNode());
-                BorderPane.setMargin(hand.getNode(), DisplayConstants.leftInsets);
+                BorderPane.setMargin(hand.getNode(), DisplayConstants.LEFT_INSETS);
                 BorderPane.setAlignment(hand.getNode(), Pos.CENTER_LEFT);
                 break;
             case UP:
                 pane.setTop(hand.getNode());
-                BorderPane.setMargin(hand.getNode(), DisplayConstants.topInsets);
+                BorderPane.setMargin(hand.getNode(), DisplayConstants.TOP_INSETS);
                 BorderPane.setAlignment(hand.getNode(), Pos.TOP_CENTER);
                 break;
             default:
                 pane.setRight(hand.getNode());
-                BorderPane.setMargin(hand.getNode(), DisplayConstants.rightInsets);
+                BorderPane.setMargin(hand.getNode(), DisplayConstants.RIGHT_INSETS);
                 BorderPane.setAlignment(hand.getNode(), Pos.CENTER_RIGHT);
                 break;
         }

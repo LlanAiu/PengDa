@@ -4,15 +4,29 @@ import com.llan.mahjongfunsies.ui.Board;
 
 public class Premove extends GameState{
 
+    boolean end;
+
+    public Premove(){
+        end = false;
+    }
+
     @Override
     public void periodic() {
         Board.getInstance().resetPostMoves();
-        game.preTurn();
+        if(game.hasWon()){
+            end = true;
+        } else {
+            game.preTurn();
+        }
         shouldTransition = true;
     }
 
     @Override
     public void onTransition() {
-        game.setState(new Checking());
+        if(end){
+            game.setState(new End());
+        } else {
+            game.setState(new Checking());
+        }
     }
 }

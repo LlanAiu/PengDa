@@ -1,5 +1,7 @@
 package com.llan.mahjongfunsies;
 
+import com.llan.mahjongfunsies.mahjong.cards.Card;
+import com.llan.mahjongfunsies.mahjong.cards.Hand;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
