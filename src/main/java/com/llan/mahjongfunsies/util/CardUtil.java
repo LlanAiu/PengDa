@@ -26,6 +26,7 @@ public class CardUtil {
         return false;
     }
 
+    //assumes sorted
     public static int countSets(@NotNull List<Card> deck){
         int count = 0;
         Card card1;
@@ -38,12 +39,10 @@ public class CardUtil {
                     deck.remove(Card.of(card1.suit(), card1.value(), card1.honor()));
                     count++;
                 }
-            } else if (card1.suit() == card2.suit() && card1.honor() == card2.honor()){
-                if(card1.value() > 1 && deck.contains(Card.of(card1.suit(), card1.value() - 1))){
-                    deck.remove(Card.of(card1.suit(), card1.value() - 1));
-                    count++;
-                } else if (card2.value() < 9 && deck.contains(Card.of(card2.suit(), card2.value() + 1))){
-                    deck.remove(Card.of(card2.suit(), card2.value() + 2));
+            } else if (card1.suit() == card2.suit() && Math.abs(card1.value() - card2.value()) == 1){
+                int value = Math.max(card1.value(), card2.value()) + 1;
+                if(deck.contains(Card.of(card1.suit(), value))){
+                    deck.remove(Card.of(card1.suit(), value));
                     count++;
                 }
             }

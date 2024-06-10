@@ -100,6 +100,10 @@ public class Game implements Episode {
         this.state = state;
     }
 
+    public String getState(){
+        return state.getClass().getName();
+    }
+
     public void playCard(Card card, int index){
         manager.removeCardFromPlayer(card, index);
         discard.addCard(card);
@@ -107,7 +111,7 @@ public class Game implements Episode {
 
     //all instances of this results in it being said person's turn
     public void addLastCardToPlayer(GameAction action, int index, Optional<Triplet> cards){
-        manager.addCardToPlayer(action, discard.removeLastPlayed(), index, cards);
+        manager.addCardToPlayer(action, discard.removeLast(), index, cards);
         manager.setCurrentTurnIndex(index);
         if(action.equals(GameAction.QUAD)){
             //technically supposed to draw from the end but that seems a little unnecessary for now

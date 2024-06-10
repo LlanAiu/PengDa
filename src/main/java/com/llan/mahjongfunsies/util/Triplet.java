@@ -29,4 +29,12 @@ public class Triplet {
     public List<Card> getCards(){
         return Arrays.stream(cards).toList();
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Triplet{");
+        sb.append("cards=").append(Arrays.toString(cards));
+        sb.append('}');
+        return sb.toString();
+    }
 }

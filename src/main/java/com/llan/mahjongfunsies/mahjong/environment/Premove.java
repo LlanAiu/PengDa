@@ -23,6 +23,7 @@ public class Premove extends GameState{
 
     @Override
     public void onTransition() {
+        System.out.println("Transitioning from Premove; Game ended?: " + end);
         if(end){
             game.setState(new End());
         } else {

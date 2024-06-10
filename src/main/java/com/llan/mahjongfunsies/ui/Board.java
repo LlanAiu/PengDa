@@ -108,13 +108,14 @@ public class Board {
     }
 
     public void finishGame(int index){
-        Stage stage = (Stage) pane.getScene().getWindow();
-        EndScreen screen = new EndScreen(index);
-        Parent root = screen.getParent();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.sizeToScene();
-        stage.show();
+        System.out.println("Does Nothing Right Now");
+//        Stage stage = (Stage) pane.getScene().getWindow();
+//        EndScreen screen = new EndScreen(index);
+//        Parent root = screen.getParent();
+//        Scene scene = new Scene(root);
+//        stage.setScene(scene);
+//        stage.sizeToScene();
+//        stage.show();
     }
 
     private void setInPane(HandUI hand){

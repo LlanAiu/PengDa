@@ -17,6 +17,25 @@ public class Main extends Application {
         stage.setTitle("Funsies!");
         stage.setScene(scene);
         stage.show();
+
+        Hand test = new Hand();
+        test.addCard(Card.of(Card.Suit.TIAO, 5));
+        test.addCard(Card.of(Card.Suit.TIAO, 6));
+        test.addCard(Card.of(Card.Suit.TIAO, 7));
+        test.addCard(Card.of(Card.Suit.TIAO, 7));
+        test.addCard(Card.of(Card.Suit.TIAO, 8));
+        test.addCard(Card.of(Card.Suit.TIAO, 9));
+        test.addCard(Card.of(Card.Suit.TONG, 2));
+        test.addCard(Card.of(Card.Suit.TONG, 2));
+        test.addCard(Card.of(Card.Suit.TONG, 8));
+        test.addCard(Card.of(Card.Suit.TONG, 8));
+        test.addCard(Card.of(Card.Suit.TONG, 8));
+//        test.addCard(Card.of(Card.Suit.WAN, 3));
+        test.addCard(Card.of(Card.Suit.WAN, 3));
+        test.addCard(Card.of(Card.Suit.WAN, 3));
+
+        System.out.println(test.isOneAway().get());
+        System.out.println(test.isWinning());
     }
 
     public static void main(String[] args) {

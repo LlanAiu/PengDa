@@ -20,13 +20,14 @@ public class Prompter {
         box = new VBox();
         moves = player.getLegalMoves();
         buttons = new Button[moves.size()];
-        box.getChildren().addAll(buttons);
         for(int i = 0; i < buttons.length; i++){
+            buttons[i] = new Button();
             assert moves.get(i) instanceof Straight;
             buttons[i].setText(getText((Straight) moves.get(i)));
             int index = i;
             buttons[i].setOnAction(actionEvent -> onAction(index));
         }
+        box.getChildren().addAll(buttons);
     }
 
     public Node getNode(){

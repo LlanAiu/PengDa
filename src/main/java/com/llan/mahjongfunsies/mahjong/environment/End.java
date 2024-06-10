@@ -6,6 +6,7 @@ public class End extends GameState{
 
     @Override
     public void periodic() {
+        System.out.println("Game Over!");
         Board.getInstance().finishGame(game.getWinningIndex());
     }
 

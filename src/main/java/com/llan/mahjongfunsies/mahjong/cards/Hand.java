@@ -15,6 +15,18 @@ public class Hand extends Subdeck{
         cards = new ArrayList<>(Constants.STARTING_CARDS);
     }
 
+    @Override
+    public void removeCard(Card card) {
+        super.removeCard(card);
+        setChanged();
+    }
+
+    @Override
+    public void sort() {
+        super.sort();
+        setChanged();
+    }
+
     public void reveal(List<Card> reveal){
         for(Card card : cards){
             if(!card.isHidden()){
@@ -25,7 +37,6 @@ public class Hand extends Subdeck{
                 reveal.remove(card);
             }
         }
-        setChanged();
     }
 
     public List<Card> getSetOf(GameAction action, Card card, Optional<Triplet> triplet){
@@ -103,6 +114,7 @@ public class Hand extends Subdeck{
         possibleHands.addCards(cards);
         for(Card card : Constants.allCards){
             possibleHands.addCard(card);
+            possibleHands.sort();
             if(CardUtil.isWinning(possibleHands)){
                 winningCards.add(card);
             }

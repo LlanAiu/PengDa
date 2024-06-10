@@ -1,5 +1,6 @@
 package com.llan.mahjongfunsies.ui;
 
+import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;

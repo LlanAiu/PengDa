@@ -88,6 +88,7 @@ public abstract class HandUI implements Observer {
                     this.addCard(display[i], player.shouldDisplay(), i);
                 } else {
                     if (!display[i].displayEquals(lastHand[i], player.shouldDisplay())) {
+                        System.out.println("Replaced " + lastHand[i] + " at index " + i + " with " + display[i]);
                         replaceCard(display[i], i);
                     }
                 }
@@ -98,7 +99,7 @@ public abstract class HandUI implements Observer {
 
     @Override
     public void update(Subject observable) {
-        System.out.println("Hand UI updated for index " + player.getIndex());
+//        System.out.println("Hand UI updated for index " + player.getIndex());
         Card[] currentCards = ((Hand) observable).readAll();
         this.updateDisplay(currentCards);
     }

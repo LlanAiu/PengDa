@@ -14,6 +14,7 @@ import com.llan.mahjongfunsies.util.DisplayUtil;
 import com.llan.mahjongfunsies.util.Triplet;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class TurnManager {
     private Player[] players;
@@ -22,8 +23,6 @@ public class TurnManager {
     private int humanIndex;
     private int currentTurnIndex;
     private int winningIndex = -1;
-
-    private int polledTries;
 
     private Map<DisplayUtil.Orientation, Player> playerOrientations;
 
@@ -39,7 +38,6 @@ public class TurnManager {
     private TurnManager(){
         currentTurnIndex = 0;
         humanIndex = 0;
-        polledTries = 0;
         players = new Player[Constants.NUM_PLAYERS];
         playerOrientations = new HashMap<>();
         for(int i = 0; i < players.length; i++){
@@ -65,7 +63,6 @@ public class TurnManager {
 
     public void reset(){
         currentTurnIndex = 0;
-        polledTries = 0;
         winningIndex = -1;
         for(Player player : players){
             player.reset();
@@ -83,12 +80,12 @@ public class TurnManager {
     }
 
     public void pollAll(){
-        Arrays.stream(players).forEach(Player::trySelect);
+        Arrays.stream(players).filter(player -> player.getIndex() != currentTurnIndex).forEach(Player::trySelect);
     }
 
     public Optional<Command> getMoveByPriority(){
         List<Command> moves = new ArrayList<>();
-        Arrays.stream(players).forEach(player -> moves.add(player.getSelectedMove()));
+        Arrays.stream(players).filter(player -> player.getIndex() != currentTurnIndex).forEach(player -> moves.add(player.getSelectedMove()));
         moves.sort(Comparator.comparingInt(o -> ((PrioritizedPostMove) o).getPriority()));
         if(!(moves.getFirst() instanceof NullCommand)){
             System.out.println("Selected Command: " + moves.getFirst().toString());
@@ -104,7 +101,8 @@ public class TurnManager {
 
     //for post turn only
     public void setPostPlayableMoves(Card lastPlayed){
-        Arrays.stream(players).forEach(player -> player.setLegalPostMoves(lastPlayed, currentTurnIndex));
+        Arrays.stream(players).filter(player -> player.getIndex() != currentTurnIndex).forEach(player -> player.setLegalPostMoves(lastPlayed, currentTurnIndex));
+        players[currentTurnIndex].clearLegalMoves();
         Board.getInstance().updatePostMoves(players[humanIndex].getLegalMoves());
     }
 
@@ -120,6 +118,7 @@ public class TurnManager {
     public void addCardToPlayer(GameAction action, Card card, int index, Optional<Triplet> cards){
         players[index].addCard(card);
         players[index].reveal(players[index].getSetOf(action, card, cards));
+        players[index].sortHand();
     }
 
     public void removeCardFromPlayer(Card card, int index){
@@ -133,7 +132,6 @@ public class TurnManager {
 
     public void setCurrentTurnIndex(int index){
         currentTurnIndex = index;
-        players[currentTurnIndex].sortHand();
     }
 
     public void checkWin(){

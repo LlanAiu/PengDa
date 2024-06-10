@@ -56,6 +56,8 @@ public abstract class Player {
     }
 
     public void reveal(List<Card> cards){
+        System.out.println("Un-hiding " + cards.size() + " cards from player " + index);
+        System.out.println(cards);
         hand.reveal(cards);
     }
 
@@ -76,9 +78,7 @@ public abstract class Player {
     }
 
     public void setLegalPostMoves(Card lastPlayed, int lastPlayerIndex){
-        if(!legalMoves.isEmpty()){
-            this.clearLegalMoves();
-        }
+        this.clearLegalMoves();
         int num = hand.countHiddenIdentical(lastPlayed);
         if (num >= 2) {
             legalMoves.add(new Triple(index));
@@ -101,9 +101,7 @@ public abstract class Player {
     }
 
     public void setPlayingMoves(){
-        if(!legalMoves.isEmpty()){
-            this.clearLegalMoves();
-        }
+        this.clearLegalMoves();
         for(Card card : hand.readAll()){
             if(card.isHidden()){
                 legalMoves.add(new PlayCard(card, index));

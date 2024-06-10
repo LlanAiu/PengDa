@@ -52,6 +52,7 @@ public class InputHandler {
 
     //used only by the prompter
     public void setLastInputMove(Straight move){
+        System.out.println("Last Input Move Set To: " + move.getCards().toString());
         lastInputMove = move;
     }
 

@@ -55,12 +55,13 @@ public class Card {
     }
 
     @Contract("_ -> new")
-    public static @NotNull Card copyOf(@NotNull Card card){
-        return new Card(card.suit, card.value, card.honor);
+    public static @NotNull Card of(HonorType honor){
+        return new Card(honor);
     }
 
-    public static Card none(){
-        return new Card(Suit.TIAO, -1, HonorType.NONE);
+    @Contract("_ -> new")
+    public static @NotNull Card copyOf(@NotNull Card card){
+        return new Card(card.suit, card.value, card.honor);
     }
 
     private final Suit suit;

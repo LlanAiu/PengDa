@@ -1,7 +1,6 @@
 package com.llan.mahjongfunsies.mahjong.commands;
 
 import com.llan.mahjongfunsies.Constants;
-import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 

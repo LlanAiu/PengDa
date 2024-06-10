@@ -10,21 +10,19 @@ public abstract class Subdeck extends SubjectBase {
 
     public void addCard(Card card){
         cards.add(card);
-        setChanged();
     }
 
     public void addCards(List<Card> cards){
         this.cards.addAll(cards);
-        setChanged();
     }
 
     public void removeCard(Card card){
         for(int i = 0; i < cards.size(); i++){
             if(cards.get(i).exactEquals(card)){
                 cards.remove(i);
+                break;
             }
         }
-        setChanged();
     }
 
     public Card removeLast(){
@@ -38,10 +36,6 @@ public abstract class Subdeck extends SubjectBase {
 
     public void clear(){
         cards.removeAll(cards);
-    }
-
-    public boolean contains(Card card){
-        return cards.contains(card);
     }
 
     public void sort(){
@@ -58,7 +52,6 @@ public abstract class Subdeck extends SubjectBase {
                 }
             }
         });
-        setChanged();
     }
 
     public List<Card> filterShown(){
