@@ -17,6 +17,7 @@ import java.sql.Time;
 public class GameController {
 
     private Game currentGame;
+    private boolean ended;
 
     private static GameController instance;
 
@@ -33,6 +34,7 @@ public class GameController {
 
     public void initialize(){
         currentGame.onStart();
+        ended = false;
         Board.getInstance().displayState();
         Timeline periodic = new Timeline(new KeyFrame(Duration.millis(DisplayConstants.FRAME_RATE_MILLIS), actionEvent -> periodic()));
         periodic.setCycleCount(Timeline.INDEFINITE);
@@ -45,6 +47,11 @@ public class GameController {
     private void periodic(){
         if(!currentGame.isFinished()){
             currentGame.run();
+        } else {
+            if(!ended){
+                currentGame.end();
+                ended = true;
+            }
         }
     }
 

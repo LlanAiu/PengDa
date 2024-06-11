@@ -101,7 +101,7 @@ public class Game implements Episode {
     }
 
     public String getState(){
-        return state.getClass().getName();
+        return state.getClass().getSimpleName();
     }
 
     public void playCard(Card card, int index){

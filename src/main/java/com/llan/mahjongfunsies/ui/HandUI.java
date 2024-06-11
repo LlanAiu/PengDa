@@ -13,6 +13,8 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
 
+import java.util.Arrays;
+
 public abstract class HandUI implements Observer {
     final GridPane grid;
     final Player player;
@@ -93,6 +95,7 @@ public abstract class HandUI implements Observer {
                     }
                 }
             }
+            Arrays.copyOf(lastHand, lastHand.length);
             lastHand = display;
         }
     }

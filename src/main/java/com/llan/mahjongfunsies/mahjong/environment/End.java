@@ -4,10 +4,13 @@ import com.llan.mahjongfunsies.ui.Board;
 
 public class End extends GameState{
 
+    public End(){
+        Board.getInstance().finishGame(game.getWinningIndex());
+    }
+
     @Override
     public void periodic() {
-        System.out.println("Game Over!");
-        Board.getInstance().finishGame(game.getWinningIndex());
+
     }
 
     @Override

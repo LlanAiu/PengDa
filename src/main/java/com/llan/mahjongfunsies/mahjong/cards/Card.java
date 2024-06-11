@@ -149,4 +149,11 @@ public class Card {
     public int hashCode() {
         return Objects.hash(suit, value, honor);
     }
+
+    @Override
+    public Card clone() {
+        Card clone  = Card.of(this.suit, this.value, this.honor);
+        clone.setHidden(this.isHidden());
+        return clone;
+    }
 }

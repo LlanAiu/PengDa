@@ -54,6 +54,7 @@ public class InputHandler {
     public void setLastInputMove(Straight move){
         System.out.println("Last Input Move Set To: " + move.getCards().toString());
         lastInputMove = move;
+        shouldReturn = true;
     }
 
     public CommandBase getLastInputMove(){

@@ -5,6 +5,7 @@ import com.llan.mahjongfunsies.mahjong.commands.Command;
 import com.llan.mahjongfunsies.util.DisplayUtil;
 import com.llan.mahjongfunsies.util.MathUtil;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 import java.util.List;
@@ -13,13 +14,17 @@ public class HumanUI extends HandUI{
     private int selectedIndex = -1;
     private PostMoveUI moveUI;
     private HBox box;
+    private Button debugButton;
 
     public HumanUI(DisplayUtil.Orientation orientation){
         super(orientation);
         box = new HBox();
+        debugButton = new Button("State");
+        debugButton.setOnAction(action -> System.out.println("Current State: " + GameController.getInstance().getCurrentGame().getState()));
         moveUI = new PostMoveUI(GameController.getInstance().getPlayerByOrientation(orientation));
         box.getChildren().add(moveUI.getNode());
         box.getChildren().add(grid);
+        box.getChildren().add(debugButton);
     }
 
     public void setSelectedIndex(int index){

@@ -11,6 +11,9 @@ public class CardUtil {
 
     public static boolean isWinning(@NotNull Subdeck hand){
         List<Card> filtered = hand.filterShown();
+        if(filtered.isEmpty()){
+            return true;
+        }
         List<Card> processed;
         List<Card> pairs = hand.findPairs(filtered);
         for(Card card : pairs){

@@ -70,7 +70,11 @@ public abstract class Subdeck extends SubjectBase {
     }
 
     public Card[] readAll(){
-        return cards.toArray(new Card[0]);
+        Card[] array = new Card[cards.size()];
+        for(int i = 0; i < array.length; i++){
+            array[i] = cards.get(i).clone();
+        }
+        return array;
     }
 
     public List<Card> getCards(){

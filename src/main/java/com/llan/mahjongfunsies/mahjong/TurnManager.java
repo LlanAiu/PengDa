@@ -113,6 +113,9 @@ public class TurnManager {
     public void drawCard(){
         players[currentTurnIndex].drawCard();
         players[currentTurnIndex].sortHand();
+        if(players[currentTurnIndex].hasWon()){
+            players[currentTurnIndex].reveal();
+        }
     }
 
     public void addCardToPlayer(GameAction action, Card card, int index, Optional<Triplet> cards){
@@ -135,8 +138,10 @@ public class TurnManager {
     }
 
     public void checkWin(){
-        if(players[currentTurnIndex].hasWon()){
-            winningIndex = currentTurnIndex;
+        for(Player player : players){
+            if(player.hasWon()){
+                winningIndex = player.getIndex();
+            }
         }
     }
 

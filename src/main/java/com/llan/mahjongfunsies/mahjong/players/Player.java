@@ -61,6 +61,11 @@ public abstract class Player {
         hand.reveal(cards);
     }
 
+    public void reveal(){
+        List<Card> cards = hand.filterShown();
+        this.reveal(cards);
+    }
+
     public List<Card> getSetOf(GameAction action, Card card, Optional<Triplet> cards){
         return hand.getSetOf(action, card, cards);
     }
