@@ -3,7 +3,6 @@ package com.llan.mahjongfunsies.ui;
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
-import com.llan.mahjongfunsies.mahjong.environment.EndScreen;
 import com.llan.mahjongfunsies.mahjong.players.Human;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.util.DisplayUtil;
@@ -26,6 +25,7 @@ public class Board {
     private int humanIndex;
     private HandUI[] hands = new HandUI[Constants.NUM_PLAYERS];
     private DiscardUI discard;
+    private EndScreen endScreen;
 
     private DisplayUtil.Orientation selectedOrientation;
     private int selectedIndex = -1;
@@ -43,6 +43,7 @@ public class Board {
         pane = new BorderPane();
         center = new StackPane();
         discard = DiscardUI.getInstance();
+        endScreen = new EndScreen();
         for(int i = 0; i < Constants.NUM_PLAYERS; i++){
             DisplayUtil.Orientation orientation;
             switch (i){
@@ -109,13 +110,12 @@ public class Board {
 
     public void finishGame(int index){
         System.out.println("Does Nothing Right Now");
-//        Stage stage = (Stage) pane.getScene().getWindow();
-//        EndScreen screen = new EndScreen(index);
-//        Parent root = screen.getParent();
-//        Scene scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.sizeToScene();
-//        stage.show();
+        Stage stage = (Stage) pane.getScene().getWindow();
+        Parent root = endScreen.getParent();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.sizeToScene();
+        stage.show();
     }
 
     private void setInPane(HandUI hand){

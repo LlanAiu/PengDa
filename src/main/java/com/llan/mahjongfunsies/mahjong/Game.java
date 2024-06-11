@@ -64,6 +64,7 @@ public class Game implements Episode {
     @Override
     public void end() {
         //post game weight updates, should they exist
+        System.out.println("End method of Game called");
     }
 
     @Override
