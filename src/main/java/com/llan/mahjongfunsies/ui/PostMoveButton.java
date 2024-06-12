@@ -1,5 +1,6 @@
 package com.llan.mahjongfunsies.ui;
 
+import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 import javafx.event.ActionEvent;
@@ -32,7 +33,19 @@ public class PostMoveButton {
     }
 
     private EventHandler<ActionEvent> onClick(GameAction action){
-        return actionEvent -> InputHandler.getInstance().onPostMove(action, player.getIndex());
+        return new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(action.equals(GameAction.QUAD)){
+                    switch(GameController.getInstance().getCurrentGameState()){
+                        case "Checking" -> InputHandler.getInstance().setDrawnQuadMove();
+                        default -> InputHandler.getInstance().onPostMove(action, player.getIndex());
+                    }
+                } else {
+                    InputHandler.getInstance().onPostMove(action, player.getIndex());
+                }
+            }
+        };
     }
 
 

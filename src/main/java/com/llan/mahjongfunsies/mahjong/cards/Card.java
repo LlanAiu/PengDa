@@ -59,6 +59,11 @@ public class Card {
         return new Card(honor);
     }
 
+    //nonsensical card;
+    public static Card none(){
+        return Card.of(Suit.TIAO, -1);
+    }
+
     @Contract("_ -> new")
     public static @NotNull Card copyOf(@NotNull Card card){
         return new Card(card.suit, card.value, card.honor);
@@ -68,6 +73,9 @@ public class Card {
     private final int value;
     private final HonorType honor;
     private boolean hidden = true;
+
+    private int setNumber = -1;
+
 
     public Card(Suit suit, int value, HonorType honor){
         if(suit == Suit.HONOR){
@@ -113,6 +121,18 @@ public class Card {
         return hidden;
     }
 
+    public void setSetNumber(int set){
+        setNumber = set;
+    }
+
+    public boolean isPartOfSet(){
+        return setNumber != -1;
+    }
+
+    public int getSetNumber(){
+        return setNumber;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Card{");
@@ -154,6 +174,7 @@ public class Card {
     public Card clone() {
         Card clone  = Card.of(this.suit, this.value, this.honor);
         clone.setHidden(this.isHidden());
+        clone.setSetNumber(this.getSetNumber());
         return clone;
     }
 }

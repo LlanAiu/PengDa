@@ -9,10 +9,8 @@ import com.llan.mahjongfunsies.util.DisplayUtil;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -81,8 +79,8 @@ public class Board {
         center.getChildren().removeIf(node -> ((VBox) node).getChildren().getFirst() instanceof Button);
     }
 
-    public void updatePostMoves(List<Command> moves){
-        ((HumanUI) hands[humanIndex]).updatePostMoves(moves);
+    public void updateSetBasedMoves(List<Command> moves){
+        ((HumanUI) hands[humanIndex]).updateSetBasedMoves(moves);
     }
 
     public void resetPostMoves(){
@@ -108,14 +106,16 @@ public class Board {
         selectedIndex = -1;
     }
 
+    //Doesn't quite work right now, will come back later
     public void finishGame(int index){
-        System.out.println("Does Nothing Right Now");
-        Stage stage = (Stage) pane.getScene().getWindow();
-        Parent root = endScreen.getParent();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.sizeToScene();
-        stage.show();
+        System.out.println("Game Ended With Index: " + index);
+//        endScreen.setText(index);
+//        Stage stage = (Stage) pane.getScene().getWindow();
+//        Scene scene = endScreen.getParent().getScene();
+////        Scene scene = new Scene(root);
+//        stage.setScene(scene);
+//        stage.sizeToScene();
+//        stage.show();
     }
 
     private void setInPane(HandUI hand){

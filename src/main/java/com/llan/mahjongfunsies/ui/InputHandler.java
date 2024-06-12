@@ -57,6 +57,12 @@ public class InputHandler {
         shouldReturn = true;
     }
 
+    public void setDrawnQuadMove(){
+        System.out.println("Last Input Move Set To DrawnQuad");
+        lastInputMove = new DrawnQuad();
+        shouldReturn = true;
+    }
+
     public CommandBase getLastInputMove(){
         if(shouldReturn){
             CommandBase selected = lastInputMove;

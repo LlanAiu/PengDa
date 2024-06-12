@@ -78,11 +78,11 @@ public class DisplayUtil {
         tile.getChildren().add(background);
         if(shouldShow){
             tile.getChildren().add(cardView);
-            if(!card.isHidden()){
-                offset = DisplayConstants.UNHIDDEN_OFFSET;
-            } else if(selected){
-                offset = DisplayConstants.SELECTED_OFFSET;
-            }
+        }
+        if(card.isPartOfSet()){
+            offset = DisplayConstants.SET_OFFSET;
+        } else if(selected){
+            offset = DisplayConstants.SELECTED_OFFSET;
         }
         if(orientation == Orientation.LEFT || orientation == Orientation.RIGHT){
             tile.setPrefSize(DisplayConstants.CARD_LENGTH, DisplayConstants.CARD_WIDTH);
@@ -99,14 +99,11 @@ public class DisplayUtil {
                tile.getChildren().forEach(node -> node.relocate(0, shift));
             }
         }
-        tile.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (shouldShow) {
-                    System.out.println(card + "; Player Index: " + GameController.getInstance().getPlayerByOrientation(orientation).getIndex());
-                    InputHandler.getInstance().onCardPressed(((IndexedPane) tile).getIndex(), card, GameController.getInstance().getPlayerByOrientation(orientation).getIndex());
-                    Board.getInstance().setSelected(orientation, cardIndex);
-                }
+        tile.setOnMouseClicked(mouseEvent -> {
+            if (shouldShow) {
+                System.out.println(card + "; Player Index: " + GameController.getInstance().getPlayerByOrientation(orientation).getIndex());
+                InputHandler.getInstance().onCardPressed(((IndexedPane) tile).getIndex(), card, GameController.getInstance().getPlayerByOrientation(orientation).getIndex());
+                Board.getInstance().setSelected(orientation, cardIndex);
             }
         });
         return tile;

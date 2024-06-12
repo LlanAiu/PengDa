@@ -14,7 +14,6 @@ import com.llan.mahjongfunsies.util.DisplayUtil;
 import com.llan.mahjongfunsies.util.Triplet;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 public class TurnManager {
     private Player[] players;
@@ -57,10 +56,6 @@ public class TurnManager {
         return playerOrientations.get(orientation);
     }
 
-    public int getCurrentTurnIndex(){
-        return currentTurnIndex;
-    }
-
     public void reset(){
         currentTurnIndex = 0;
         winningIndex = -1;
@@ -97,13 +92,17 @@ public class TurnManager {
     //For current turn only
     public void setPlayableMoves(){
         players[currentTurnIndex].setPlayingMoves();
+        if(currentTurnIndex == humanIndex){
+            System.out.println("Board updated to show human move buttons (if applicable)");
+            Board.getInstance().updateSetBasedMoves(players[humanIndex].getLegalMoves());
+        }
     }
 
     //for post turn only
     public void setPostPlayableMoves(Card lastPlayed){
         Arrays.stream(players).filter(player -> player.getIndex() != currentTurnIndex).forEach(player -> player.setLegalPostMoves(lastPlayed, currentTurnIndex));
         players[currentTurnIndex].clearLegalMoves();
-        Board.getInstance().updatePostMoves(players[humanIndex].getLegalMoves());
+        Board.getInstance().updateSetBasedMoves(players[humanIndex].getLegalMoves());
     }
 
     public void drawInitialHands(){

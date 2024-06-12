@@ -43,7 +43,7 @@ public class PostMoveUI {
                 buttons[0].setVisible(true);
             } else if (move instanceof Straight){
                 buttons[1].setVisible(true);
-            } else if (move instanceof Quad){
+            } else if (move instanceof Quad || move instanceof DrawnQuad){
                 buttons[2].setVisible(true);
             } else if (move instanceof Win){
                 buttons[3].setVisible(true);

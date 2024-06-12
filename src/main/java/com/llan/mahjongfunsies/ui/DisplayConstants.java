@@ -13,8 +13,8 @@ public final class DisplayConstants {
     public static final Insets LEFT_INSETS = new Insets(20, 0, 20, 5);
     public static final Insets RIGHT_INSETS = new Insets(20, 10, 20, 0);
 
-    public static final double SELECTED_OFFSET = -7;
-    public static final double UNHIDDEN_OFFSET = -15;
+    public static final double SELECTED_OFFSET = -5;
+    public static final double SET_OFFSET = -8;
 
     public static final int FRAME_RATE_MILLIS = 50;
     public static final int POST_WAIT_MILLIS = 2500;

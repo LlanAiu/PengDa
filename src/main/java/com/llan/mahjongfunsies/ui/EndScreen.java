@@ -10,6 +10,7 @@ public class EndScreen {
 
     public EndScreen(){
         root = new AnchorPane();
+        text = new Label();
         root.getChildren().add(text);
         root.setPrefSize(400, 400);
     }

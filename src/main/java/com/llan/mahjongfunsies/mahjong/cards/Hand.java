@@ -1,18 +1,25 @@
 package com.llan.mahjongfunsies.mahjong.cards;
 
 import com.llan.mahjongfunsies.Constants;
+import com.llan.mahjongfunsies.mahjong.commands.DrawnQuad;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.util.CardUtil;
+import com.llan.mahjongfunsies.util.MathUtil;
 import com.llan.mahjongfunsies.util.Triplet;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
 
 public class Hand extends Subdeck{
+    private int sets;
 
     public Hand(){
         cards = new ArrayList<>(Constants.STARTING_CARDS);
+        sets = 0;
     }
 
     @Override
@@ -28,14 +35,43 @@ public class Hand extends Subdeck{
     }
 
     public void reveal(List<Card> reveal){
+        boolean set = false;
+        if ((MathUtil.between(reveal.size(), 2, 5))){
+            set = true;
+            sets++;
+        }
         for(Card card : cards){
             if(!card.isHidden()){
                 continue;
             }
             if(reveal.contains(card)){
                 card.setHidden(false);
+                if(set){
+                    card.setSetNumber(sets);
+                }
                 reveal.remove(card);
             }
+        }
+    }
+
+    //Doesn't reveal, pretty much just used for drawn sets of 4
+    public void createSet(List<Card> cardSet, int setNumber) {
+        for(Card card : cards){
+            if(card.isPartOfSet()){
+                continue;
+            }
+            if(cardSet.contains(card)){
+                card.setSetNumber(setNumber);
+                cardSet.remove(card);
+            }
+        }
+    }
+
+    //same as above
+    public void addCardsToRevealedSet(List<Card> cards, int setNumber){
+        for(Card card : cards){
+            card.setSetNumber(setNumber);
+            card.setHidden(false);
         }
     }
 
@@ -56,7 +92,7 @@ public class Hand extends Subdeck{
                 triplet.ifPresent(triplet1 -> cards.addAll(triplet1.getCards()));
                 break;
             case WIN:
-                cards.addAll(this.filterShown());
+                cards.addAll(this.filterOutSets(false));
                 break;
         }
         return cards;
@@ -66,7 +102,7 @@ public class Hand extends Subdeck{
         int value = search.value();
         Card.Suit suit = search.suit();
         List<Triplet> sets = new ArrayList<>();
-        List<Card> filtered = this.filterShown();
+        List<Card> filtered = this.filterOutSets(true);
         if(suit == Card.Suit.HONOR){
             return sets;
         }
@@ -124,6 +160,25 @@ public class Hand extends Subdeck{
             return Optional.empty();
         } else {
             return Optional.of(winningCards);
+        }
+    }
+
+    public boolean canDrawnQuad(Card search){
+        if(this.countIdentical(search) == 4){
+            int differentSets = (int) cards.stream().filter(card -> card.equals(search)).flatMapToInt(card -> IntStream.of(card.getSetNumber())).distinct().count();
+            if(differentSets <= 2){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public DrawnQuad getDrawnQuadCommand(Card search){
+        if(this.countNonSetIdentical(search) < 4){
+            int setNumber = cards.stream().filter(card -> card.equals(search) && card.isPartOfSet()).toList().getFirst().getSetNumber();
+            return new DrawnQuad(this, true, List.of(search), setNumber);
+        } else {
+            return new DrawnQuad(this, false, cards.stream().filter(card -> card.equals(search)).toList(), ++sets);
         }
     }
 

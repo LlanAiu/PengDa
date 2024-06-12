@@ -59,8 +59,8 @@ public class GameController {
         return currentGame;
     }
 
-    public int getCurrentTurnIndex(){
-        return currentGame.getCurrentTurnIndex();
+    public String getCurrentGameState(){
+        return currentGame.getState();
     }
 
     public Player getPlayerByOrientation(DisplayUtil.Orientation orientation){

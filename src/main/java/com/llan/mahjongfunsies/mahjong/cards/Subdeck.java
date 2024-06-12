@@ -30,8 +30,12 @@ public abstract class Subdeck extends SubjectBase {
         return cards.removeLast();
     }
 
-    public int countHiddenIdentical(Card search){
-        return (int) this.filterShown().stream().filter(card -> card.equals(search)).count();
+    public int countNonSetIdentical(Card search){
+        return (int) this.filterOutSets(true).stream().filter(card -> card.equals(search)).count();
+    }
+
+    public int countIdentical(Card search){
+        return (int) cards.stream().filter(card -> card.equals(search)).count();
     }
 
     public void clear(){
@@ -40,10 +44,8 @@ public abstract class Subdeck extends SubjectBase {
 
     public void sort(){
         cards.sort((card1, card2) -> {
-            if(card1.isHidden() != card2.isHidden()){
-                int card1priority = (card1.isHidden()) ? 1 : 0;
-                int card2priority = (card2.isHidden()) ? 1 : 0;
-                return card1priority - card2priority;
+            if(card1.getSetNumber() != card2.getSetNumber()){
+                return -(card1.getSetNumber() - card2.getSetNumber());
             } else {
                 if(card1.suit() != card2.suit()){
                     return card1.suit().getPriority() - card2.suit().getPriority();
@@ -54,14 +56,18 @@ public abstract class Subdeck extends SubjectBase {
         });
     }
 
-    public List<Card> filterShown(){
-        return cards.stream().filter(card -> card.isHidden()).toList();
+    public List<Card> filterOutSets(boolean includeHiddenSets){
+        if(includeHiddenSets){
+            return cards.stream().filter(card -> !card.isPartOfSet()).toList();
+        } else {
+            return cards.stream().filter(card -> card.isHidden()).toList();
+        }
     }
 
     public List<Card> findPairs(List<Card> cards){
         List<Card> pairs = new ArrayList<>();
         for(Card card : cards){
-            int num = this.countHiddenIdentical(card);
+            int num = this.countNonSetIdentical(card);
             if(num >= 2 && !pairs.contains(card)){
                 pairs.add(card);
             }

@@ -18,12 +18,14 @@ public abstract class Player {
     int index;
     Command move;
     List<Command> legalMoves;
+    Card lastDrawnCard;
 
     public Player(int index){
         this.index = index;
         hand = new Hand();
         move = new NullCommand();
         legalMoves = new ArrayList<>();
+        lastDrawnCard = Card.none();
     }
 
     public void reset(){
@@ -44,7 +46,8 @@ public abstract class Player {
     }
 
     public void drawCard(){
-        hand.addCard(Deck.getInstance().drawNext());
+        lastDrawnCard = Deck.getInstance().drawNext();
+        hand.addCard(lastDrawnCard);
     }
 
     public void addCard(Card card){
@@ -62,7 +65,7 @@ public abstract class Player {
     }
 
     public void reveal(){
-        List<Card> cards = hand.filterShown();
+        List<Card> cards = hand.filterOutSets(false);
         this.reveal(cards);
     }
 
@@ -84,7 +87,7 @@ public abstract class Player {
 
     public void setLegalPostMoves(Card lastPlayed, int lastPlayerIndex){
         this.clearLegalMoves();
-        int num = hand.countHiddenIdentical(lastPlayed);
+        int num = hand.countNonSetIdentical(lastPlayed);
         if (num >= 2) {
             legalMoves.add(new Triple(index));
             if(num >= 3){
@@ -108,10 +111,14 @@ public abstract class Player {
     public void setPlayingMoves(){
         this.clearLegalMoves();
         for(Card card : hand.readAll()){
-            if(card.isHidden()){
+            if(!card.isPartOfSet()){
                 legalMoves.add(new PlayCard(card, index));
             }
+            if(hand.canDrawnQuad(lastDrawnCard)){
+                legalMoves.add(hand.getDrawnQuadCommand(lastDrawnCard));
+            }
         }
+        lastDrawnCard = Card.none();
     }
 
     //leaves only the remaining moves that need disambiguation-ing
@@ -138,6 +145,8 @@ public abstract class Player {
             if(straights.size() == 1){
                 move = straights.getFirst();
             }
+        } else if (move instanceof DrawnQuad && !((DrawnQuad) move).isSelected()){
+            move = legalMoves.stream().filter(command -> command instanceof DrawnQuad).toList().getFirst();
         }
         return move;
     }

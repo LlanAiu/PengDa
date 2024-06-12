@@ -90,7 +90,7 @@ public abstract class HandUI implements Observer {
                     this.addCard(display[i], player.shouldDisplay(), i);
                 } else {
                     if (!display[i].displayEquals(lastHand[i], player.shouldDisplay())) {
-                        System.out.println("Replaced " + lastHand[i] + " at index " + i + " with " + display[i]);
+//                        System.out.println("Replaced " + lastHand[i] + " at index " + i + " with " + display[i]);
                         replaceCard(display[i], i);
                     }
                 }

@@ -58,6 +58,10 @@ public class Game implements Episode {
 
     public void nextTurn(){
         manager.incrementTurn();
+        drawCard();
+    }
+
+    public void drawCard(){
         manager.drawCard();
     }
 
@@ -126,9 +130,5 @@ public class Game implements Episode {
 
     public Player getPlayerByIndex(int index){
         return manager.getPlayerByIndex(index);
-    }
-
-    public int getCurrentTurnIndex(){
-        return manager.getCurrentTurnIndex();
     }
 }

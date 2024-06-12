@@ -10,7 +10,7 @@ import java.util.List;
 public class CardUtil {
 
     public static boolean isWinning(@NotNull Subdeck hand){
-        List<Card> filtered = hand.filterShown();
+        List<Card> filtered = hand.filterOutSets(true);
         if(filtered.isEmpty()){
             return true;
         }

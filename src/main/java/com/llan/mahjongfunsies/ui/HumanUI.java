@@ -24,7 +24,7 @@ public class HumanUI extends HandUI{
         moveUI = new PostMoveUI(GameController.getInstance().getPlayerByOrientation(orientation));
         box.getChildren().add(moveUI.getNode());
         box.getChildren().add(grid);
-        box.getChildren().add(debugButton);
+//        box.getChildren().add(debugButton);
     }
 
     public void setSelectedIndex(int index){
@@ -38,7 +38,7 @@ public class HumanUI extends HandUI{
         }
     }
 
-    public void updatePostMoves(List<Command> moves){
+    public void updateSetBasedMoves(List<Command> moves){
         moveUI.updateVisibilities(moves);
     }
 
