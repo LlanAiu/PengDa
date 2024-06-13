@@ -1,12 +1,14 @@
 package com.llan.mahjongfunsies.mahjong.environment;
 
-import com.llan.mahjongfunsies.mahjong.commands.DrawnQuad;
+import com.llan.mahjongfunsies.mahjong.commands.Ambiguous;
+import com.llan.mahjongfunsies.mahjong.commands.CommandBase;
 
 public class Checking extends GameState{
-    private boolean premove;
+    private boolean prompting;
+    private CommandBase toPrompt;
 
     public Checking(){
-        premove = false;
+        prompting = false;
     }
 
     @Override
@@ -14,9 +16,9 @@ public class Checking extends GameState{
         var move = game.pollCurrentTurn();
         if(move.isPresent()){
             move.ifPresent(command -> {
-                if(command instanceof DrawnQuad){
-                    ((DrawnQuad) command).play();
-                    premove = true;
+                if(command instanceof Ambiguous && !((Ambiguous) command).isSelected()){
+                    toPrompt = (CommandBase) command;
+                    prompting = true;
                 } else {
                     command.execute();
                 }
@@ -27,9 +29,9 @@ public class Checking extends GameState{
 
     @Override
     public void onTransition() {
-        if(premove){
+        if(prompting){
             game.drawCard();
-            game.setState(new Premove());
+            game.setState(new Prompting(toPrompt.getPlayerIndex()));
         } else {
             game.postTurn();
             game.setState(new Postchecking());

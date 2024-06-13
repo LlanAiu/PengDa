@@ -173,12 +173,24 @@ public class Hand extends Subdeck{
         return false;
     }
 
-    public DrawnQuad getDrawnQuadCommand(Card search){
+    public List<Card> countFourOf(){
+        List<Card> fours = new ArrayList<>();
+        for(Card card : cards){
+            if(cards.stream().filter(card1 -> card1.equals(card)).count() == 4){
+                if(!fours.contains(card)){
+                    fours.add(card);
+                }
+            }
+        }
+        return fours;
+    }
+
+    public DrawnQuad getDrawnQuadCommand(Card search, int index){
         if(this.countNonSetIdentical(search) < 4){
             int setNumber = cards.stream().filter(card -> card.equals(search) && card.isPartOfSet()).toList().getFirst().getSetNumber();
-            return new DrawnQuad(this, true, List.of(search), setNumber);
+            return new DrawnQuad(this, index, true, List.of(search), setNumber);
         } else {
-            return new DrawnQuad(this, false, cards.stream().filter(card -> card.equals(search)).toList(), ++sets);
+            return new DrawnQuad(this, index, false, cards.stream().filter(card -> card.equals(search)).toList(), ++sets);
         }
     }
 

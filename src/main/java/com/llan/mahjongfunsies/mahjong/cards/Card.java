@@ -140,6 +140,7 @@ public class Card {
         sb.append(", value=").append(value);
         sb.append(", honor=").append(honor);
         sb.append(", hidden=").append(hidden);
+        sb.append(", set #=").append(setNumber);
         sb.append('}');
         return sb.toString();
     }
@@ -158,7 +159,7 @@ public class Card {
 
     public boolean displayEquals(Card other, boolean override){
 
-        if(this.isHidden() && other.isHidden() && !override) {
+        if(this.isHidden() && other.isHidden() && !override && this.isPartOfSet() == other.isPartOfSet()) {
             return true;
         } else {
             return this.exactEquals(other);

@@ -1,10 +1,8 @@
 package com.llan.mahjongfunsies.ui;
 
-import com.llan.mahjongfunsies.mahjong.cards.Card;
+import com.llan.mahjongfunsies.mahjong.commands.Ambiguous;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
-import com.llan.mahjongfunsies.mahjong.commands.Straight;
 import com.llan.mahjongfunsies.mahjong.players.Player;
-import com.llan.mahjongfunsies.util.Triplet;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -22,8 +20,8 @@ public class Prompter {
         buttons = new Button[moves.size()];
         for(int i = 0; i < buttons.length; i++){
             buttons[i] = new Button();
-            assert moves.get(i) instanceof Straight;
-            buttons[i].setText(getText((Straight) moves.get(i)));
+            assert moves.get(i) instanceof Ambiguous;
+            buttons[i].setText(((Ambiguous) moves.get(i)).getText());
             int index = i;
             buttons[i].setOnAction(actionEvent -> onAction(index));
         }
@@ -35,17 +33,6 @@ public class Prompter {
     }
 
     public void onAction(int index){
-        InputHandler.getInstance().setLastInputMove((Straight) moves.get(index));
-    }
-
-    public String getText(Straight command){
-        Triplet cards = command.getCards();
-        StringBuilder sb = new StringBuilder("{ ");
-        for(Card card : cards.getCards()){
-            sb.append(card.value() + ", ");
-        }
-        sb.delete(sb.length() - 2, sb.length());
-        sb.append(" }");
-        return sb.toString();
+        InputHandler.getInstance().setLastInputMove((Ambiguous) moves.get(index));
     }
 }

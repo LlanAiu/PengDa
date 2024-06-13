@@ -19,6 +19,7 @@ public abstract class Player {
     Command move;
     List<Command> legalMoves;
     Card lastDrawnCard;
+    boolean firstMove;
 
     public Player(int index){
         this.index = index;
@@ -43,6 +44,7 @@ public abstract class Player {
 
     public void drawInitialHand(){
         hand.addCards(Deck.getInstance().drawNext(Constants.STARTING_CARDS));
+        firstMove = true;
     }
 
     public void drawCard(){
@@ -114,16 +116,28 @@ public abstract class Player {
             if(!card.isPartOfSet()){
                 legalMoves.add(new PlayCard(card, index));
             }
-            if(hand.canDrawnQuad(lastDrawnCard)){
-                legalMoves.add(hand.getDrawnQuadCommand(lastDrawnCard));
+        }
+        if(hand.canDrawnQuad(lastDrawnCard)){
+            legalMoves.add(hand.getDrawnQuadCommand(lastDrawnCard, index));
+        }
+        if(firstMove){
+            List<Card> fours = hand.countFourOf();
+            if(!fours.isEmpty()){
+                for(Card card : fours){
+                    legalMoves.add(hand.getDrawnQuadCommand(card, index));
+                }
             }
         }
         lastDrawnCard = Card.none();
     }
 
+    public void endFirstMove(){
+        firstMove = false;
+    }
+
     //leaves only the remaining moves that need disambiguation-ing
-    public void filterStraightMoves(){
-        legalMoves.removeIf(command -> !(command instanceof Straight));
+    public void filterAmbiguousMoves(){
+        legalMoves.removeIf(command -> !(command instanceof Ambiguous));
     }
 
     public void clearLegalMoves(){
@@ -146,7 +160,10 @@ public abstract class Player {
                 move = straights.getFirst();
             }
         } else if (move instanceof DrawnQuad && !((DrawnQuad) move).isSelected()){
-            move = legalMoves.stream().filter(command -> command instanceof DrawnQuad).toList().getFirst();
+            List<Command> straights = legalMoves.stream().filter(command -> command instanceof Straight).toList();
+            if(straights.size() == 1){
+                move = straights.getFirst();
+            }
         }
         return move;
     }

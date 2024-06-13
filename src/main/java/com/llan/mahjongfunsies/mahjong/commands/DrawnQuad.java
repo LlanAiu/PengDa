@@ -5,15 +5,15 @@ import com.llan.mahjongfunsies.mahjong.cards.Hand;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class DrawnQuad extends CommandBase{
+public class DrawnQuad extends CommandBase implements Ambiguous{
     private boolean reveal;
     private List<Card> toReveal;
     private int setNumber;
     private Hand hand;
 
-    public DrawnQuad(Hand hand, boolean reveal, List<Card> cards, int setNumber){
+    public DrawnQuad(Hand hand, int index, boolean reveal, List<Card> cards, int setNumber){
+        super(index);
         this.reveal = reveal;
         toReveal = cards;
         this.setNumber = setNumber;
@@ -33,7 +33,13 @@ public class DrawnQuad extends CommandBase{
         }
     }
 
+    @Override
     public boolean isSelected(){
         return !toReveal.isEmpty();
+    }
+
+    @Override
+    public String getText() {
+        return toReveal.getFirst().toString();
     }
 }

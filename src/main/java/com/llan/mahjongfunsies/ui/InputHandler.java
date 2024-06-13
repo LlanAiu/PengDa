@@ -1,5 +1,6 @@
 package com.llan.mahjongfunsies.ui;
 
+import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.commands.*;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
@@ -26,7 +27,9 @@ public class InputHandler {
 
     public void onCardPressed(int cardIndex, Card card, int index){
         if(lastCardIndex == cardIndex && lastInputMove.getCard().exactEquals(card) && lastInputMove.getPlayerIndex() == index){
-            shouldReturn = true;
+            if(GameController.getInstance().getCurrentGameState().equals("Checking")){
+                shouldReturn = true;
+            }
         } else {
             lastInputMove = new PlayCard(card, index);
             lastCardIndex = cardIndex;
@@ -51,9 +54,9 @@ public class InputHandler {
     }
 
     //used only by the prompter
-    public void setLastInputMove(Straight move){
-        System.out.println("Last Input Move Set To: " + move.getCards().toString());
-        lastInputMove = move;
+    public void setLastInputMove(Ambiguous move){
+        System.out.println("Last Input Move Disambiguated (Hopefully)");
+        lastInputMove = (CommandBase) move;
         shouldReturn = true;
     }
 

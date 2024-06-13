@@ -1,6 +1,6 @@
 package com.llan.mahjongfunsies.mahjong.environment;
 
-import com.llan.mahjongfunsies.mahjong.commands.Straight;
+import com.llan.mahjongfunsies.mahjong.commands.Ambiguous;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.ui.Board;
 
@@ -9,13 +9,13 @@ public class Prompting extends GameState{
 
     public Prompting(int index){
         player = game.getPlayerByIndex(index);
-        player.filterStraightMoves();
+        player.filterAmbiguousMoves();
         Board.getInstance().addPrompter(player);
     }
 
     @Override
     public void periodic() {
-        Straight move = (Straight) player.getSelectedMove();
+        Ambiguous move = (Ambiguous) player.getSelectedMove();
         if(move.isSelected()){
             shouldTransition = true;
         } else {

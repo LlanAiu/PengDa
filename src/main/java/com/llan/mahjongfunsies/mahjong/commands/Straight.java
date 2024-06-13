@@ -1,12 +1,13 @@
 package com.llan.mahjongfunsies.mahjong.commands;
 
 import com.llan.mahjongfunsies.Constants;
+import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.util.Triplet;
 
 import java.util.Optional;
 
-public class Straight extends PrioritizedPostMove {
+public class Straight extends PrioritizedPostMove implements Ambiguous{
     private Triplet cards;
 
     public Straight(int playerIndex){
@@ -26,9 +27,20 @@ public class Straight extends PrioritizedPostMove {
         this.cards = cards;
     }
 
-
+    @Override
     public boolean isSelected(){
         return cards != null;
+    }
+
+    @Override
+    public String getText() {;
+        StringBuilder sb = new StringBuilder("{ ");
+        for(Card card : cards.getCards()){
+            sb.append(card.value() + ", ");
+        }
+        sb.delete(sb.length() - 2, sb.length());
+        sb.append(" }");
+        return sb.toString();
     }
 
     @Override

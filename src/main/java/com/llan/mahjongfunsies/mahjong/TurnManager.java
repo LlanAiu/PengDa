@@ -125,6 +125,7 @@ public class TurnManager {
 
     public void removeCardFromPlayer(Card card, int index){
         players[index].removeCard(card);
+        players[index].endFirstMove();
     }
 
     public void incrementTurn(){

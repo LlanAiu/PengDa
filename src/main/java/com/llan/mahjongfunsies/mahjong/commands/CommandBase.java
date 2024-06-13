@@ -13,6 +13,11 @@ public abstract class CommandBase implements Command{
 
     public CommandBase(){}
 
+    public CommandBase(int playerIndex){
+        this.playerIndex = playerIndex;
+        currentGame = GameController.getInstance().getCurrentGame();
+    }
+
     public CommandBase(Card card, int playerIndex){
         this.card = card;
         this.playerIndex = playerIndex;

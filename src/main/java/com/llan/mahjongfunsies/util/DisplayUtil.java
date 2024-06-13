@@ -79,7 +79,7 @@ public class DisplayUtil {
         if(shouldShow){
             tile.getChildren().add(cardView);
         }
-        if(card.isPartOfSet()){
+        if(card.isPartOfSet() || !card.isHidden()){
             offset = DisplayConstants.SET_OFFSET;
         } else if(selected){
             offset = DisplayConstants.SELECTED_OFFSET;
