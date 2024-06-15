@@ -41,8 +41,13 @@ public class CardUtil {
                 if(deck.contains(Card.of(card1.suit(), card1.value(), card1.honor()))){
                     deck.remove(Card.of(card1.suit(), card1.value(), card1.honor()));
                     count++;
+                } else {
+                    Card card3 = card2;
+                    card2 = deck.removeFirst();
+                    deck.addFirst(card3);
                 }
-            } else if (card1.suit() == card2.suit() && Math.abs(card1.value() - card2.value()) == 1){
+            }
+            if (card1.suit() == card2.suit() && Math.abs(card1.value() - card2.value()) == 1){
                 int value = Math.max(card1.value(), card2.value()) + 1;
                 if(deck.contains(Card.of(card1.suit(), value))){
                     deck.remove(Card.of(card1.suit(), value));
