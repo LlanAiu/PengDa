@@ -2,7 +2,7 @@ package com.llan.mahjongfunsies.mahjong.environment;
 
 import com.llan.mahjongfunsies.ui.Board;
 
-public class End extends GameState{
+public class End extends GameStatus {
 
     public End(){
         Board.getInstance().finishGame(game.getWinningIndex());

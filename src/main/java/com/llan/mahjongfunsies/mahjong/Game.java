@@ -7,7 +7,7 @@ import com.llan.mahjongfunsies.mahjong.commands.Command;
 import com.llan.mahjongfunsies.mahjong.environment.End;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.environment.Premove;
-import com.llan.mahjongfunsies.mahjong.environment.State;
+import com.llan.mahjongfunsies.mahjong.environment.Status;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.util.DisplayUtil;
@@ -21,10 +21,10 @@ public class Game implements Episode {
     private final TurnManager manager;
     private final Discard discard;
     private final Deck deck;
-    private State state;
+    private Status status;
 
     public Game(){
-        manager = TurnManager.getInstance();
+        manager = new TurnManager();
         discard = Discard.getInstance();
         deck = Deck.getInstance();
     }
@@ -36,14 +36,14 @@ public class Game implements Episode {
         deck.reset();
         manager.drawInitialHands();
         manager.drawCard();
-        state = new Premove();
+        status = new Premove();
     }
 
     @Override
     public void run() {
-        state.periodic();
-        if(state.shouldTransition()){
-            state.onTransition();
+        status.periodic();
+        if(status.shouldTransition()){
+            status.onTransition();
         }
     }
 
@@ -73,7 +73,7 @@ public class Game implements Episode {
 
     @Override
     public boolean isFinished() {
-        return state instanceof End;
+        return status instanceof End;
     }
 
     public Optional<Command> pollCurrentTurn(){
@@ -101,12 +101,12 @@ public class Game implements Episode {
         return deck.isEmpty();
     }
 
-    public void setState(State state){
-        this.state = state;
+    public void setState(Status status){
+        this.status = status;
     }
 
     public String getState(){
-        return state.getClass().getSimpleName();
+        return status.getClass().getSimpleName();
     }
 
     public void playCard(Card card, int index){

@@ -3,7 +3,7 @@ package com.llan.mahjongfunsies.mahjong.environment;
 import com.llan.mahjongfunsies.mahjong.commands.Ambiguous;
 import com.llan.mahjongfunsies.mahjong.commands.CommandBase;
 
-public class Checking extends GameState{
+public class Checking extends GameStatus {
     private boolean prompting;
     private CommandBase toPrompt;
 

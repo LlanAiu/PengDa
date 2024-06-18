@@ -3,7 +3,7 @@ package com.llan.mahjongfunsies.mahjong.environment;
 import com.llan.mahjongfunsies.mahjong.commands.Straight;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
 
-public class Postchecking extends GameState{
+public class Postchecking extends GameStatus {
     private int polledTries;
 
     public Postchecking(){

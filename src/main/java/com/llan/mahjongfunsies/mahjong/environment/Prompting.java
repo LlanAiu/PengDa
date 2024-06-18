@@ -4,7 +4,7 @@ import com.llan.mahjongfunsies.mahjong.commands.Ambiguous;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.ui.Board;
 
-public class Prompting extends GameState{
+public class Prompting extends GameStatus {
     private Player player;
 
     public Prompting(int index){

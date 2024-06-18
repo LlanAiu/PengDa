@@ -25,16 +25,16 @@ public class TurnManager {
 
     private Map<DisplayUtil.Orientation, Player> playerOrientations;
 
-    private static TurnManager instance;
+//    private static TurnManager instance;
+//
+//    public static TurnManager getInstance(){
+//        if(instance == null){
+//            instance = new TurnManager();
+//        }
+//        return instance;
+//    }
 
-    public static TurnManager getInstance(){
-        if(instance == null){
-            instance = new TurnManager();
-        }
-        return instance;
-    }
-
-    private TurnManager(){
+    public TurnManager(){
         currentTurnIndex = 0;
         humanIndex = 0;
         players = new Player[Constants.NUM_PLAYERS];

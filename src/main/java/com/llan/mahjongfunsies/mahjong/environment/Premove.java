@@ -2,7 +2,7 @@ package com.llan.mahjongfunsies.mahjong.environment;
 
 import com.llan.mahjongfunsies.ui.Board;
 
-public class Premove extends GameState{
+public class Premove extends GameStatus {
 
     boolean end;
 

@@ -1,9 +1,12 @@
 package com.llan.mahjongfunsies.mahjong.players;
 
+import com.llan.mahjongfunsies.ai.Policy;
+import com.llan.mahjongfunsies.ai.RandomPolicy;
 import com.llan.mahjongfunsies.mahjong.commands.NullCommand;
-import com.llan.mahjongfunsies.util.MathUtil;
 
 public class Computer extends Player{
+    //null for now
+    Policy policy = new RandomPolicy();
 
     public Computer(int index){
         super(index);
@@ -16,9 +19,8 @@ public class Computer extends Player{
 
     @Override
     public boolean trySelect() {
-        if(!legalMoves.isEmpty() && move instanceof NullCommand){
-            int moveIndex = MathUtil.randInt(0, legalMoves.size() - 1);
-            move = legalMoves.get(moveIndex);
+        if(move instanceof NullCommand){
+            move = policy.select(legalMoves);
             return true;
         }
         return false;
