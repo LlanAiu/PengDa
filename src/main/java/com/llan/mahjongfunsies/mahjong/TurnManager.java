@@ -137,6 +137,10 @@ public class TurnManager {
         currentTurnIndex = index;
     }
 
+    public int getCurrentTurnIndex(){
+        return currentTurnIndex;
+    }
+
     public void checkWin(){
         for(Player player : players){
             if(player.hasWon()){
@@ -152,5 +156,13 @@ public class TurnManager {
 
     public Player getPlayerByIndex(int index){
         return players[index];
+    }
+
+    public Card[][] getCards(){
+        Card[][] hands = new Card[players.length][];
+        for(int i = 0; i < hands.length; i++){
+            hands[i] = players[i].getCards();
+        }
+        return hands;
     }
 }

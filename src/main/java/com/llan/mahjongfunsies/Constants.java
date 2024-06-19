@@ -3,7 +3,9 @@ package com.llan.mahjongfunsies;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class Constants {
     public static final int CARD_DUPLICATES = 4;
@@ -20,24 +22,29 @@ public final class Constants {
     public static final int WIN_PRIORITY = 1;
 
 
-    public static final Card[] allCards;
+    public static final Card[] ALL_CARDS;
+    public static final Map<Card, Integer> CARD_INDICES;
 
     static {
         List<Card> cardsList = new ArrayList<>();
+        CARD_INDICES = new HashMap<>();
+        int index = 0;
         for(Card.Suit suit : Card.Suit.values()){
             if(suit == Card.Suit.HONOR){
                 for(Card.HonorType honor : Card.HonorType.values()){
                     if(honor != Card.HonorType.NONE){
-                        cardsList.add(new Card(honor));
+                        cardsList.add(Card.of(honor));
+                        CARD_INDICES.put(Card.of(honor), index++);
                     }
                 }
             } else {
                 for(int value : Constants.CARD_VALUES){
-                    cardsList.add(new Card(suit, value));
+                    cardsList.add(Card.of(suit, value));
+                    CARD_INDICES.put(Card.of(suit, value), index++);
                 }
             }
         }
-        allCards = cardsList.toArray(new Card[cardsList.size()]);
-        TOTAL_DECK_SIZE = allCards.length * CARD_DUPLICATES;
+        ALL_CARDS = cardsList.toArray(new Card[cardsList.size()]);
+        TOTAL_DECK_SIZE = ALL_CARDS.length * CARD_DUPLICATES;
     }
 }

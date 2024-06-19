@@ -27,6 +27,6 @@ public class Prompting extends GameStatus {
     public void onTransition() {
         player.getSelectedMove().execute();
         Board.getInstance().removePrompter();
-        game.setState(new Premove());
+        game.setStatus(new Premove());
     }
 }

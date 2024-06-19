@@ -24,9 +24,9 @@ public class Premove extends GameStatus {
     @Override
     public void onTransition() {
         if(end){
-            game.setState(new End());
+            game.setStatus(new End());
         } else {
-            game.setState(new Checking());
+            game.setStatus(new Checking());
         }
     }
 }

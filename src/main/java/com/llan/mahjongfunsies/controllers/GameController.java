@@ -8,11 +8,7 @@ import com.llan.mahjongfunsies.util.DisplayUtil;
 import com.llan.mahjongfunsies.util.SubjectBase;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.util.Duration;
-
-import java.sql.Time;
 
 public class GameController {
 
@@ -60,7 +56,7 @@ public class GameController {
     }
 
     public String getCurrentGameState(){
-        return currentGame.getState();
+        return currentGame.getStatus();
     }
 
     public Player getPlayerByOrientation(DisplayUtil.Orientation orientation){

@@ -31,10 +31,10 @@ public class Checking extends GameStatus {
     public void onTransition() {
         if(prompting){
             game.drawCard();
-            game.setState(new Prompting(toPrompt.getPlayerIndex()));
+            game.setStatus(new Prompting(toPrompt.getPlayerIndex()));
         } else {
             game.postTurn();
-            game.setState(new Postchecking());
+            game.setStatus(new Postchecking());
         }
     }
 }

@@ -10,8 +10,6 @@ import com.llan.mahjongfunsies.util.Triplet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 public class Hand extends Subdeck{
@@ -148,7 +146,7 @@ public class Hand extends Subdeck{
         Hand possibleHands = new Hand();
         List<Card> winningCards = new ArrayList<>();
         possibleHands.addCards(cards);
-        for(Card card : Constants.allCards){
+        for(Card card : Constants.ALL_CARDS){
             possibleHands.addCard(card);
             possibleHands.sort();
             if(CardUtil.isWinning(possibleHands)){

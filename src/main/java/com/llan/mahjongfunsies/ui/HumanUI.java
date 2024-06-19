@@ -20,7 +20,7 @@ public class HumanUI extends HandUI{
         super(orientation);
         box = new HBox();
         debugButton = new Button("State");
-        debugButton.setOnAction(action -> System.out.println("Current State: " + GameController.getInstance().getCurrentGame().getState()));
+        debugButton.setOnAction(action -> System.out.println("Current State: " + GameController.getInstance().getCurrentGame().getStatus()));
         moveUI = new PostMoveUI(GameController.getInstance().getPlayerByOrientation(orientation));
         box.getChildren().add(moveUI.getNode());
         box.getChildren().add(grid);

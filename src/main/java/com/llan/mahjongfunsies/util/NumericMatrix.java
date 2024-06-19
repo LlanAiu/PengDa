@@ -18,9 +18,13 @@ public class NumericMatrix {
 
     public void setRow(double[] values, int row){
         for(int i = 0; i < matrix[row].length; i++){
-            if(values.length > i){
-                matrix[row][i] = values[i];
-            }
+            matrix[row][i] = values[i];
+        }
+    }
+
+    public void setRow(int[] values, int row, int start){
+        for(int i = 0; i < values.length; i++){
+            matrix[row][i + start] = values[i];
         }
     }
 

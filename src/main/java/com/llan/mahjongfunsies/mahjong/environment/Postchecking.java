@@ -24,18 +24,18 @@ public class Postchecking extends GameStatus {
         if(move.isPresent()){
             move.ifPresent(command -> {
                 if(command instanceof Straight && !((Straight) command).isSelected()){
-                    game.setState(new Prompting(((Straight) command).getPlayerIndex()));
+                    game.setStatus(new Prompting(((Straight) command).getPlayerIndex()));
                 } else {
                     command.execute();
-                    game.setState(new Premove());
+                    game.setStatus(new Premove());
                 }
             });
         } else {
             if(game.noCardsLeft()){
-                game.setState(new End());
+                game.setStatus(new End());
             } else {
                 game.nextTurn();
-                game.setState(new Premove());
+                game.setStatus(new Premove());
             }
         }
     }

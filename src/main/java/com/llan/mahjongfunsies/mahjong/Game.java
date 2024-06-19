@@ -1,5 +1,8 @@
 package com.llan.mahjongfunsies.mahjong;
 
+import com.llan.mahjongfunsies.ai.Environment;
+import com.llan.mahjongfunsies.ai.Feature;
+import com.llan.mahjongfunsies.ai.State;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
@@ -16,7 +19,7 @@ import com.llan.mahjongfunsies.util.Triplet;
 
 import java.util.Optional;
 
-public class Game implements Episode {
+public class Game implements Episode, Environment {
 
     private final TurnManager manager;
     private final Discard discard;
@@ -101,12 +104,17 @@ public class Game implements Episode {
         return deck.isEmpty();
     }
 
-    public void setState(Status status){
+    public void setStatus(Status status){
         this.status = status;
     }
 
-    public String getState(){
+    public String getStatus(){
         return status.getClass().getSimpleName();
+    }
+
+    @Override
+    public State getState() {
+        return new Feature(manager.getCards(), manager.getCurrentTurnIndex(), deck.cardsRemaining(), discard.readAll());
     }
 
     public void playCard(Card card, int index){

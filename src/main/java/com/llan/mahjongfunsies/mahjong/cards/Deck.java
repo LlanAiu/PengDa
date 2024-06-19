@@ -50,7 +50,7 @@ public class Deck {
         if(!cards.isEmpty()) {
             cards.removeAll(cards);
         }
-        for(Card card : Constants.allCards){
+        for(Card card : Constants.ALL_CARDS){
             for(int i = 0; i < Constants.CARD_DUPLICATES; i++){
                 cards.add(Card.copyOf(card));
             }
