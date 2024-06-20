@@ -26,6 +26,7 @@ public class DrawnQuad extends CommandBase implements Ambiguous{
 
     @Override
     public void play() {
+        currentGame.record(this, playerIndex);
         if(reveal){
             hand.addCardsToRevealedSet(toReveal, setNumber);
         } else {

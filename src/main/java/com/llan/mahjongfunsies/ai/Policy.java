@@ -7,5 +7,5 @@ import java.util.List;
 public abstract class Policy {
     ValueFunction function;
 
-    public abstract Command select(List<Command> actions);
+    public abstract Command select(List<Command> actions, State currentState);
 }

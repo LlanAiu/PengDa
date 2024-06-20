@@ -10,6 +10,7 @@ public class PlayCard extends CommandBase{
 
     @Override
     public void play() {
+        currentGame.record(this, playerIndex);
         currentGame.playCard(card, playerIndex);
     }
 }

@@ -68,7 +68,11 @@ public abstract class Player {
 
     public void reveal(){
         List<Card> cards = hand.filterOutSets(false);
-        this.reveal(cards);
+        List<Card> modifiable = new ArrayList<>();
+        for(Card card : cards){
+            modifiable.add(card);
+        }
+        this.reveal(modifiable);
     }
 
     public List<Card> getSetOf(GameAction action, Card card, Optional<Triplet> cards){
@@ -89,6 +93,7 @@ public abstract class Player {
 
     public void setLegalPostMoves(Card lastPlayed, int lastPlayerIndex){
         this.clearLegalMoves();
+        legalMoves.add(new NullCommand());
         int num = hand.countNonSetIdentical(lastPlayed);
         if (num >= 2) {
             legalMoves.add(new Triple(index));

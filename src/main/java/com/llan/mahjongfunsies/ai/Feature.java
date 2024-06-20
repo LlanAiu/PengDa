@@ -10,13 +10,15 @@ public class Feature implements State{
     private final int currentTurnIndex;
     private final int remainingDeck;
     private final Card[] discard;
+    private final boolean ended;
 
-    public Feature(Card[][] currentHands, int currentTurnIndex, int remainingDeck, Card[] discard){
+    public Feature(Card[][] currentHands, int currentTurnIndex, int remainingDeck, Card[] discard, boolean ended){
         this.hands = currentHands;
         this.currentTurnIndex = currentTurnIndex;
         this.remainingDeck = remainingDeck;
         this.discard = discard;
         this.encodings = new NumericMatrix[Constants.NUM_PLAYERS];
+        this.ended = ended;
         generateEncodings();
     }
 
@@ -27,9 +29,9 @@ public class Feature implements State{
             encodings[i].setValue((currentTurnIndex == i) ? 1 : 0, 0, 0);
             encodings[i].setValue(remainingDeck, 0, 1);
             for(int j = 0; j < hands.length; j++){
-                encodings[i].setRow(encodingSubset(hands[j], j == i), 1, j * Constants.ALL_CARDS.length + 2);
+                encodings[i].setRow(encodingSubset(hands[j], j == i), 0, j * Constants.ALL_CARDS.length + 2);
             }
-            encodings[i].setRow(discardEncoding, 1, hands.length * Constants.ALL_CARDS.length + 2);
+            encodings[i].setRow(discardEncoding, 0, hands.length * Constants.ALL_CARDS.length + 2);
         }
     }
 
@@ -38,6 +40,10 @@ public class Feature implements State{
         return encodings[playerIndex];
     }
 
+    @Override
+    public boolean isTerminal() {
+        return ended;
+    }
 
     private int[] encodingSubset(Card[] subdeck, boolean hiddenOverride){
         int[] count = new int[Constants.ALL_CARDS.length];

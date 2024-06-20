@@ -101,7 +101,6 @@ public class DisplayUtil {
         }
         tile.setOnMouseClicked(mouseEvent -> {
             if (shouldShow) {
-                System.out.println(card + "; Player Index: " + GameController.getInstance().getPlayerByOrientation(orientation).getIndex());
                 InputHandler.getInstance().onCardPressed(((IndexedPane) tile).getIndex(), card, GameController.getInstance().getPlayerByOrientation(orientation).getIndex());
                 Board.getInstance().setSelected(orientation, cardIndex);
             }

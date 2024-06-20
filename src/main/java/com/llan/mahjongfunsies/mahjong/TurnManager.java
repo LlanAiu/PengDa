@@ -23,21 +23,14 @@ public class TurnManager {
     private int currentTurnIndex;
     private int winningIndex = -1;
 
+    private List<PrioritizedPostMove> postMoves;
     private Map<DisplayUtil.Orientation, Player> playerOrientations;
-
-//    private static TurnManager instance;
-//
-//    public static TurnManager getInstance(){
-//        if(instance == null){
-//            instance = new TurnManager();
-//        }
-//        return instance;
-//    }
 
     public TurnManager(){
         currentTurnIndex = 0;
         humanIndex = 0;
         players = new Player[Constants.NUM_PLAYERS];
+        postMoves = new ArrayList<>(4);
         playerOrientations = new HashMap<>();
         for(int i = 0; i < players.length; i++){
             if(i == humanIndex){
@@ -79,21 +72,24 @@ public class TurnManager {
     }
 
     public Optional<Command> getMoveByPriority(){
-        List<Command> moves = new ArrayList<>();
-        Arrays.stream(players).filter(player -> player.getIndex() != currentTurnIndex).forEach(player -> moves.add(player.getSelectedMove()));
-        moves.sort(Comparator.comparingInt(o -> ((PrioritizedPostMove) o).getPriority()));
-        if(!(moves.getFirst() instanceof NullCommand)){
-            System.out.println("Selected Command: " + moves.getFirst().toString());
-            return Optional.of(moves.getFirst());
+        postMoves.clear();
+        Arrays.stream(players).filter(player -> player.getIndex() != currentTurnIndex).forEach(player -> postMoves.add((PrioritizedPostMove) player.getSelectedMove()));
+        postMoves.sort(Comparator.comparingInt(o -> o.getPriority()));
+        if(!(postMoves.getFirst() instanceof NullCommand)){
+            System.out.println("Selected Command: " + postMoves.getFirst().toString());
+            return Optional.of(postMoves.getFirst());
         }
         return Optional.empty();
+    }
+
+    public List<PrioritizedPostMove> getAllPostMoves(){
+        return postMoves;
     }
 
     //For current turn only
     public void setPlayableMoves(){
         players[currentTurnIndex].setPlayingMoves();
         if(currentTurnIndex == humanIndex){
-            System.out.println("Board updated to show human move buttons (if applicable)");
             Board.getInstance().updateSetBasedMoves(players[humanIndex].getLegalMoves());
         }
     }
@@ -128,7 +124,7 @@ public class TurnManager {
         players[index].endFirstMove();
     }
 
-    public void incrementTurn(){
+    public void nextPlayer(){
         currentTurnIndex++;
         currentTurnIndex %= Constants.NUM_PLAYERS;
     }

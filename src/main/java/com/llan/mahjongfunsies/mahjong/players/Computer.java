@@ -20,7 +20,7 @@ public class Computer extends Player{
     @Override
     public boolean trySelect() {
         if(move instanceof NullCommand){
-            move = policy.select(legalMoves);
+            move = policy.select(legalMoves, null);
             return true;
         }
         return false;

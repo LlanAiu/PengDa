@@ -8,7 +8,7 @@ import java.util.List;
 
 public class RandomPolicy extends Policy{
     @Override
-    public Command select(List<Command> actions) {
+    public Command select(List<Command> actions, State currentState) {
         if(!actions.isEmpty()){
             int moveIndex = MathUtil.randInt(0, actions.size() - 1);
             return actions.get(moveIndex);

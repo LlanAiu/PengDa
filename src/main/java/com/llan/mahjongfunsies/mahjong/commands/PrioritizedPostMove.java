@@ -27,6 +27,10 @@ public abstract class PrioritizedPostMove extends CommandBase{
         return priority == Constants.NULL_PRIORITY;
     }
 
+    public void record(){
+        currentGame.record(this, playerIndex);
+    }
+
     //only called once, should just return a constant
     abstract int setPriority();
 
