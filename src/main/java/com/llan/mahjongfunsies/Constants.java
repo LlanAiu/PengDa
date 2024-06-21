@@ -21,6 +21,7 @@ public final class Constants {
     public static final int QUAD_PRIORITY = 2;
     public static final int WIN_PRIORITY = 1;
 
+    public static final int DRAW = -1;
 
     public static final Card[] ALL_CARDS;
     public static final Map<Card, Integer> CARD_INDICES;

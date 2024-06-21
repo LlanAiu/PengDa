@@ -1,7 +1,7 @@
 package com.llan.mahjongfunsies.mahjong.players;
 
-import com.llan.mahjongfunsies.ai.Policy;
-import com.llan.mahjongfunsies.ai.RandomPolicy;
+import com.llan.mahjongfunsies.ai.policies.Policy;
+import com.llan.mahjongfunsies.ai.policies.RandomPolicy;
 import com.llan.mahjongfunsies.mahjong.commands.NullCommand;
 
 public class Computer extends Player{

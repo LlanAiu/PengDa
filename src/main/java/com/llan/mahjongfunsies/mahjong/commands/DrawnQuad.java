@@ -32,6 +32,7 @@ public class DrawnQuad extends CommandBase implements Ambiguous{
         } else {
             hand.createSet(toReveal, setNumber);
         }
+        currentGame.updateState();
     }
 
     @Override

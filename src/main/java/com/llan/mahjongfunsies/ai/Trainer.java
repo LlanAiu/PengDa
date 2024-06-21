@@ -1,10 +1,7 @@
 package com.llan.mahjongfunsies.ai;
 
-import com.llan.mahjongfunsies.mahjong.Game;
-
 public class Trainer {
     private static Trainer instance;
-    private Game currentGame;
 
     public static Trainer getInstance(){
         if(instance == null){
@@ -13,7 +10,7 @@ public class Trainer {
         return instance;
     }
 
-    public Trainer(){
+    private Trainer(){
 
     }
 }

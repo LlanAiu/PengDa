@@ -93,7 +93,7 @@ public abstract class Player {
 
     public void setLegalPostMoves(Card lastPlayed, int lastPlayerIndex){
         this.clearLegalMoves();
-        legalMoves.add(new NullCommand());
+        legalMoves.add(new Nothing(index));
         int num = hand.countNonSetIdentical(lastPlayed);
         if (num >= 2) {
             legalMoves.add(new Triple(index));

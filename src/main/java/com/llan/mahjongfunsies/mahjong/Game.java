@@ -1,9 +1,9 @@
 package com.llan.mahjongfunsies.mahjong;
 
 import com.llan.mahjongfunsies.ai.AIConstants;
-import com.llan.mahjongfunsies.ai.Environment;
-import com.llan.mahjongfunsies.ai.Feature;
-import com.llan.mahjongfunsies.ai.State;
+import com.llan.mahjongfunsies.ai.components.Environment;
+import com.llan.mahjongfunsies.ai.components.Feature;
+import com.llan.mahjongfunsies.ai.components.State;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
@@ -29,6 +29,7 @@ public class Game implements Episode, Environment {
     private final Deck deck;
     private final GameRecord record;
     private Status status;
+    private State currentState;
     private int turnNumber;
 
     public Game(){
@@ -47,6 +48,7 @@ public class Game implements Episode, Environment {
         manager.drawInitialHands();
         manager.drawCard();
         status = new Premove();
+        updateState();
     }
 
     @Override
@@ -98,6 +100,7 @@ public class Game implements Episode, Environment {
     }
 
     public Optional<Command> getPostMove(){
+        manager.collectPostMoves();
         recordAllPostMoves();
         return manager.getMoveByPriority();
     }
@@ -131,7 +134,18 @@ public class Game implements Episode, Environment {
 
     @Override
     public State getState() {
-        return new Feature(manager.getCards(), manager.getCurrentTurnIndex(), deck.cardsRemaining(), discard.readAll(), isFinished());
+        return currentState;
+    }
+
+    public void updateState() {
+        currentState = new Feature(
+                manager.getCards(),
+                manager.getCurrentTurnIndex(),
+                deck.cardsRemaining(),
+                discard.readAll(),
+                isFinished(),
+                getWinningIndex()
+        );
     }
 
     public double getReward(int playerIndex){

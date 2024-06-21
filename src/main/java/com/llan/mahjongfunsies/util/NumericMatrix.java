@@ -12,6 +12,15 @@ public class NumericMatrix {
         matrix = new double[rows][columns];
     }
 
+    public NumericMatrix(int rows, int columns, double minRandomValue, double maxRandomValue){
+        this(rows, columns);
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++){
+                matrix[i][j] = MathUtil.random(minRandomValue, maxRandomValue);
+            }
+        }
+    }
+
     public void setValue(double value, int row, int column){
         matrix[row][column] = value;
     }
@@ -91,6 +100,13 @@ public class NumericMatrix {
             }
         }
         return result;
+    }
+
+    public double convertToDouble(){
+        if(this.columns() != 1 || this.rows() != 1){
+            throw new UnsupportedOperationException("Cannot convert multidimensional matrix to a double");
+        }
+        return matrix[0][0];
     }
 
     @Override

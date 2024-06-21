@@ -2,11 +2,10 @@ package com.llan.mahjongfunsies.util;
 
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.ai.AIConstants;
-import com.llan.mahjongfunsies.ai.State;
+import com.llan.mahjongfunsies.ai.components.State;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GameRecord {

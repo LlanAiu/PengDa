@@ -1,5 +1,6 @@
 package com.llan.mahjongfunsies.mahjong.environment;
 
+import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.commands.Straight;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
 
@@ -14,8 +15,12 @@ public class Postchecking extends GameStatus {
     @Override
     public void periodic() {
         game.pollAll();
-        polledTries++;
-        shouldTransition = polledTries >= DisplayConstants.MAX_POLLED_FRAMES;
+        if(GameController.getInstance().isTraining()){
+            shouldTransition = true;
+        } else {
+            polledTries++;
+            shouldTransition = polledTries >= DisplayConstants.MAX_POLLED_FRAMES;
+        }
     }
 
     @Override

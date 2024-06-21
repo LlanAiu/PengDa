@@ -72,14 +72,18 @@ public class TurnManager {
     }
 
     public Optional<Command> getMoveByPriority(){
-        postMoves.clear();
-        Arrays.stream(players).filter(player -> player.getIndex() != currentTurnIndex).forEach(player -> postMoves.add((PrioritizedPostMove) player.getSelectedMove()));
         postMoves.sort(Comparator.comparingInt(o -> o.getPriority()));
-        if(!(postMoves.getFirst() instanceof NullCommand)){
+        if(!postMoves.getFirst().isNull()){
             System.out.println("Selected Command: " + postMoves.getFirst().toString());
             return Optional.of(postMoves.getFirst());
         }
         return Optional.empty();
+    }
+
+    public void collectPostMoves(){
+        postMoves.clear();
+        Arrays.stream(players).filter(player -> player.getIndex() != currentTurnIndex)
+                .forEach(player -> postMoves.add((PrioritizedPostMove) player.getSelectedMove()));
     }
 
     public List<PrioritizedPostMove> getAllPostMoves(){

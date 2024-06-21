@@ -1,4 +1,4 @@
-package com.llan.mahjongfunsies.ai;
+package com.llan.mahjongfunsies.ai.components;
 
 import com.llan.mahjongfunsies.util.NumericMatrix;
 

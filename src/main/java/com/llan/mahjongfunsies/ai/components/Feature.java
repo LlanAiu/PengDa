@@ -1,7 +1,9 @@
-package com.llan.mahjongfunsies.ai;
+package com.llan.mahjongfunsies.ai.components;
 
 import com.llan.mahjongfunsies.Constants;
+import com.llan.mahjongfunsies.ai.AIConstants;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
+import com.llan.mahjongfunsies.mahjong.commands.Command;
 import com.llan.mahjongfunsies.util.NumericMatrix;
 
 public class Feature implements State{
@@ -11,14 +13,16 @@ public class Feature implements State{
     private final int remainingDeck;
     private final Card[] discard;
     private final boolean ended;
+    private final int winningIndex;
 
-    public Feature(Card[][] currentHands, int currentTurnIndex, int remainingDeck, Card[] discard, boolean ended){
+    public Feature(Card[][] currentHands, int currentTurnIndex, int remainingDeck, Card[] discard, boolean ended, int winningIndex){
         this.hands = currentHands;
         this.currentTurnIndex = currentTurnIndex;
         this.remainingDeck = remainingDeck;
         this.discard = discard;
         this.encodings = new NumericMatrix[Constants.NUM_PLAYERS];
         this.ended = ended;
+        this.winningIndex = winningIndex;
         generateEncodings();
     }
 
@@ -36,7 +40,7 @@ public class Feature implements State{
     }
 
     @Override
-    public NumericMatrix getFeature(int playerIndex){
+    public NumericMatrix getFeature(int playerIndex) {
         return encodings[playerIndex];
     }
 
@@ -45,7 +49,17 @@ public class Feature implements State{
         return ended;
     }
 
-    private int[] encodingSubset(Card[] subdeck, boolean hiddenOverride){
+    public int getWinningIndex() {
+        return winningIndex;
+    }
+
+
+    public Feature apply(Command action){
+        //do something here dunno how yet
+        return null;
+    }
+
+    private int[] encodingSubset(Card[] subdeck, boolean hiddenOverride) {
         int[] count = new int[Constants.ALL_CARDS.length];
         for(Card card : subdeck){
             if(!card.isHidden() || hiddenOverride){

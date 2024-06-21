@@ -56,5 +56,6 @@ public class Straight extends PrioritizedPostMove implements Ambiguous{
     @Override
     public void play() {
         currentGame.addLastCardToPlayer(getActionType(), playerIndex, Optional.of(cards));
+        currentGame.updateState();
     }
 }

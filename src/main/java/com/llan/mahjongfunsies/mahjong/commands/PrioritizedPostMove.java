@@ -28,6 +28,7 @@ public abstract class PrioritizedPostMove extends CommandBase{
     }
 
     public void record(){
+        System.out.println("Move recorded: " + getClass().getSimpleName());
         currentGame.record(this, playerIndex);
     }
 
@@ -39,5 +40,6 @@ public abstract class PrioritizedPostMove extends CommandBase{
     @Override
     public void play() {
         currentGame.addLastCardToPlayer(getActionType(), playerIndex, Optional.empty());
+        currentGame.updateState();
     }
 }

@@ -1,6 +1,6 @@
 package com.llan.mahjongfunsies.util;
 
-import com.llan.mahjongfunsies.ai.State;
+import com.llan.mahjongfunsies.ai.components.State;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
 
 public record TurnRecord (

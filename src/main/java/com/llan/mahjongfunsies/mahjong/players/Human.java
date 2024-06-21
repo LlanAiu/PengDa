@@ -1,6 +1,7 @@
 package com.llan.mahjongfunsies.mahjong.players;
 
 import com.llan.mahjongfunsies.mahjong.commands.CommandBase;
+import com.llan.mahjongfunsies.mahjong.commands.Nothing;
 import com.llan.mahjongfunsies.mahjong.commands.NullCommand;
 import com.llan.mahjongfunsies.ui.InputHandler;
 
@@ -17,6 +18,9 @@ public class Human extends Player{
 
     @Override
     public boolean trySelect() {
+        if(!legalMoves.isEmpty() && move instanceof NullCommand){
+            move = new Nothing(index);
+        }
         CommandBase input = InputHandler.getInstance().getLastInputMove();
         if(!(input instanceof NullCommand)){
             if(input.getPlayerIndex() == index){

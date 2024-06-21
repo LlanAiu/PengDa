@@ -3,9 +3,11 @@ package com.llan.mahjongfunsies.mahjong.commands;
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 
-public class NullCommand extends PrioritizedPostMove{
+public class Nothing extends PrioritizedPostMove{
 
-    public NullCommand(){}
+    public Nothing(int index){
+        super(index);
+    }
 
     @Override
     int setPriority() {
@@ -15,10 +17,5 @@ public class NullCommand extends PrioritizedPostMove{
     @Override
     GameAction getActionType() {
         return null;
-    }
-
-    @Override
-    public void play() {
-        throw new UnsupportedOperationException("Null Command Is Not Playable!");
     }
 }

@@ -36,6 +36,9 @@ public class Discard extends Subdeck{
     }
 
     public Card getLastPlayed(){
+        if(cards.isEmpty()){
+            return Card.none();
+        }
         return cards.getLast();
     }
 
