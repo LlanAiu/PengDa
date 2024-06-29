@@ -20,6 +20,7 @@ import com.llan.mahjongfunsies.util.Episode;
 import com.llan.mahjongfunsies.util.GameRecord;
 import com.llan.mahjongfunsies.util.Triplet;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class Game implements Episode, Environment {
@@ -138,11 +139,13 @@ public class Game implements Episode, Environment {
     }
 
     public void updateState() {
+        ArrayList<Card> discardList = new ArrayList<>();
+        discardList.addAll(discard.getCards());
         currentState = new Feature(
                 manager.getCards(),
                 manager.getCurrentTurnIndex(),
                 deck.cardsRemaining(),
-                discard.readAll(),
+                discardList,
                 isFinished(),
                 getWinningIndex()
         );

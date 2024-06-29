@@ -13,6 +13,7 @@ import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.util.DisplayUtil;
 import com.llan.mahjongfunsies.util.Triplet;
 
+import java.sql.Array;
 import java.util.*;
 
 public class TurnManager {
@@ -158,10 +159,12 @@ public class TurnManager {
         return players[index];
     }
 
-    public Card[][] getCards(){
-        Card[][] hands = new Card[players.length][];
+    public ArrayList<Card>[] getCards(){
+        ArrayList<Card>[] hands = new ArrayList[Constants.NUM_PLAYERS];
         for(int i = 0; i < hands.length; i++){
-            hands[i] = players[i].getCards();
+            Card[] cards = players[i].getCards();
+            hands[i] = new ArrayList<>(cards.length);
+            hands[i].addAll(List.of(cards));
         }
         return hands;
     }
