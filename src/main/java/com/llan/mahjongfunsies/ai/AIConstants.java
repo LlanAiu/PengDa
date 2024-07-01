@@ -12,4 +12,5 @@ public final class AIConstants {
     public static final double STARTING_WEIGHT_MAX = 0.2;
 
     public static final double DEFAULT_EPSILON = 0.05;
+    public static final double DISCOUNT = 0.99;
 }

@@ -14,6 +14,7 @@ public final class Constants {
     public static final int STARTING_CARDS = 13;
 
     public static final int NUM_PLAYERS = 4;
+    public static final int HUMAN_INDEX = 0;
 
     public static final int NULL_PRIORITY = 100000;
     public static final int STRAIGHT_PRIORITY = 4;

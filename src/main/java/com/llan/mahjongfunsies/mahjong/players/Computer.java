@@ -1,15 +1,18 @@
 package com.llan.mahjongfunsies.mahjong.players;
 
 import com.llan.mahjongfunsies.ai.policies.Policy;
-import com.llan.mahjongfunsies.ai.policies.RandomPolicy;
 import com.llan.mahjongfunsies.mahjong.commands.NullCommand;
 
 public class Computer extends Player{
-    //null for now
-    Policy policy = new RandomPolicy();
+    private Policy policy;
 
-    public Computer(int index){
+    public Computer(int index, Policy policy){
         super(index);
+        this.policy = policy;
+    }
+
+    public Policy getPolicy(){
+        return policy;
     }
 
     @Override

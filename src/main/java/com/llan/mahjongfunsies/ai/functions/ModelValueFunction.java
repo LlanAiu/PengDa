@@ -12,11 +12,20 @@ public abstract class ModelValueFunction extends ValueFunction{
 
     public abstract Model getModel();
 
-    public abstract double stateValue(State state);
-
     @Override
     public double valueOf(State state, Command command) {
         State resultingState = model.getResultingStateOf(state, command);
-        return stateValue(resultingState) + model.getRewardOf(resultingState);
+        return valueOf(resultingState);
+    }
+
+    @Override
+    public double totalValueOf(State state, Command command) {
+        State resultingState = model.getResultingStateOf(state, command);
+        return valueOf(resultingState) + rewardOf(resultingState);
+    }
+
+    @Override
+    public double rewardOf(State state) {
+        return model.getRewardOf(state);
     }
 }

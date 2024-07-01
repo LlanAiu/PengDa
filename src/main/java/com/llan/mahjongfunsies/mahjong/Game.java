@@ -13,6 +13,7 @@ import com.llan.mahjongfunsies.mahjong.environment.End;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.environment.Premove;
 import com.llan.mahjongfunsies.mahjong.environment.Status;
+import com.llan.mahjongfunsies.mahjong.players.Computer;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.util.DisplayUtil;
@@ -33,8 +34,8 @@ public class Game implements Episode, Environment {
     private State currentState;
     private int turnNumber;
 
-    public Game(){
-        manager = new TurnManager();
+    public Game(TurnManager.GameMode mode){
+        manager = new TurnManager(mode);
         discard = Discard.getInstance();
         deck = Deck.getInstance();
         record = new GameRecord();
@@ -194,5 +195,9 @@ public class Game implements Episode, Environment {
 
     public Player getPlayerByIndex(int index){
         return manager.getPlayerByIndex(index);
+    }
+
+    public Computer[] getPlayers(){
+        return manager.getPlayers();
     }
 }

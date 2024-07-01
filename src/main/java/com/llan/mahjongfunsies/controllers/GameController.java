@@ -2,6 +2,7 @@ package com.llan.mahjongfunsies.controllers;
 
 import com.llan.mahjongfunsies.ai.Trainer;
 import com.llan.mahjongfunsies.mahjong.Game;
+import com.llan.mahjongfunsies.mahjong.TurnManager;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
@@ -16,6 +17,9 @@ public class GameController {
     private Game currentGame;
     private boolean ended;
     private boolean training;
+
+    private Trainer trainer;
+
     private static GameController instance;
 
     public static GameController getInstance(){
@@ -31,7 +35,7 @@ public class GameController {
 
     public void initialize(){
         training = false;
-        currentGame = new Game();
+        currentGame = new Game(TurnManager.GameMode.NORMAL);
         currentGame.onStart();
         ended = false;
         Board.getInstance().displayState();
@@ -45,7 +49,7 @@ public class GameController {
 
     public void initializeTraining(){
         training = true;
-        currentGame = new Game();
+        currentGame = new Game(TurnManager.GameMode.TRAINING);
         ended = false;
         currentGame.onStart();
         while(!ended){
@@ -57,7 +61,7 @@ public class GameController {
         if(!currentGame.isFinished()){
             currentGame.run();
             if(training){
-                //do something
+                trainer.update();
             }
         } else {
             if(!ended){

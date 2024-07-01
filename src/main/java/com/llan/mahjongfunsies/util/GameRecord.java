@@ -50,6 +50,9 @@ public class GameRecord {
 
     //also in reverse order, e.g. last turn in index 0
     public TurnRecord[] getLast(int playerIndex, int numTurns){
+        if(recordedTurns[playerIndex].size() < numTurns){
+            return null;
+        }
         TurnRecord[] turns = new TurnRecord[numTurns];
         int lastIndex = recordedTurns[playerIndex].size() - 1;
         for(int i = 0; i < numTurns; i++){
@@ -57,4 +60,5 @@ public class GameRecord {
         }
         return turns;
     }
+
 }

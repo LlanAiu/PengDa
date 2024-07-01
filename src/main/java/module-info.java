@@ -4,6 +4,7 @@ module com.llan.mahjongfunsies {
     requires org.jetbrains.annotations;
     requires java.desktop;
     requires java.sql;
+    requires jdk.jdi;
 
 
     opens com.llan.mahjongfunsies to javafx.fxml;

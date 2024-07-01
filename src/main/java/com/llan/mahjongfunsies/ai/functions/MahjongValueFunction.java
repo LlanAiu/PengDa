@@ -15,7 +15,15 @@ public class MahjongValueFunction extends ModelValueFunction{
     }
 
     @Override
-    public double stateValue(State state) {
+    public double valueOf(State state) {
+        if(state.isTerminal()){
+            return 0.0;
+        }
         return state.getFeature(playerIndex).times(weights).convertToDouble();
+    }
+
+    @Override
+    public double rewardOf(State state) {
+        return model.getRewardOf(state);
     }
 }

@@ -1,9 +1,10 @@
 package com.llan.mahjongfunsies.mahjong;
 
 import com.llan.mahjongfunsies.Constants;
+import com.llan.mahjongfunsies.ai.policies.RandomPolicy;
+import com.llan.mahjongfunsies.ai.policies.SoftMahjongPolicy;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
-import com.llan.mahjongfunsies.mahjong.commands.NullCommand;
 import com.llan.mahjongfunsies.mahjong.commands.PrioritizedPostMove;
 import com.llan.mahjongfunsies.mahjong.environment.GameAction;
 import com.llan.mahjongfunsies.mahjong.players.Computer;
@@ -13,31 +14,38 @@ import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.util.DisplayUtil;
 import com.llan.mahjongfunsies.util.Triplet;
 
-import java.sql.Array;
 import java.util.*;
 
 public class TurnManager {
+    public enum GameMode {
+        TRAINING,
+        NORMAL;
+    }
     private Player[] players;
 
     //replace with a mode enum, eventually
-    private int humanIndex;
+    private GameMode mode;
     private int currentTurnIndex;
     private int winningIndex = -1;
 
     private List<PrioritizedPostMove> postMoves;
     private Map<DisplayUtil.Orientation, Player> playerOrientations;
 
-    public TurnManager(){
+    public TurnManager(GameMode mode){
         currentTurnIndex = 0;
-        humanIndex = 0;
         players = new Player[Constants.NUM_PLAYERS];
         postMoves = new ArrayList<>(4);
         playerOrientations = new HashMap<>();
+        this.mode = mode;
         for(int i = 0; i < players.length; i++){
-            if(i == humanIndex){
-                players[i] = new Human(i);
+            if(mode == GameMode.NORMAL){
+                if(i == Constants.HUMAN_INDEX){
+                    players[i] = new Human(i);
+                } else {
+                    players[i] = new Computer(i, new RandomPolicy());
+                }
             } else {
-                players[i] = new Computer(i);
+                players[i] = new Computer(i, new SoftMahjongPolicy(i));
             }
         }
         playerOrientations.put(DisplayUtil.Orientation.DOWN, players[0]);
@@ -94,8 +102,8 @@ public class TurnManager {
     //For current turn only
     public void setPlayableMoves(){
         players[currentTurnIndex].setPlayingMoves();
-        if(currentTurnIndex == humanIndex){
-            Board.getInstance().updateSetBasedMoves(players[humanIndex].getLegalMoves());
+        if(currentTurnIndex == Constants.HUMAN_INDEX && mode == GameMode.NORMAL){
+            Board.getInstance().updateSetBasedMoves(players[Constants.HUMAN_INDEX].getLegalMoves());
         }
     }
 
@@ -103,7 +111,9 @@ public class TurnManager {
     public void setPostPlayableMoves(Card lastPlayed){
         Arrays.stream(players).filter(player -> player.getIndex() != currentTurnIndex).forEach(player -> player.setLegalPostMoves(lastPlayed, currentTurnIndex));
         players[currentTurnIndex].clearLegalMoves();
-        Board.getInstance().updateSetBasedMoves(players[humanIndex].getLegalMoves());
+        if(mode == GameMode.NORMAL){
+            Board.getInstance().updateSetBasedMoves(players[Constants.HUMAN_INDEX].getLegalMoves());
+        }
     }
 
     public void drawInitialHands(){
@@ -167,5 +177,15 @@ public class TurnManager {
             hands[i].addAll(List.of(cards));
         }
         return hands;
+    }
+
+    //strictly training use only
+    public Computer[] getPlayers(){
+        if(mode == GameMode.NORMAL){
+            throw new UnsupportedOperationException("Player Information Protected Under Normal Gameplay!");
+        } else {
+            Computer[] computers = (Computer[]) players;
+            return computers;
+        }
     }
 }

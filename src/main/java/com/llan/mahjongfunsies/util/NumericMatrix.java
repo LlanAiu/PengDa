@@ -102,6 +102,16 @@ public class NumericMatrix {
         return result;
     }
 
+    public NumericMatrix scale(double value){
+        NumericMatrix result = new NumericMatrix(this.rows(), this.columns());
+        for(int row = 0; row < result.rows(); row++){
+            for(int col = 0; col < result.columns(); col++){
+                result.setValue(this.getValue(row, col) * value, row, col);
+            }
+        }
+        return result;
+    }
+
     public double convertToDouble(){
         if(this.columns() != 1 || this.rows() != 1){
             throw new UnsupportedOperationException("Cannot convert multidimensional matrix to a double");

@@ -29,7 +29,7 @@ public abstract class EpsilonGreedy extends Policy{
             int index = -1;
             double maxValue = Double.MIN_VALUE;
             for(int i = 0; i < actions.size(); i++){
-                double value = function.valueOf(currentState, actions.get(i));
+                double value = function.totalValueOf(currentState, actions.get(i));
                 if(value > maxValue){
                     maxValue = value;
                     index = i;
