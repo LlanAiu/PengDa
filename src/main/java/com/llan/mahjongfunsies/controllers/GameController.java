@@ -50,6 +50,7 @@ public class GameController {
     public void initializeTraining(){
         training = true;
         currentGame = new Game(TurnManager.GameMode.TRAINING);
+        trainer = new Trainer(currentGame);
         ended = false;
         currentGame.onStart();
         while(!ended){

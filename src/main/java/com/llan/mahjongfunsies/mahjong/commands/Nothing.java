@@ -18,4 +18,9 @@ public class Nothing extends PrioritizedPostMove{
     GameAction getActionType() {
         return null;
     }
+
+    @Override
+    public void play() {
+        System.out.println("Playing Nothing Does Nothing...");
+    }
 }

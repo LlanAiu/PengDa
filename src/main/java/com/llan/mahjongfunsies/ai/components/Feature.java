@@ -79,7 +79,7 @@ public class Feature implements State{
             changed.currentTurnIndex = ((PrioritizedPostMove) action).getPlayerIndex();
             if(action instanceof Win){
                 changed.winningIndex = ((Win) action).getPlayerIndex();
-                ended = true;
+                changed.ended = true;
             } else if (action instanceof Quad){
                 changed.hands[((Quad) action).getPlayerIndex()].add(Card.none());
             }

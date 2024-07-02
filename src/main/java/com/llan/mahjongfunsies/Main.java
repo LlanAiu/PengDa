@@ -1,5 +1,6 @@
 package com.llan.mahjongfunsies;
 
+import com.llan.mahjongfunsies.controllers.GameController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,6 +16,8 @@ public class Main extends Application {
         stage.setTitle("Funsies!");
         stage.setScene(scene);
         stage.show();
+
+        GameController.getInstance().initializeTraining();
     }
 
     public static void main(String[] args) {

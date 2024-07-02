@@ -1,9 +1,9 @@
 package com.llan.mahjongfunsies.mahjong.environment;
 
+import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.ui.Board;
 
 public class Premove extends GameStatus {
-
     boolean end;
 
     public Premove(){
@@ -12,7 +12,9 @@ public class Premove extends GameStatus {
 
     @Override
     public void periodic() {
-        Board.getInstance().resetPostMoves();
+        if(!GameController.getInstance().isTraining()){
+            Board.getInstance().resetPostMoves();
+        }
         if(game.hasWon()){
             end = true;
         } else {

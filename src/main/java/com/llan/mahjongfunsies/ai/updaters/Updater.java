@@ -1,4 +1,4 @@
-package com.llan.mahjongfunsies.ai.Iterators;
+package com.llan.mahjongfunsies.ai.updaters;
 
 import com.llan.mahjongfunsies.ai.components.State;
 import com.llan.mahjongfunsies.ai.functions.ValueFunction;
@@ -12,16 +12,24 @@ import java.util.List;
 public abstract class Updater {
     Policy policy;
     ValueFunction function;
+    private int stepSizeCount;
 
     public Updater(Policy policy){
         this.policy = policy;
         this.function = policy.getFunction();
+        stepSizeCount = 1;
     }
 
     //this is bad design but too lazy to abstract record right now
     public void update(List<Command> actions, State currentState, GameRecord record) {
         NumericMatrix update = getUpdate(actions, currentState, record);
-        policy.getFunction().updateWeights(update);
+        if(update != null){
+            policy.getFunction().updateWeights(update);
+        }
+    }
+
+    public double getStepSize(){
+        return 1.0 / ((double) stepSizeCount++);
     }
 
     public abstract NumericMatrix getUpdate(List<Command> actions, State currentState, GameRecord record);

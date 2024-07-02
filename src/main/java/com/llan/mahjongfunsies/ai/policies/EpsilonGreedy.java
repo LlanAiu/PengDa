@@ -27,7 +27,7 @@ public abstract class EpsilonGreedy extends Policy{
         if(Math.random() > epsilon){
             //take greedy action
             int index = -1;
-            double maxValue = Double.MIN_VALUE;
+            double maxValue = Double.NEGATIVE_INFINITY;
             for(int i = 0; i < actions.size(); i++){
                 double value = function.totalValueOf(currentState, actions.get(i));
                 if(value > maxValue){

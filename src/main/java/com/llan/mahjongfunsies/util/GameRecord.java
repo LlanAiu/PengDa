@@ -45,7 +45,12 @@ public class GameRecord {
     }
 
     public TurnRecord getLast(int playerIndex){
-        return recordedTurns[playerIndex].getLast();
+        TurnRecord[] last = getLast(playerIndex, 1);
+        if(last == null){
+            return null;
+        } else {
+            return last[0];
+        }
     }
 
     //also in reverse order, e.g. last turn in index 0

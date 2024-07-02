@@ -1,8 +1,5 @@
 package com.llan.mahjongfunsies.mahjong.cards;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Objects;
 
 public class Card {
@@ -44,18 +41,15 @@ public class Card {
         }
     }
 
-    @Contract("_, _ -> new")
-    public static @NotNull Card of(Suit suit, int value){
+    public static Card of(Suit suit, int value){
         return new Card(suit, value);
     }
 
-    @Contract("_, _, _ -> new")
-    public static @NotNull Card of(Suit suit, int value, HonorType honor){
+    public static Card of(Suit suit, int value, HonorType honor){
         return new Card(suit, value, honor);
     }
 
-    @Contract("_ -> new")
-    public static @NotNull Card of(HonorType honor){
+    public static Card of(HonorType honor){
         return new Card(honor);
     }
 
@@ -64,8 +58,7 @@ public class Card {
         return Card.of(Suit.TIAO, -1);
     }
 
-    @Contract("_ -> new")
-    public static @NotNull Card copyOf(@NotNull Card card){
+    public static Card copyOf(Card card){
         return new Card(card.suit, card.value, card.honor);
     }
 

@@ -28,7 +28,7 @@ public abstract class PrioritizedPostMove extends CommandBase{
     }
 
     public void record(){
-        System.out.println("Move recorded: " + getClass().getSimpleName());
+//        System.out.println("Move recorded: " + getClass().getSimpleName());
         currentGame.record(this, playerIndex);
     }
 

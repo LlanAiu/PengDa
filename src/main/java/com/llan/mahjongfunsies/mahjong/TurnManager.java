@@ -1,6 +1,7 @@
 package com.llan.mahjongfunsies.mahjong;
 
 import com.llan.mahjongfunsies.Constants;
+import com.llan.mahjongfunsies.ai.components.State;
 import com.llan.mahjongfunsies.ai.policies.RandomPolicy;
 import com.llan.mahjongfunsies.ai.policies.SoftMahjongPolicy;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
@@ -66,8 +67,8 @@ public class TurnManager {
         }
     }
 
-    public Optional<Command> pollCurrentTurn(){
-        if(players[currentTurnIndex].trySelect()){
+    public Optional<Command> pollCurrentTurn(State gameState){
+        if(players[currentTurnIndex].trySelect(gameState)){
             Command move = players[currentTurnIndex].getSelectedMove();
             if(players[currentTurnIndex].checkLegalMove(move)){
                 return Optional.of(move);
@@ -76,8 +77,8 @@ public class TurnManager {
         return Optional.empty();
     }
 
-    public void pollAll(){
-        Arrays.stream(players).filter(player -> player.getIndex() != currentTurnIndex).forEach(Player::trySelect);
+    public void pollAll(State gameState){
+        Arrays.stream(players).filter(player -> player.getIndex() != currentTurnIndex).forEach(player -> player.trySelect(gameState));
     }
 
     public Optional<Command> getMoveByPriority(){
@@ -184,7 +185,10 @@ public class TurnManager {
         if(mode == GameMode.NORMAL){
             throw new UnsupportedOperationException("Player Information Protected Under Normal Gameplay!");
         } else {
-            Computer[] computers = (Computer[]) players;
+            Computer[] computers = new Computer[players.length];
+            for(int i = 0; i < players.length; i++){
+                computers[i] = (Computer) players[i];
+            }
             return computers;
         }
     }

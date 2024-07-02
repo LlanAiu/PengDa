@@ -112,6 +112,16 @@ public class NumericMatrix {
         return result;
     }
 
+    public NumericMatrix transpose(){
+        NumericMatrix result = new NumericMatrix(this.columns(), this.rows());
+        for(int row = 0; row < this.rows(); row++){
+            for(int col = 0; col < this.columns(); col++){
+                result.setValue(this.getValue(row, col), col, row);
+            }
+        }
+        return result;
+    }
+
     public double convertToDouble(){
         if(this.columns() != 1 || this.rows() != 1){
             throw new UnsupportedOperationException("Cannot convert multidimensional matrix to a double");

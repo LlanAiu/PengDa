@@ -1,5 +1,6 @@
 package com.llan.mahjongfunsies.mahjong.players;
 
+import com.llan.mahjongfunsies.ai.components.State;
 import com.llan.mahjongfunsies.mahjong.commands.CommandBase;
 import com.llan.mahjongfunsies.mahjong.commands.Nothing;
 import com.llan.mahjongfunsies.mahjong.commands.NullCommand;
@@ -17,7 +18,7 @@ public class Human extends Player{
     }
 
     @Override
-    public boolean trySelect() {
+    public boolean trySelect(State gameState) {
         if(!legalMoves.isEmpty() && move instanceof NullCommand){
             move = new Nothing(index);
         }

@@ -1,5 +1,6 @@
 package com.llan.mahjongfunsies.mahjong.players;
 
+import com.llan.mahjongfunsies.ai.components.State;
 import com.llan.mahjongfunsies.ai.policies.Policy;
 import com.llan.mahjongfunsies.mahjong.commands.NullCommand;
 
@@ -21,9 +22,9 @@ public class Computer extends Player{
     }
 
     @Override
-    public boolean trySelect() {
+    public boolean trySelect(State gameState) {
         if(move instanceof NullCommand){
-            move = policy.select(legalMoves, null);
+            move = policy.select(legalMoves, gameState);
             return true;
         }
         return false;

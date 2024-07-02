@@ -19,7 +19,7 @@ public class Prompting extends GameStatus {
         if(move.isSelected()){
             shouldTransition = true;
         } else {
-            player.trySelect();
+            player.trySelect(game.getState());
         }
     }
 

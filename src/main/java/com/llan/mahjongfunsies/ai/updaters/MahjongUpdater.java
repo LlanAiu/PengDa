@@ -1,4 +1,4 @@
-package com.llan.mahjongfunsies.ai.Iterators;
+package com.llan.mahjongfunsies.ai.updaters;
 
 import com.llan.mahjongfunsies.ai.AIConstants;
 import com.llan.mahjongfunsies.ai.components.State;
@@ -18,16 +18,18 @@ public class MahjongUpdater extends Updater{
         this.playerIndex = playerIndex;
     }
 
-    //w' = w + a[r + discount * q(s', a', w) - q(s, a, w)] * grad(q(s, a, w))
-    //MISSING STEP SIZE!!!, SHOULD BE VARIABLE THOUGH
     @Override
     public NumericMatrix getUpdate(List<Command> actions, State currentState, GameRecord record) {
         TurnRecord lastTurn = record.getLast(playerIndex);
+        if(lastTurn == null){
+            return null;
+        }
         Command selected = policy.select(actions, currentState);
         double value = (function.rewardOf(currentState)
                 + AIConstants.DISCOUNT * function.valueOf(currentState, selected)
                 - function.valueOf(lastTurn.gameState(), lastTurn.selectedAction()));
-        NumericMatrix update = lastTurn.gameState().getFeature(playerIndex).scale(value);
+        value *= getStepSize();
+        NumericMatrix update = lastTurn.gameState().getFeature(playerIndex).scale(value).transpose();
         return update;
     }
 }

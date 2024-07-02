@@ -4,15 +4,13 @@ import com.llan.mahjongfunsies.ai.AIConstants;
 import com.llan.mahjongfunsies.ai.components.Environment;
 import com.llan.mahjongfunsies.ai.components.Feature;
 import com.llan.mahjongfunsies.ai.components.State;
+import com.llan.mahjongfunsies.controllers.GameController;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.cards.Deck;
 import com.llan.mahjongfunsies.mahjong.cards.Discard;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
 import com.llan.mahjongfunsies.mahjong.commands.PrioritizedPostMove;
-import com.llan.mahjongfunsies.mahjong.environment.End;
-import com.llan.mahjongfunsies.mahjong.environment.GameAction;
-import com.llan.mahjongfunsies.mahjong.environment.Premove;
-import com.llan.mahjongfunsies.mahjong.environment.Status;
+import com.llan.mahjongfunsies.mahjong.environment.*;
 import com.llan.mahjongfunsies.mahjong.players.Computer;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.ui.Board;
@@ -20,7 +18,6 @@ import com.llan.mahjongfunsies.util.DisplayUtil;
 import com.llan.mahjongfunsies.util.Episode;
 import com.llan.mahjongfunsies.util.GameRecord;
 import com.llan.mahjongfunsies.util.Triplet;
-
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -66,7 +63,9 @@ public class Game implements Episode, Environment {
     }
 
     public void postTurn(){
-        Board.getInstance().resetSelected();
+        if(!GameController.getInstance().isTraining()){
+            Board.getInstance().resetSelected();
+        }
         manager.setPostPlayableMoves(discard.getLastPlayed());
     }
 
@@ -94,11 +93,11 @@ public class Game implements Episode, Environment {
     }
 
     public Optional<Command> pollCurrentTurn(){
-        return manager.pollCurrentTurn();
+        return manager.pollCurrentTurn(currentState);
     }
 
     public void pollAll(){
-        manager.pollAll();
+        manager.pollAll(currentState);
     }
 
     public Optional<Command> getPostMove(){
@@ -144,7 +143,7 @@ public class Game implements Episode, Environment {
         discardList.addAll(discard.getCards());
         currentState = new Feature(
                 manager.getCards(),
-                manager.getCurrentTurnIndex(),
+                currentTurnIndex(),
                 deck.cardsRemaining(),
                 discardList,
                 isFinished(),
@@ -187,6 +186,17 @@ public class Game implements Episode, Environment {
                 getState(),
                 selectedAction,
                 getReward(playerIndex));
+    }
+
+    public GameRecord getRecord(){
+        return record;
+    }
+
+    public int currentTurnIndex(){
+        if(status instanceof Postchecking || status instanceof Prompting){
+            return -1;
+        }
+        return manager.getCurrentTurnIndex();
     }
 
     public Player getPlayerByOrientation(DisplayUtil.Orientation orientation){

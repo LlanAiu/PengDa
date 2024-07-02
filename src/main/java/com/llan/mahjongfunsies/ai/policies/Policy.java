@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class Policy {
     ValueFunction function;
 
-    public Policy(){
+    public void setValueFunction(){
         function = getFunction();
     }
 
