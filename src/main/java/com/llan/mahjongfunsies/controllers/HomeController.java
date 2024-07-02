@@ -1,10 +1,9 @@
 package com.llan.mahjongfunsies.controllers;
 
-import com.llan.mahjongfunsies.ui.Board;
+import com.llan.mahjongfunsies.ui.DisplayConstants;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -16,19 +15,30 @@ public class HomeController {
     public void onStart(ActionEvent e){
         try {
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            setScreen(stage);
+            start(stage, DisplayConstants.NORMAL_SCENE);
         } catch (IOException ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
     }
 
-    private void setScreen(Stage stage) throws IOException {
+    @FXML
+    public void onTrain(ActionEvent e){
+        try {
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            setScreen(stage, DisplayConstants.TRAINING_SCENE);
+        } catch (IOException ex){
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public void start(Stage stage, Scene scene) throws IOException{
         GameController.getInstance().initialize();
-        Parent root = Board.getInstance().getRoot();
-        Scene scene = new Scene(root);
+        setScreen(stage, scene);
+    }
+
+    private void setScreen(Stage stage, Scene scene) throws IOException {
         stage.setScene(scene);
         stage.sizeToScene();
         stage.show();
-
     }
 }

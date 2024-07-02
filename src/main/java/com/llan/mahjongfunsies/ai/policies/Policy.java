@@ -13,6 +13,14 @@ public abstract class Policy {
         function = getFunction();
     }
 
+    public void save(String filename){
+        function.saveWeights(filename);
+    }
+
+    public void load(String filename){
+        function.loadWeights(filename);
+    }
+
     public abstract ValueFunction getFunction();
 
     public abstract Command select(List<Command> actions, State currentState);

@@ -40,8 +40,11 @@ public class Board {
     private Board(){
         pane = new BorderPane();
         center = new StackPane();
+
+    }
+
+    public void initialize(){
         discard = DiscardUI.getInstance();
-        endScreen = new EndScreen();
         for(int i = 0; i < Constants.NUM_PLAYERS; i++){
             DisplayUtil.Orientation orientation;
             switch (i){

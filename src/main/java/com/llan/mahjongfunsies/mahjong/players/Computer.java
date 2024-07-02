@@ -16,6 +16,14 @@ public class Computer extends Player{
         return policy;
     }
 
+    public void save(){
+        policy.save(index + ".txt");
+    }
+
+    public void load(){
+        policy.load(index + ".txt");
+    }
+
     @Override
     public boolean shouldDisplay() {
         return false;

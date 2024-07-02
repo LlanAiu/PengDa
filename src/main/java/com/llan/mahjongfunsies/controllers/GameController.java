@@ -3,6 +3,7 @@ package com.llan.mahjongfunsies.controllers;
 import com.llan.mahjongfunsies.ai.Trainer;
 import com.llan.mahjongfunsies.mahjong.Game;
 import com.llan.mahjongfunsies.mahjong.TurnManager;
+import com.llan.mahjongfunsies.mahjong.players.Computer;
 import com.llan.mahjongfunsies.mahjong.players.Player;
 import com.llan.mahjongfunsies.ui.Board;
 import com.llan.mahjongfunsies.ui.DisplayConstants;
@@ -11,6 +12,8 @@ import com.llan.mahjongfunsies.util.SubjectBase;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+
+import java.util.Arrays;
 
 public class GameController {
 
@@ -38,6 +41,7 @@ public class GameController {
         currentGame = new Game(TurnManager.GameMode.NORMAL);
         currentGame.onStart();
         ended = false;
+        Board.getInstance().initialize();
         Board.getInstance().displayState();
         Timeline periodic = new Timeline(new KeyFrame(Duration.millis(DisplayConstants.FRAME_RATE_MILLIS), actionEvent -> periodic()));
         periodic.setCycleCount(Timeline.INDEFINITE);
@@ -86,5 +90,13 @@ public class GameController {
 
     public Player getPlayerByOrientation(DisplayUtil.Orientation orientation){
         return currentGame.getPlayerByOrientation(orientation);
+    }
+
+    public void saveTrainingWeights(){
+        Arrays.stream(currentGame.getPlayers()).forEach(Computer::save);
+    }
+
+    public void loadWeights(){
+        Arrays.stream(currentGame.getPlayers()).forEach(Computer::load);
     }
 }

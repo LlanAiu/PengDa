@@ -1,6 +1,7 @@
 package com.llan.mahjongfunsies.ui;
 
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 
 public final class DisplayConstants {
     public static final int CARD_WIDTH = 40;
@@ -20,4 +21,7 @@ public final class DisplayConstants {
     public static final int POST_WAIT_MILLIS = 2500;
     //automatically floored
     public static final int MAX_POLLED_FRAMES = POST_WAIT_MILLIS / FRAME_RATE_MILLIS;
+
+    public static final Scene NORMAL_SCENE = new Scene(Board.getInstance().getRoot());
+    public static final Scene TRAINING_SCENE = new Scene(TrainingScreen.getInstance().getRoot());
 }
