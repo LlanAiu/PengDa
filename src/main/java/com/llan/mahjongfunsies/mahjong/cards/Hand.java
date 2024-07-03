@@ -54,13 +54,15 @@ public class Hand extends Subdeck{
 
     //Doesn't reveal, pretty much just used for drawn sets of 4
     public void createSet(List<Card> cardSet, int setNumber) {
+        List<Card> modifiable = new ArrayList<>();
+        modifiable.addAll(cardSet);
         for(Card card : cards){
             if(card.isPartOfSet()){
                 continue;
             }
-            if(cardSet.contains(card)){
+            if(modifiable.contains(card)){
                 card.setSetNumber(setNumber);
-                cardSet.remove(card);
+                modifiable.remove(card);
             }
         }
     }

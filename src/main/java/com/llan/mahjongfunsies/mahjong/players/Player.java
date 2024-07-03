@@ -62,8 +62,6 @@ public abstract class Player {
     }
 
     public void reveal(List<Card> cards){
-        System.out.println("Un-hiding " + cards.size() + " cards from player " + index);
-        System.out.println(cards);
         hand.reveal(cards);
     }
 
@@ -98,7 +96,7 @@ public abstract class Player {
         int num = hand.countNonSetIdentical(lastPlayed);
         if (num >= 2) {
             legalMoves.add(new Triple(index));
-            if(num >= 3){
+            if(num >= 3 && !Deck.getInstance().isEmpty()){
                 legalMoves.add(new Quad(index));
             }
         }
@@ -123,7 +121,7 @@ public abstract class Player {
                 legalMoves.add(new PlayCard(card, index));
             }
         }
-        if(hand.canDrawnQuad(lastDrawnCard)){
+        if(hand.canDrawnQuad(lastDrawnCard) && !Deck.getInstance().isEmpty()){
             legalMoves.add(hand.getDrawnQuadCommand(lastDrawnCard, index));
         }
         if(firstMove){

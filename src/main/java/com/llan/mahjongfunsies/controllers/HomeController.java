@@ -15,6 +15,7 @@ public class HomeController {
     public void onStart(ActionEvent e){
         try {
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            GameController.getInstance().setTraining(false);
             start(stage, DisplayConstants.NORMAL_SCENE);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -25,6 +26,7 @@ public class HomeController {
     public void onTrain(ActionEvent e){
         try {
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            GameController.getInstance().setTraining(true);
             setScreen(stage, DisplayConstants.TRAINING_SCENE);
         } catch (IOException ex){
             System.out.println(ex.getMessage());

@@ -45,7 +45,7 @@ public abstract class Subdeck extends SubjectBase {
     public void sort(){
         cards.sort((card1, card2) -> {
             if(card1.getSetNumber() != card2.getSetNumber()){
-                return -(card1.getSetNumber() - card2.getSetNumber());
+                return - (card1.getSetNumber() - card2.getSetNumber());
             } else {
                 if(card1.suit() != card2.suit()){
                     return card1.suit().getPriority() - card2.suit().getPriority();

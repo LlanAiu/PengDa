@@ -134,7 +134,7 @@ public class NumericMatrix {
         StringBuilder sb = new StringBuilder("{");
         for(int row = 0; row < matrix.length; row++){
             for(int col = 0; col < matrix[row].length; col++){
-                sb.append(this.getValue(row, col)).append(", ");
+                sb.append(MathUtil.round(this.getValue(row, col), 2)).append(", ");
             }
             sb.delete(sb.length() - 2, sb.length());
             sb.append("}").append(System.getProperty("line.separator")).append("{");
@@ -157,6 +157,9 @@ public class NumericMatrix {
     }
 
     public static NumericMatrix parseDataString(List<String> strings){
+        if(strings.isEmpty()){
+            return null;
+        }
         String[] string1 = strings.getFirst().split(",");
         NumericMatrix result = new NumericMatrix(strings.size(), string1.length);
         for(int i = 0; i < strings.size(); i++){
@@ -170,5 +173,9 @@ public class NumericMatrix {
 
     public static NumericMatrix empty(){
         return new NumericMatrix(0, 0);
+    }
+
+    public boolean isEmpty(){
+        return rows() == 0 && columns() == 0;
     }
 }

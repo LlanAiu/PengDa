@@ -2,6 +2,7 @@ package com.llan.mahjongfunsies.ai.updaters;
 
 import com.llan.mahjongfunsies.ai.AIConstants;
 import com.llan.mahjongfunsies.ai.components.State;
+import com.llan.mahjongfunsies.ai.data.DataSaver;
 import com.llan.mahjongfunsies.ai.policies.Policy;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
 import com.llan.mahjongfunsies.util.GameRecord;
@@ -16,6 +17,10 @@ public class MahjongUpdater extends Updater{
     public MahjongUpdater(Policy policy, int playerIndex){
         super(policy);
         this.playerIndex = playerIndex;
+        NumericMatrix step = DataSaver.retrieve("step" + playerIndex + ".txt");
+        if(step != null && !step.isEmpty()) {
+            stepSizeCount = (int) step.convertToDouble();
+        }
     }
 
     @Override
@@ -31,5 +36,11 @@ public class MahjongUpdater extends Updater{
         value *= getStepSize();
         NumericMatrix update = lastTurn.gameState().getFeature(playerIndex).scale(value).transpose();
         return update;
+    }
+
+    public void saveStepSize(){
+        NumericMatrix stepSize = new NumericMatrix(1, 1);
+        stepSize.setValue(stepSizeCount, 0, 0);
+        DataSaver.save(stepSize, "step" + playerIndex + ".txt");
     }
 }

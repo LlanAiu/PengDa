@@ -19,9 +19,7 @@ import com.llan.mahjongfunsies.util.Episode;
 import com.llan.mahjongfunsies.util.GameRecord;
 import com.llan.mahjongfunsies.util.Triplet;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
-import java.util.function.DoubleConsumer;
 
 public class Game implements Episode, Environment {
 
@@ -83,10 +81,8 @@ public class Game implements Episode, Environment {
 
     @Override
     public void end() {
-        System.out.println("End method of Game called");
+        System.out.println("End of Game Method Called; Index: " + manager.hasWon());
         record.setEndGameRewards(manager.hasWon());
-        System.out.println(record.getLast(manager.getCurrentTurnIndex()));
-        Arrays.stream(record.getRewards()).forEach(value -> System.out.print(value + ", "));
     }
 
     @Override

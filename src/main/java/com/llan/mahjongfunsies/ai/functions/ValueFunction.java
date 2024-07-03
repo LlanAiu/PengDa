@@ -20,14 +20,15 @@ public abstract class ValueFunction {
 
     public void loadWeights(String filename){
         NumericMatrix retrieve = DataSaver.retrieve(filename);
-        if(retrieve.rows() == 1 && retrieve.columns() == AIConstants.FEATURE_LENGTH){
+        if(retrieve != null && retrieve.rows() == weights.rows() && retrieve.columns() == weights.columns()){
             weights = retrieve;
         }
+//        System.out.println(weights.getValue(0, 0));
     }
 
     //w' = w + a[r + discount * q(s', a', w) - q(s, a, w)] * grad(q(s, a, w))
     public void updateWeights(NumericMatrix update){
-        weights.plus(update);
+        weights = weights.plus(update);
     }
 
     public abstract double valueOf(State state);

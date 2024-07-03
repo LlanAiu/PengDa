@@ -2,7 +2,6 @@ package com.llan.mahjongfunsies.mahjong;
 
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.ai.components.State;
-import com.llan.mahjongfunsies.ai.policies.RandomPolicy;
 import com.llan.mahjongfunsies.ai.policies.SoftMahjongPolicy;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
@@ -43,10 +42,10 @@ public class TurnManager {
                 if(i == Constants.HUMAN_INDEX){
                     players[i] = new Human(i);
                 } else {
-                    players[i] = new Computer(i, new RandomPolicy());
+                    players[i] = new Computer(i, new SoftMahjongPolicy(i, true));
                 }
             } else {
-                players[i] = new Computer(i, new SoftMahjongPolicy(i));
+                players[i] = new Computer(i, new SoftMahjongPolicy(i, true));
             }
         }
         playerOrientations.put(DisplayUtil.Orientation.DOWN, players[0]);
@@ -84,7 +83,6 @@ public class TurnManager {
     public Optional<Command> getMoveByPriority(){
         postMoves.sort(Comparator.comparingInt(o -> o.getPriority()));
         if(!postMoves.getFirst().isNull()){
-            System.out.println("Selected Command: " + postMoves.getFirst().toString());
             return Optional.of(postMoves.getFirst());
         }
         return Optional.empty();

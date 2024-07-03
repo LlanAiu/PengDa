@@ -33,4 +33,10 @@ public class Trainer {
             }
         }
     }
+
+    public void onEnd(){
+        for(Updater updater : updaters){
+            ((MahjongUpdater) updater).saveStepSize();
+        }
+    }
 }

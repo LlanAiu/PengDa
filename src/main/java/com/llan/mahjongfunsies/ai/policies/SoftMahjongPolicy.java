@@ -4,13 +4,19 @@ import com.llan.mahjongfunsies.ai.functions.MahjongValueFunction;
 import com.llan.mahjongfunsies.ai.functions.ValueFunction;
 
 public class SoftMahjongPolicy extends EpsilonGreedy{
-    private int playerIndex;
     private MahjongValueFunction valueFunction;
 
     public SoftMahjongPolicy(int playerIndex) {
-        this.playerIndex = playerIndex;
         valueFunction = new MahjongValueFunction(playerIndex);
         setValueFunction();
+    }
+
+    public SoftMahjongPolicy(int playerIndex, boolean load){
+        valueFunction = new MahjongValueFunction(playerIndex);
+        setValueFunction();
+        if(load){
+            valueFunction.loadWeights(playerIndex + ".txt");
+        }
     }
 
     @Override

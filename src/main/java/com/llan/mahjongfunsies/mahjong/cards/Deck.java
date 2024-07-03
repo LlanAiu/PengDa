@@ -27,7 +27,7 @@ public class Deck {
         if(cards.size() > 0){
             return cards.removeFirst();
         }
-        return null;
+        throw new UnsupportedOperationException("Cannot Draw Card From Empty Deck");
     }
 
     public List<Card> drawNext(int number){
@@ -64,9 +64,5 @@ public class Deck {
             shuffled.add(cards.remove(MathUtil.randInt(0, cards.size() - 1)));
         }
         cards = shuffled;
-    }
-
-    public Card[] readAll(){
-        return cards.toArray(new Card[cards.size()]);
     }
 }

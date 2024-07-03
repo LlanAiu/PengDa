@@ -18,4 +18,8 @@ public class MathUtil {
     public static double random(double min, double max){
         return min + (max - min) * Math.random();
     }
+
+    public static double round(double value, int decimals){
+        return Math.round(Math.pow(10, decimals) * value) / Math.pow(10, decimals);
+    }
 }

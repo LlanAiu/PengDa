@@ -12,7 +12,7 @@ import java.util.List;
 public abstract class Updater {
     Policy policy;
     ValueFunction function;
-    private int stepSizeCount;
+    int stepSizeCount;
 
     public Updater(Policy policy){
         this.policy = policy;

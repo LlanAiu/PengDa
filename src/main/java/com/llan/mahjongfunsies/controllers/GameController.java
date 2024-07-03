@@ -72,8 +72,16 @@ public class GameController {
             if(!ended){
                 currentGame.end();
                 ended = true;
+                if(training){
+                    saveTrainingWeights();
+                    trainer.onEnd();
+                }
             }
         }
+    }
+
+    public void setTraining(boolean training){
+        this.training = training;
     }
 
     public boolean isTraining(){
