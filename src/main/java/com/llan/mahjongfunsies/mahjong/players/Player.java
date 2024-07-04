@@ -158,15 +158,10 @@ public abstract class Player {
     }
 
     public Command getSelectedMove(){
-        if(move instanceof Straight && !((Straight) move).isSelected()){
-            List<Command> straights = legalMoves.stream().filter(command -> command instanceof Straight).toList();
-            if(straights.size() == 1){
-                move = straights.getFirst();
-            }
-        } else if (move instanceof DrawnQuad && !((DrawnQuad) move).isSelected()){
-            List<Command> straights = legalMoves.stream().filter(command -> command instanceof Straight).toList();
-            if(straights.size() == 1){
-                move = straights.getFirst();
+        if(move instanceof Ambiguous && !((Ambiguous) move).isSelected()){
+            List<Command> ambiguous = legalMoves.stream().filter(command -> command instanceof Ambiguous).toList();
+            if(ambiguous.size() == 1){
+                move = ambiguous.getFirst();
             }
         }
         return move;

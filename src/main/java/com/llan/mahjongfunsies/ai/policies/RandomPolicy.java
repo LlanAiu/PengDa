@@ -10,11 +10,23 @@ import com.llan.mahjongfunsies.util.MathUtil;
 import java.util.List;
 
 public class RandomPolicy extends Policy{
+    private ValueFunction valueFunction;
+
+    public RandomPolicy(){
+        valueFunction = new NullValueFunction();
+        setValueFunction();
+    }
 
     @Override
     public ValueFunction getFunction() {
-        return new NullValueFunction();
+        return valueFunction;
     }
+
+    @Override
+    public void save(String filename) {}
+
+    @Override
+    public void load(String filename) {}
 
     @Override
     public Command select(List<Command> actions, State currentState) {

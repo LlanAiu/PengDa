@@ -11,12 +11,13 @@ public class SoftMahjongPolicy extends EpsilonGreedy{
         setValueFunction();
     }
 
-    public SoftMahjongPolicy(int playerIndex, boolean load){
+    public SoftMahjongPolicy(int playerIndex, boolean load, boolean compete){
         valueFunction = new MahjongValueFunction(playerIndex);
         setValueFunction();
         if(load){
             valueFunction.loadWeights(playerIndex + ".txt");
         }
+        this.setOverride(compete);
     }
 
     @Override

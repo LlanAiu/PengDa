@@ -10,13 +10,20 @@ import java.util.List;
 
 public abstract class EpsilonGreedy extends Policy{
     private double epsilon;
+    private boolean override;
 
     public EpsilonGreedy(double epsilon){
         this.epsilon = MathUtil.clamp(epsilon, 0.0, 1.0);
+        override = false;
     }
 
     public EpsilonGreedy(){
         this.epsilon = AIConstants.DEFAULT_EPSILON;
+        override = false;
+    }
+
+    public void setOverride(boolean override){
+        this.override = override;
     }
 
     @Override
@@ -24,7 +31,7 @@ public abstract class EpsilonGreedy extends Policy{
         if(actions.isEmpty()){
             return new NullCommand();
         }
-        if(Math.random() > epsilon){
+        if(Math.random() > epsilon || override){
             //take greedy action
             int index = -1;
             double maxValue = Double.NEGATIVE_INFINITY;

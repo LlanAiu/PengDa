@@ -1,5 +1,6 @@
 package com.llan.mahjongfunsies.ai.updaters;
 
+import com.llan.mahjongfunsies.ai.AIConstants;
 import com.llan.mahjongfunsies.ai.components.State;
 import com.llan.mahjongfunsies.ai.functions.ValueFunction;
 import com.llan.mahjongfunsies.ai.policies.Policy;
@@ -7,6 +8,7 @@ import com.llan.mahjongfunsies.mahjong.commands.Command;
 import com.llan.mahjongfunsies.util.GameRecord;
 import com.llan.mahjongfunsies.util.NumericMatrix;
 
+import java.lang.constant.Constable;
 import java.util.List;
 
 public abstract class Updater {
@@ -29,7 +31,8 @@ public abstract class Updater {
     }
 
     public double getStepSize(){
-        return 1.0 / ((double) stepSizeCount++);
+        return AIConstants.STEP_SIZE;
+//        return 1.0 / ((double) stepSizeCount++);
     }
 
     public abstract NumericMatrix getUpdate(List<Command> actions, State currentState, GameRecord record);

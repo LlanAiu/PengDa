@@ -2,6 +2,7 @@ package com.llan.mahjongfunsies.mahjong;
 
 import com.llan.mahjongfunsies.Constants;
 import com.llan.mahjongfunsies.ai.components.State;
+import com.llan.mahjongfunsies.ai.policies.RandomPolicy;
 import com.llan.mahjongfunsies.ai.policies.SoftMahjongPolicy;
 import com.llan.mahjongfunsies.mahjong.cards.Card;
 import com.llan.mahjongfunsies.mahjong.commands.Command;
@@ -42,10 +43,11 @@ public class TurnManager {
                 if(i == Constants.HUMAN_INDEX){
                     players[i] = new Human(i);
                 } else {
-                    players[i] = new Computer(i, new SoftMahjongPolicy(i, true));
+                    players[i] = new Computer(i, new SoftMahjongPolicy(i, true, true));
                 }
             } else {
-                players[i] = new Computer(i, new SoftMahjongPolicy(i, true));
+                players[i] = new Computer(i, new SoftMahjongPolicy(i, true, false));
+//                players[i] = new Computer(i, new RandomPolicy());
             }
         }
         playerOrientations.put(DisplayUtil.Orientation.DOWN, players[0]);

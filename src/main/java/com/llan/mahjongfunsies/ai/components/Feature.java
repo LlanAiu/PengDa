@@ -40,7 +40,8 @@ public class Feature implements State{
                 encodings[i].setValue(hands[j].size(), 0, j);
                 encodings[i].setRow(encodingSubset(hands[j], j == i), 0, j * Constants.ALL_CARDS.length + 6);
             }
-            encodings[i].setRow(discardEncoding, 0, hands.length * Constants.ALL_CARDS.length + 6);
+            encodings[i].setRow(squaredSubset(hands[i], true), 0, AIConstants.SQUARED_SUBSET_INDEX);
+            encodings[i].setRow(discardEncoding, 0, AIConstants.DISCARD_SUBSET_INDEX);
         }
     }
 
@@ -97,6 +98,22 @@ public class Feature implements State{
             if(!card.isHidden() || hiddenOverride){
                 count[Constants.CARD_INDICES.get(card)]++;
             }
+        }
+        return count;
+    }
+
+    private int[] squaredSubset(List<Card> subdeck, boolean hiddenOverride){
+        int[] count = new int[Constants.ALL_CARDS.length];
+        for(Card card : subdeck){
+            if(card.equals(Card.none())){
+                continue;
+            }
+            if(!card.isHidden() || hiddenOverride){
+                count[Constants.CARD_INDICES.get(card)]++;
+            }
+        }
+        for(int i = 0; i < count.length; i++){
+            count[i] = count[i] * count[i];
         }
         return count;
     }
