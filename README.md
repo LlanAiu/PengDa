@@ -13,4 +13,5 @@ And yes, there's a lack of libraries on purpose, I thought it'd be beneficial to
 
 # Sources
 Mahjong images courtesy of https://github.com/FluffyStuff/riichi-mahjong-tiles.git
+
 RL algorithm design based pretty much entirely on "Reinforcement Learning: An Introduction (2nd Edition)" (R. Sutton and A. Barto)
